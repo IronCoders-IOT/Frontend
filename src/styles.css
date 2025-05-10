@@ -1,0 +1,23 @@
+/* Define una clase base para la fuente Inter */
+.inter-font {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+}
+.inter-light {
+  font-weight: 300;
+}
+.inter-regular {
+  font-weight: 400;
+}
+.inter-bold {
+  font-weight: 700;
+}
+/* Estilos globales */
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+}
