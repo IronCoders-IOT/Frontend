@@ -1,23 +1,50 @@
-/* Define una clase base para la fuente Inter */
-.inter-font {
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-}
-.inter-light {
+
+@font-face {
+  font-family: "Inter-Regular";
+  src: url("assets/fonts/Inter_28pt-Regular.ttf") format("truetype");
   font-weight: 300;
+  font-style: normal;
 }
-.inter-regular {
-  font-weight: 400;
+
+@font-face {
+  font-family: "Inter-Medium";
+  src: url("assets/fonts/Inter_28pt-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style:  normal;
 }
-.inter-bold {
+
+@font-face {
+  font-family: "Inter-Bold";
+  src: url("assets/fonts/Inter_28pt-Bold.ttf") format("truetype");
   font-weight: 700;
+  font-style: normal; /* Usa valores válidos: normal, italic */
 }
-/* Estilos globales */
+
+@font-face {
+  font-family: "Comfortaa-Regular";
+  src: url("assets/fonts/Comfortaa-Regular.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face{
+  font-family: "Comfortaa-Medium";
+  src: url("assets/fonts/Comfortaa-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face{
+  font-family: "Comfortaa-SemiBold";
+  src: url("assets/fonts/Comfortaa-SemiBold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
 html, body {
   height: 100%;
 }
 
 body {
   margin: 0;
-  font-family: "Inter", sans-serif;
 }

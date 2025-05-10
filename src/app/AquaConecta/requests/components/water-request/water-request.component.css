@@ -1,0 +1,22 @@
+.request-container{
+  margin: 0 auto;
+  width: 119.5rem;
+
+}
+
+.request-title-search{
+  margin: 0 auto;
+  width: 92.5%;
+
+}
+.title-request {
+  font-size: 50px;
+  color: #333333;
+  font-family: "Comfortaa-SemiBold", sans-serif;
+}
+
+@media (max-width: 1822px) {
+  .request-container {
+    width: 100%;
+  }
+}

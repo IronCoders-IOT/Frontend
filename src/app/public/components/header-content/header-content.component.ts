@@ -7,7 +7,7 @@ import {MatButtonModule} from '@angular/material/button';
 @Component({
   selector: 'app-header-content',
   imports: [
-    NgOptimizedImage, MatButtonModule, MatDividerModule, MatIconModule
+     MatButtonModule, MatDividerModule, MatIconModule
   ],
   templateUrl: './header-content.component.html',
   standalone: true,

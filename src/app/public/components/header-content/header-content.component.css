@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 header{
   height: 100px;
 
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter-Regular', sans-serif;
 
   /*background-color: aqua;*/
-
   padding: 15px;
+
 }
 
 .header-container{
   margin: 0 auto;
+  height: 100%;
   width: 110rem;
   display: flex;
   align-items: center;
@@ -19,6 +19,14 @@ header{
 }
 .logo-header{
   margin-right: auto;
+}
+.title{
+  font-size: 50px;
+  color: #333333;
+  font-family: "Inter-Bold", sans-serif;
+}
+.conecta{
+  color: #0097E6;
 }
 .container-buttons-header{
   display: flex;
