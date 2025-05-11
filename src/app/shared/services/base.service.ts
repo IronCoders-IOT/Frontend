@@ -51,8 +51,8 @@ export class BaseService<T> {
   }
 
   // Get All Resources
-  getAll(): Observable<T> {
-    return this.http.get<T>(this.resourcePath(), this.httpOptions)
+  getAll(): Observable<T[]> {
+    return this.http.get<T[]>(this.resourcePath(), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 
