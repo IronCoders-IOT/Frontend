@@ -10,16 +10,17 @@ import {merge, Observable, of as observableOf} from 'rxjs';
 import {catchError, map, startWith, switchMap} from 'rxjs/operators';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {DatePipe} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-water-request',
-  imports: [HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
-    MatPaginatorModule, DatePipe, MatFormFieldModule,MatInputModule],
+  imports: [CommonModule,HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
+    MatPaginatorModule, DatePipe, MatFormFieldModule,MatInputModule, RouterLink],
   templateUrl: './water-request.component.html',
   standalone: true,
   styleUrl: './water-request.component.css'
@@ -29,7 +30,7 @@ export class WaterRequestComponent implements AfterViewInit {
   //requests:  Array<WaterRequestEntity> = [];
   requests: MatTableDataSource<WaterRequestEntity> = new MatTableDataSource<WaterRequestEntity>();
 
-  displayedColumns: string[] = ['id', 'resident_id', 'request_liters', 'provider_id', 'delivered_at', 'status'];
+  displayedColumns: string[] = ['id', 'resident_id', 'requested_liters', 'provider_id', 'delivered_at', 'status'];
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
@@ -91,6 +92,18 @@ export class WaterRequestComponent implements AfterViewInit {
       .subscribe(data => (this.requests.data = data));
   }
 
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'Received':
+        return 'status-received';
+      case 'In Progress':
+        return 'status-in-progress';
+      case 'Closed':
+        return 'status-closed';
+      default:
+        return '';
+    }
+  }
 }
 
 

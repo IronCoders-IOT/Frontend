@@ -1,0 +1,122 @@
+.request-container{
+  margin: 0 auto;
+  width: 119rem;
+
+}
+.request-title-search{
+  margin: 0 auto;
+  margin-top: 3%;
+  width: 92.5%;
+  display: flex;
+  align-items: center;
+}
+.title-request {
+  font-size: 50px;
+  color: #333333;
+  font-family: "Inter-Regular", sans-serif;
+}
+
+@media (max-width: 1822px) {
+  .request-container, .container-card {
+    width: 100%;
+  }
+}
+
+/*------------------ Muesta de datos --------------------*/
+.container-card{
+  height: 600px;
+  width: 92.5%;
+  margin: 0 auto;
+}
+
+.custom-scheduled-card{
+  margin-bottom: 100px;
+
+  border: none;
+  border-radius: 33px;
+  background-color: white;
+  margin: 0 auto  ;
+  width: 60%;
+  height: 100%;
+  padding: 40px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Borde difuminado */
+
+
+}
+@media (max-width: 1383px) {
+  .custom-scheduled-card {
+    width: 95%;
+
+  }
+}
+
+
+
+mat-card-title {
+  font-family: Inter-Bold, sans-serif;
+  font-size: 22px;
+  color: #333333;
+  text-decoration: underline;
+
+}
+mat-card-content{
+  font-family: Inter-regular, sans-serif;
+  font-size: 24px;
+  color: #333333;
+  font-weight: 200;
+
+}
+
+mat-card-header{
+  display: block;
+}
+
+.container-dates{
+  display: flex;
+  gap: 100px;
+}
+.header-date{
+  display: flex;
+
+}
+@media (max-width: 863px) {
+  .custom-scheduled-card {
+    width: 100%;
+    padding: 20px;
+  }
+  .header-date{
+    display: block;
+    margin: 0 auto;
+  }
+  .container-dates{
+    display: block;
+  }
+  mat-card-header{
+    margin : 0 auto;
+  }
+  .container-card{
+    height: auto;
+  }
+
+
+}
+/*------------------------botones de guardar-----------------*/
+mat-card-actions{
+  margin-left: auto;
+}
+.button-cancel,.button-save{
+  font-family: Inter-Medium, sans-serif;
+  font-size: 17px;
+}
+
+.button-cancel {
+  color: #ff0000 !important;
+}
+
+.button-save {
+  border-radius: 13px;
+  padding: 20px;
+  color: White !important;
+  background-color: #2197DF;
+  width: 120px;
+}
