@@ -15,6 +15,11 @@
   color: #333333;
   font-family: "Inter-Regular", sans-serif;
 }
+@media (max-width: 1822px) {
+  .request-container {
+    width: 100%;
+  }
+}
 
 /*---------------buscador ----------------------*/
 .search-container{
@@ -86,11 +91,6 @@ input:focus {
 }
 
 /*----------------------------------------------*/
-@media (max-width: 1822px) {
-  .request-container {
-    width: 100%;
-  }
-}
 
 /* Structure */
 .example-container {
