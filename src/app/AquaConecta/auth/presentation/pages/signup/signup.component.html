@@ -1,0 +1,85 @@
+<div class="signup-container">
+    <div class="image-section">
+        <div class="background-image"></div>
+        <!-- La imagen de fondo de manos y agua se carga mediante CSS -->
+    </div>
+    <div class="form-section">
+        <div class="form-container">
+            <h1 class="app-title">Aqua<span class="highlight">Conecta</span></h1>
+
+            <p class="welcome-message">Create your account</p>
+
+            <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" formControlName="name" placeholder="Full Name" class="form-control"
+                        [ngClass]="{'invalid': hasError('name', 'required')}">
+                    <div class="error-message" *ngIf="hasError('name', 'required')">
+                        Name is required
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Last name</label>
+                    <input type="text" id="name" formControlName="name" placeholder="Full Name" class="form-control"
+                        [ngClass]="{'invalid': hasError('name', 'required')}">
+                    <div class="error-message" *ngIf="hasError('name', 'required')">
+                        Last
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" formControlName="email" placeholder="Email" class="form-control"
+                        [ngClass]="{'invalid': hasError('email', 'required') || hasError('email', 'email')}">
+                    <div class="error-message" *ngIf="hasError('email', 'required')">
+                        Email is required
+                    </div>
+                    <div class="error-message" *ngIf="hasError('email', 'email')">
+                        Please enter a valid email
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" formControlName="password" placeholder="Password"
+                        class="form-control"
+                        [ngClass]="{'invalid': hasError('password', 'required') || hasError('password', 'minlength')}">
+                    <div class="error-message" *ngIf="hasError('password', 'required')">
+                        Password is required
+                    </div>
+                    <div class="error-message" *ngIf="hasError('password', 'minlength')">
+                        Password must be at least 6 characters
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" formControlName="confirmPassword"
+                        placeholder="Confirm Password" class="form-control"
+                        [ngClass]="{'invalid': hasError('confirmPassword', 'required') || signupForm.hasError('passwordMismatch')}">
+                    <div class="error-message" *ngIf="hasError('confirmPassword', 'required')">
+                        Password confirmation is required
+                    </div>
+                    <div class="error-message"
+                        *ngIf="signupForm.hasError('passwordMismatch') && signupForm.get('confirmPassword')?.touched">
+                        Passwords do not match
+                    </div>
+                </div>
+
+                <div class="error-container" *ngIf="errorMessage">
+                    <p class="error-message">{{ errorMessage }}</p>
+                </div>
+
+                <button type="submit" class="btn-signup" [disabled]="isSubmitting || signupForm.invalid">
+                    {{ isSubmitting ? 'Creating account...' : 'Sign up' }}
+                </button>
+
+                <div class="login-section">
+                    <span>Already have an account?</span>
+                    <a (click)="onLogin()" class="login-link">Sign in here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
