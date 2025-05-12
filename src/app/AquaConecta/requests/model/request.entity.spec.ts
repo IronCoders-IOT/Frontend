@@ -1,7 +1,7 @@
-import { Request } from './request.entity';
+import { WaterRequestEntity } from './water-request.entity';
 
 describe('Request', () => {
   it('should create an instance', () => {
-    expect(new Request()).toBeTruthy();
+    expect(new WaterRequestEntity()).toBeTruthy();
   });
 });

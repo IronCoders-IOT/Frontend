@@ -3,20 +3,89 @@
   width: 119.5rem;
 
 }
-
 .request-title-search{
   margin: 0 auto;
   width: 92.5%;
-
+  display: flex;
+  align-items: center;
 }
 .title-request {
   font-size: 50px;
   color: #333333;
-  font-family: "Comfortaa-SemiBold", sans-serif;
+  font-family: "Inter-Regular", sans-serif;
 }
+
 
 @media (max-width: 1822px) {
   .request-container {
     width: 100%;
   }
+}
+
+/* Structure */
+.example-container {
+  position: relative;
+  width: 92.5%;
+
+  margin: 0 auto;
+
+}
+
+.example-table-container {
+  position: relative;
+  min-height: 200px;
+  max-height: 400px;
+  overflow: auto;
+
+}
+
+table {
+  width: 100%;
+  background-color: white; /* Color de fondo de la tabla */
+  font-size: 20px;
+  overflow: hidden;
+}
+
+
+/* Cambiar el color de las celdas de datos */
+td, th {
+  color: #555555;
+  font-size: 20px;
+
+  font-family: "Inter-Regular", sans-serif;
+
+}
+
+/* Cambiar el color de las filas al pasar el mouse */
+tr:hover {
+  background-color: whitesmoke;
+}
+
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-rate-limit-reached {
+  max-width: 360px;
+  text-align: center;
+
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  width: 64px;
+}
+
+.mat-column-created {
+  width: 124px;
 }
