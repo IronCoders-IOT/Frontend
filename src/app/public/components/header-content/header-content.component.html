@@ -1,19 +1,16 @@
-<header>
-
+<header class="app-header">
   <div class="header-container">
-    <!--<img class="logo-header" ngSrc="assets/images/logo.png" alt="" height="66" width="381">-->
-    <h1 class="title">Aqua<span class="conecta">Conecta</span></h1>
-
-    <div class="container-buttons-header">
-      <p class="providers-button">Residents</p>
-      <p class="logout-button">Reports</p>
-      <p class="providers-button">Requests</p>
-      <p class="logout-button">Logout</p>
+    <div class="logo">
+      <h1 class="logo-text">Aqua<span class="conecta">Conecta</span></h1>
+    </div>
+    
+    <div class="navigation">
+      <a routerLink="/residents" class="nav-item" routerLinkActive="active">Residents</a>
+      <a routerLink="/reports" class="nav-item" routerLinkActive="active">Reports</a>
+      <a routerLink="/requests" class="nav-item" routerLinkActive="active">Requests</a>
+      <a routerLink="/logout" class="nav-item" routerLinkActive="active">Logout</a>
     </div>
   </div>
-
+  
+  <div class="divider"></div>
 </header>
-
-
-<div class="line-header"></div>
-

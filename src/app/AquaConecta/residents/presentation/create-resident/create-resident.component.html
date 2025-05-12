@@ -1,0 +1,65 @@
+<app-header-content></app-header-content>
+
+<div class="form-section">
+    <h2 class="form-title">Create new resident</h2>
+
+    <form [formGroup]="residentForm" (ngSubmit)="onSubmit()">
+        <div class="form-layout">
+            <!-- Primera columna -->
+            <div class="form-column left-column">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" formControlName="firstName" placeholder="First Name"
+                        class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="documentType">Document type</label>
+                    <input type="text" id="documentType" formControlName="documentType" placeholder="Document type"
+                        class="form-control">
+                </div>
+            </div>
+
+            <!-- Segunda columna -->
+            <div class="form-column middle-column">
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" formControlName="lastName" placeholder="Last Name"
+                        class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="documentNumber">Document Number</label>
+                    <input type="text" id="documentNumber" formControlName="documentNumber"
+                        placeholder="Document Number" class="form-control">
+                </div>
+            </div>
+
+            <!-- Tercera columna -->
+            <div class="form-column right-column">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" formControlName="email" placeholder="Email" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" formControlName="password" placeholder="Password"
+                        class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm your password</label>
+                    <input type="password" id="confirmPassword" formControlName="confirmPassword"
+                        placeholder="Confirm your password" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button type="submit" class="btn-next" [disabled]="isSubmitting">
+                Next
+            </button>
+        </div>
+    </form>
+</div>
