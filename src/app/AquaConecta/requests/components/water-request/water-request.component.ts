@@ -29,7 +29,7 @@ export class WaterRequestComponent implements AfterViewInit {
   //requests:  Array<WaterRequestEntity> = [];
   requests: MatTableDataSource<WaterRequestEntity> = new MatTableDataSource<WaterRequestEntity>();
 
-  displayedColumns: string[] = ['id', 'resident_id', 'provider_id', 'request_liters', 'status', 'delivered_at'];
+  displayedColumns: string[] = ['id', 'resident_id', 'request_liters', 'provider_id', 'delivered_at', 'status'];
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
@@ -38,6 +38,10 @@ export class WaterRequestComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.getAllRequests();
+
+    this.requests.filterPredicate = (data: WaterRequestEntity, filter: string) => {
+      return data.id.toString().toLowerCase().includes(filter);
+    };
   }
 
   getAllRequests(): void {
