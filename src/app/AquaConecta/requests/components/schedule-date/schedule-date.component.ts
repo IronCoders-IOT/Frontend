@@ -1,32 +1,46 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-schedule-date',
   standalone: true,
-  imports: [
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatFormFieldModule,
-    MatInputModule,
-  ],
   templateUrl: './schedule-date.component.html',
   styleUrls: ['./schedule-date.component.css'],
 })
 export class ScheduleDateComponent {
-  selectedDate: Date | null = null;
+  selectedDate: Date | null = null; // Propiedad para almacenar la fecha seleccionada
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<ScheduleDateComponent>
+    @Inject(MAT_DIALOG_DATA) public data: any, // Datos pasados al modal
+    public dialogRef: MatDialogRef<ScheduleDateComponent> // Referencia al modal
   ) {}
 
-  saveDate(selectedDate: Date): void {
-    if (!selectedDate) {
+  /**
+   * Método para manejar el cambio de fecha en el campo de entrada.
+   */
+onDateChange(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  if (input.value) {
+    const [year, month, day] = input.value.split('-').map(Number);
+    this.selectedDate = new Date(year, month - 1, day); // Meses en JavaScript son 0-indexados
+  } else {
+    this.selectedDate = null;
+  }
+  console.log('Fecha seleccionada:', this.selectedDate);
+}
+
+  /**
+   * Cierra el modal sin guardar cambios.
+   */
+  closeModal(): void {
+    this.dialogRef.close();
+  }
+
+  /**
+   * Valida la fecha seleccionada y cierra el modal devolviendo los datos.
+   */
+  saveDate(): void {
+    if (!this.selectedDate) {
       console.error('Por favor selecciona una fecha.');
       return;
     }
@@ -34,15 +48,15 @@ export class ScheduleDateComponent {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    if (selectedDate <= today) {
+    if (this.selectedDate <= today) {
       console.error('La fecha seleccionada debe ser mayor a la fecha actual.');
       return;
     }
 
-    console.log('Fecha seleccionada:', selectedDate);
+    console.log('Fecha seleccionada:', this.selectedDate);
     console.log('Datos de la fila:', this.data);
 
-    // Aquí puedes realizar el POST o UPDATE a la base de datos
-    this.dialogRef.close({ selectedDate, rowData: this.data });
+    // Simula el guardado devolviendo los datos al componente padre
+    this.dialogRef.close({ selectedDate: this.selectedDate, rowData: this.data });
   }
 }

@@ -30,14 +30,16 @@
             type="date"
             class="date-input"
             placeholder="MM/DD/YYYY"
+            (change)="onDateChange($event)"
           />
         </div>
       </div>
 
       <!-- Actions -->
+      <!-- Actions -->
       <div class="card-actions">
-        <button class="button-cancel">Cancel</button>
-        <button class="button-save">Save</button>
+        <button class="button-cancel" (click)="closeModal()">Cancel</button>
+        <button class="button-save" (click)="saveDate()">Save</button>
       </div>
 
     </div>

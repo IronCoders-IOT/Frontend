@@ -46,19 +46,24 @@ export class WaterRequestComponent implements AfterViewInit {
     };
   }
 
-  openScheduleModal(row: any): void {
-    const dialogRef = this.dialog.open(ScheduleDateComponent, {
-      width: '550px',
-      data: row, // Pasamos la información de la fila al modal
-    });
+openScheduleModal(row: WaterRequestEntity): void {
+  const dialogRef = this.dialog.open(ScheduleDateComponent, {
+    width: '550px',
+    data: row, // Pasamos la información de la fila al modal
+  });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('Modal result:', result);
-        // Aquí puedes manejar la respuesta del modal, como actualizar la tabla
-      }
-    });
-  }
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result && result.selectedDate) {
+      console.log('Modal result:', result);
+
+      // Actualiza la fecha en la fila correspondiente
+      row.delivered_at = result.selectedDate;
+
+      // Refresca la tabla para reflejar el cambio en la UI
+      this.requests.data = [...this.requests.data];
+    }
+  });
+}
   getAllRequests(): void {
     this.isLoadingResults = true;
 
