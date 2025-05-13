@@ -197,3 +197,59 @@ tr:hover {
   color: #007606;
 
 }
+@media (max-width: 1200px) {
+  .request-container {
+    width: 90%;
+    padding: 0 10px;
+    margin-top: 20px;
+  }
+
+  .request-title-search {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .title-request {
+    font-size: 30px;
+    margin: 0;
+    text-align: center;
+  }
+
+  .search-container {
+    display: flex;
+    flex-direction: row;  /* input y botón uno al lado del otro */
+    align-items: center;
+    justify-content: center;  /* CENTRA ambos */
+    gap: 10px;
+    width: 100%;
+  }
+
+  .input-wrapper {
+    display: flex;
+    justify-content: center;
+    width: auto; /* auto o lo necesario */
+  }
+
+  .input-wrapper input {
+    width: 160px;
+    margin: 0;          /* elimina márgenes que desalineen */
+    padding-left: 38px; /* espacio para el ícono si tienes uno */
+  }
+
+  .search-button {
+    padding: 8px 15px;
+    font-size: 13px;
+    margin: 0; /* elimina margin-left: auto si estaba antes */
+  }
+
+  .example-container,
+  .example-table-container,
+  table {
+    width: 100%;
+  }
+}
