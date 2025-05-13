@@ -14,13 +14,14 @@ import {CommonModule, DatePipe} from '@angular/common';
 
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import { MatDialog } from '@angular/material/dialog';
+import { ScheduleDateComponent } from '../schedule-date/schedule-date.component';
 
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-water-request',
   imports: [CommonModule,HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
-    MatPaginatorModule, DatePipe, MatFormFieldModule,MatInputModule, RouterLink],
+    MatPaginatorModule, DatePipe, MatFormFieldModule,MatInputModule],
   templateUrl: './water-request.component.html',
   standalone: true,
   styleUrl: './water-request.component.css'
@@ -35,7 +36,7 @@ export class WaterRequestComponent implements AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  constructor(private sensordataApiService: SensordataApiService) {}
+  constructor(private sensordataApiService: SensordataApiService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getAllRequests();
@@ -45,6 +46,19 @@ export class WaterRequestComponent implements AfterViewInit {
     };
   }
 
+  openScheduleModal(row: any): void {
+    const dialogRef = this.dialog.open(ScheduleDateComponent, {
+      width: '550px',
+      data: row, // Pasamos la información de la fila al modal
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Modal result:', result);
+        // Aquí puedes manejar la respuesta del modal, como actualizar la tabla
+      }
+    });
+  }
   getAllRequests(): void {
     this.isLoadingResults = true;
 

@@ -1,50 +1,45 @@
-<app-header-content></app-header-content>
+
 
 <div class="request-container">
-
-  <div class="request-title-search">
-    <h1 class="title-request">Scheduled date</h1>
-  </div>
-
   <div class="container-card">
-  <mat-card appearance="outlined" class="custom-scheduled-card">
+    <div class="custom-scheduled-card">
 
-    <mat-card-header>
-      <mat-card-title> Resident</mat-card-title><br>
-      <mat-card-content>Herding group</mat-card-content>
-    </mat-card-header> <br>
+      <!-- Resident -->
+      <div class="card-header">
+        <div class="card-title">Resident </div>
+        <div class="card-content">{{ data?.resident_name }}</div>
+      </div>
 
-    <mat-card-header>
-      <mat-card-title> Water Quantity Request  (Liters)</mat-card-title><br>
-      <mat-card-content>Herding group</mat-card-content>
-    </mat-card-header><br>
+      <!-- Water Quantity -->
+      <div class="card-header">
+        <div class="card-title">Water Quantity Request (Liters)</div>
+        <div class="card-content">{{ data?.requested_liters }}</div>
+      </div>
 
-    <div class="container-dates">
-      <mat-card-header class="header-date">
-        <mat-card-title > Emission Date: </mat-card-title>
-        <mat-card-content>Herding group</mat-card-content>
-      </mat-card-header>
+      <!-- Emission Date -->
+      <div class="container-dates">
+        <div class="header-date">
+          <div class="card-title">Emission Date:</div>
+          <div class="card-content">{{ data?.emission_date }}</div>
+          <br>
 
-      <mat-card-header class="header-date">
-        <mat-card-title> Supply Request:</mat-card-title><br>
-        <mat-card-content>
-          <mat-form-field appearance="fill">
-            <mat-label>Select date</mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="supplay_request">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card-header>
+          <div for="date-picker" class="card-title">Delivered Date:</div>
+          <br>
+          <input
+            id="date-picker"
+            type="date"
+            class="date-input"
+            placeholder="MM/DD/YYYY"
+          />
+        </div>
+      </div>
 
-    </div><br><br>
+      <!-- Actions -->
+      <div class="card-actions">
+        <button class="button-cancel">Cancel</button>
+        <button class="button-save">Save</button>
+      </div>
 
-    <mat-card-actions>
-      <button mat-button class="button-cancel" (click)="openDialog('0ms', '0ms')">Cancel</button>
-      <button mat-button class="button-save" (click)="saveDate()">Save</button>
-
-    </mat-card-actions>
-
-  </mat-card>
+    </div>
   </div>
 </div>

@@ -253,3 +253,8 @@ tr:hover {
     width: 100%;
   }
 }
+
+.schedule-link {
+  color: blue;
+  text-decoration: underline; /* Opcional, para que parezca un enlace */
+}
