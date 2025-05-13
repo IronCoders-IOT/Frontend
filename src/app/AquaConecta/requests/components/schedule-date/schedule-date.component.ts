@@ -1,76 +1,62 @@
-import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
-import {HeaderContentComponent} from '../../../../public/components/header-content/header-content.component';
-import {MatInputModule} from '@angular/material/input';
-
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import { MatDatepickerModule} from '@angular/material/datepicker';
-import {FormsModule} from '@angular/forms';
-import {MatNativeDateModule} from '@angular/material/core';
-
-import {
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
-} from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-schedule-date',
-  imports: [
-    HeaderContentComponent,
-    MatInputModule, MatCardModule, MatButtonModule,MatDatepickerModule,
-    MatNativeDateModule,
-    MatInputModule,
-    FormsModule
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './schedule-date.component.html',
   standalone: true,
-  styleUrl: './schedule-date.component.css'
+  templateUrl: './schedule-date.component.html',
+  styleUrls: ['./schedule-date.component.css'],
 })
 export class ScheduleDateComponent {
+  selectedDate: Date | null = null; // Propiedad para almacenar la fecha seleccionada
 
-  supplay_request: Date | null = null;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any, // Datos pasados al modal
+    public dialogRef: MatDialogRef<ScheduleDateComponent> // Referencia al modal
+  ) {}
 
-  readonly dialog = inject(MatDialog);
-
-  openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(DialogAnimationsExampleDialog, {
-      width: '550px',
-      enterAnimationDuration,
-      exitAnimationDuration,
-    });
+  /**
+   * Método para manejar el cambio de fecha en el campo de entrada.
+   */
+onDateChange(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  if (input.value) {
+    const [year, month, day] = input.value.split('-').map(Number);
+    this.selectedDate = new Date(year, month - 1, day); // Meses en JavaScript son 0-indexados
+  } else {
+    this.selectedDate = null;
   }
-
-  saveDate() {
-    const today = new Date();
-    if (this.supplay_request) {
-      // Elimina la hora de la fecha actual para comparar solo las fechas
-      today.setHours(0, 0, 0, 0);
-
-      if (this.supplay_request <= today) {
-        console.error('La fecha seleccionada debe ser mayor a la fecha actual.');
-        return;
-      }
-
-      console.log('Selected Date:', this.supplay_request);
-      // Aquí puedes realizar el POST o UPDATE a la base de datos
-    } else {
-      console.error('Por favor selecciona una fecha.');
-    }
-  }
+  console.log('Fecha seleccionada:', this.selectedDate);
 }
 
-@Component({
-  selector: 'dialog-animations-dialog',
-  templateUrl: './dialog-animation-dialog.html',
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true
-})
-export class DialogAnimationsExampleDialog {
-  readonly dialogRef = inject(MatDialogRef<DialogAnimationsExampleDialog>);
+  /**
+   * Cierra el modal sin guardar cambios.
+   */
+  closeModal(): void {
+    this.dialogRef.close();
+  }
+
+  /**
+   * Valida la fecha seleccionada y cierra el modal devolviendo los datos.
+   */
+  saveDate(): void {
+    if (!this.selectedDate) {
+      console.error('Por favor selecciona una fecha.');
+      return;
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (this.selectedDate <= today) {
+      console.error('La fecha seleccionada debe ser mayor a la fecha actual.');
+      return;
+    }
+
+    console.log('Fecha seleccionada:', this.selectedDate);
+    console.log('Datos de la fila:', this.data);
+
+    // Simula el guardado devolviendo los datos al componente padre
+    this.dialogRef.close({ selectedDate: this.selectedDate, rowData: this.data });
+  }
 }

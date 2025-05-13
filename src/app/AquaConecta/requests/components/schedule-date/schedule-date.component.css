@@ -1,122 +1,132 @@
-.request-container{
-  margin: 0 auto;
-  width: 119rem;
+
+
+
+
+/* Tarjeta principal */
+.container-card {
+  max-width: 1200px;
+  width: 100%;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+    font-family: "Inter-Regular", sans-serif;
 
 }
-.request-title-search{
-  margin: 0 auto;
-  margin-top: 3%;
-  width: 92.5%;
+
+.custom-scheduled-card {
   display: flex;
-  align-items: center;
-}
-.title-request {
-  font-size: 50px;
-  color: #333333;
-  font-family: "Inter-Regular", sans-serif;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-@media (max-width: 1822px) {
-  .request-container, .container-card {
-    width: 100%;
-  }
+/* Encabezados de tarjeta */
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-/*------------------ Muesta de datos --------------------*/
-.container-card{
-  height: 600px;
-  width: 92.5%;
-  margin: 0 auto;
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
 }
 
-.custom-scheduled-card{
-  margin-bottom: 100px;
-
-  border: none;
-  border-radius: 33px;
-  background-color: white;
-  margin: 0 auto  ;
-  width: 60%;
-  height: 100%;
-  padding: 40px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Borde difuminado */
-
-
-}
-@media (max-width: 1383px) {
-  .custom-scheduled-card {
-    width: 95%;
-
-  }
+.card-content {
+  font-size: 1rem;
+  color: #666;
 }
 
-
-
-mat-card-title {
-  font-family: Inter-Bold, sans-serif;
-  font-size: 22px;
-  color: #333333;
-  text-decoration: underline;
-
-}
-mat-card-content{
-  font-family: Inter-regular, sans-serif;
-  font-size: 24px;
-  color: #333333;
-  font-weight: 200;
-
+/* Sección de fechas */
+.container-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
-mat-card-header{
+.header-date {
+  flex: 1;
+  min-width: 260px;
+}
+
+.header-date label {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
   display: block;
 }
 
-.container-dates{
+.date-input {
+  font-size: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 60%;
+  box-sizing: border-box;
+}
+
+/* Botones */
+.card-actions {
   display: flex;
-  gap: 100px;
-}
-.header-date{
-  display: flex;
-
-}
-@media (max-width: 863px) {
-  .custom-scheduled-card {
-    width: 100%;
-    padding: 20px;
-  }
-  .header-date{
-    display: block;
-    margin: 0 auto;
-  }
-  .container-dates{
-    display: block;
-  }
-  mat-card-header{
-    margin : 0 auto;
-  }
-  .container-card{
-    height: auto;
-  }
-
-
-}
-/*------------------------botones de guardar-----------------*/
-mat-card-actions{
-  margin-left: auto;
-}
-.button-cancel,.button-save{
-  font-family: Inter-Medium, sans-serif;
-  font-size: 17px;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
 
-.button-cancel {
-  color: #ff0000 !important;
-}
-
+.button-cancel,
 .button-save {
-  border-radius: 13px;
-  padding: 20px;
-  color: White !important;
-  background-color: #2197DF;
-  width: 120px;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-width: 120px;
+  text-align: center;
 }
+
+/* Botón Cancelar */
+.button-cancel {
+  color: #e53935 !important;
+  background-color: transparent !important;
+  border: 2px solid #e53935 !important;
+}
+
+.button-cancel:hover {
+  background-color: rgba(229, 57, 53, 0.1);
+}
+
+/* Botón Guardar */
+.button-save {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+}
+
+.button-save:hover {
+  background-color: #1976d2;
+}
+
+/* Responsive para tablets y móviles */
+@media (max-width: 768px) {
+  .container-card {
+    padding: 1.5rem;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+  }
+
+  .card-content {
+    font-size: 0.95rem;
+  }
+
+  .button-cancel,
+  .button-save {
+    font-size: 0.95rem;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
