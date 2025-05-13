@@ -9,10 +9,9 @@ import {ProviderDetailComponent} from './AquaConecta/providers/components/provid
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  //{ path: 'requests', component: WaterRequestComponent },
-  //{ path: 'schedule', component: ScheduleDateComponent },
   { path:'providers', component: ProviderListComponent},
-  { path:'provider/:id', component: ProviderDetailComponent},
+  { path: 'provider/:id', redirectTo: 'provider/:id/detail', pathMatch: 'full' },
+  { path: 'provider/:id/detail', component: ProviderDetailComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'residents/create', component: CreateResidentComponent },
