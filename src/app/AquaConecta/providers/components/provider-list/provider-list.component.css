@@ -1,0 +1,225 @@
+.provider-container{
+  margin: 0 auto;
+  width: 119rem;
+
+}
+.provider-title-search{
+  margin: 0 auto;
+  margin-top: 3%;
+  width: 92.5%;
+  display: flex;
+  align-items: center;
+}
+.title-provider {
+  font-size: 40px;
+  color: #333333;
+  font-family: "Inter-Regular", sans-serif;
+}
+@media (max-width: 1822px) {
+  .provider-container {
+    width: 100%;
+  }
+}
+
+/*---------------buscador ----------------------*/
+.search-container{
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+  gap: 20px;
+
+  height: 40px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.input-wrapper .icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.input-wrapper input {
+  border: 1px solid #00a0ff;
+  border-radius: 20px;
+  padding: 8px 15px 8px 38px; /* espacio para el icono */
+  font-size: 15px;
+  outline: none;
+  width: 200px;
+  transition: border-color 0.3s ease;
+}
+
+.input-wrapper input:focus {
+  border-color: #007acc;
+  box-shadow: 0 0 5px #007acc;
+}
+
+input {
+  border: 1px solid #00a0ff;   /* azul borde */
+  border-radius: 20px;          /* bordes redondeados */
+  padding: 8px 15px;            /* espacio dentro */
+  font-size: 14px;
+  outline: none;
+  width: 170px;                 /* ancho fijo o ajusta a tu gusto */
+  transition: border-color 0.3s ease;
+  font-family: Inter-Medium, sans-serif
+}
+
+input:focus {
+  border-color: #007acc;        /* cambio de color al enfocar */
+  box-shadow: 0 0 5px #007acc;
+}
+
+.search-button{
+  border-radius: 20px;
+  padding: 8px 25px 8px;
+  font-size: 15px;
+  background-color: #2197DF;
+  color: white;
+  border: none;
+  font-family: Inter-Medium, sans-serif;
+}
+.search-button:hover{
+  background-color: #007acc;
+  cursor: pointer;
+}
+
+/*----------------------------------------------*/
+/* Structure */
+.example-container {
+  position: relative;
+  width: 92.5%;
+  margin: 0 auto;
+  margin-top: 1%;
+
+}
+
+.example-table-container {
+  position: relative;
+  min-height: 200px;
+  overflow: auto;
+}
+
+table {
+  width: 100%; /* Cambia el ancho de la tabla al 80% del contenedor */
+  background-color: white; /* Color de fondo de la tabla */
+  font-size: 15px;
+  overflow: hidden;
+  margin-bottom: 5%;
+
+}
+
+
+/* Cambiar el color de las celdas de datos */
+th{
+  font-weight: bold; /* Negrita para el texto */
+
+}
+td, th {
+  color: #555555;
+  font-size: 15px;
+
+  font-family: "Inter-Regular", sans-serif;
+
+}
+
+/* Cambiar el color de las filas al pasar el mouse */
+tr:hover {
+  background-color: whitesmoke;
+}
+
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-rate-limit-reached {
+  max-width: 360px;
+  text-align: center;
+
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  width: 64px;
+}
+
+.mat-column-created {
+  width: 124px;
+}
+
+
+
+@media (max-width: 1200px) {
+  .provider-container {
+    width: 90%;
+    padding: 0 10px;
+    margin-top: 20px;
+  }
+
+  .provider-title-search {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .title-provider {
+    font-size: 30px;
+    margin: 0;
+    text-align: center;
+  }
+
+  .search-container {
+    display: flex;
+    flex-direction: row;  /* input y botón uno al lado del otro */
+    align-items: center;
+    justify-content: center;  /* CENTRA ambos */
+    gap: 10px;
+    width: 100%;
+  }
+
+  .input-wrapper {
+    display: flex;
+    justify-content: center;
+    width: auto; /* auto o lo necesario */
+  }
+
+  .input-wrapper input {
+    width: 160px;
+    margin: 0;          /* elimina márgenes que desalineen */
+    padding-left: 38px; /* espacio para el ícono si tienes uno */
+  }
+
+  .search-button {
+    padding: 8px 15px;
+    font-size: 13px;
+    margin: 0; /* elimina margin-left: auto si estaba antes */
+  }
+
+  .example-container,
+  .example-table-container,
+  table {
+    width: 100%;
+  }
+}
+
+
