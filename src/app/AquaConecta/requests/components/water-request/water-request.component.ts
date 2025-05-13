@@ -30,7 +30,7 @@ export class WaterRequestComponent implements AfterViewInit {
   //requests:  Array<WaterRequestEntity> = [];
   requests: MatTableDataSource<WaterRequestEntity> = new MatTableDataSource<WaterRequestEntity>();
 
-  displayedColumns: string[] = ['id', 'resident_id', 'requested_liters', 'provider_id', 'delivered_at', 'status'];
+  displayedColumns: string[] = ['id', 'resident_name', 'requested_liters', 'emission_date', 'delivered_at', 'status'];
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
