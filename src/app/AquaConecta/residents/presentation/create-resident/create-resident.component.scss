@@ -4,6 +4,7 @@
     min-height: 100vh;
     background-color: #212121;
     font-family: 'Inter-Regular', sans-serif;
+    
 }
 
 .page-header {
@@ -16,6 +17,7 @@
     font-size: 16px;
     font-weight: normal;
     margin: 0;
+    padding: 200px;
 }
 
 .content-container {
@@ -31,8 +33,9 @@
 }
 
 .form-section {
-    padding: 10px;
-    font-family: "Inter-Regular", sans-serif;
+  margin: 0 auto;
+  width: 92.5%;
+  font-family: "Inter-Regular", sans-serif;
 
 }
 
@@ -42,6 +45,7 @@
     margin-bottom: 25px;
     font-weight: 500;
     font-weight: bold;
+    
 }
 
 .form-layout {
