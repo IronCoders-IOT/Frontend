@@ -1,43 +1,72 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-schedule-date',
   standalone: true,
   templateUrl: './schedule-date.component.html',
   styleUrls: ['./schedule-date.component.css'],
+  imports: [FormsModule], // <-- Agrega esto
+
 })
-export class ScheduleDateComponent {
-  selectedDate: Date | null = null; // Propiedad para almacenar la fecha seleccionada
+export class ScheduleDateComponent implements OnInit {
+  deliveredDateString: string = ''; // Para el ngModel del input date
+  selectedDate: Date | null = null; // Fecha como objeto Date
+  status: string = ''; // Estado inicial
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any, // Datos pasados al modal
-    public dialogRef: MatDialogRef<ScheduleDateComponent> // Referencia al modal
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<ScheduleDateComponent>
   ) {}
 
   /**
-   * Método para manejar el cambio de fecha en el campo de entrada.
+   * Inicializa valores si vienen desde el componente padre.
    */
-onDateChange(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  if (input.value) {
-    const [year, month, day] = input.value.split('-').map(Number);
-    this.selectedDate = new Date(year, month - 1, day); // Meses en JavaScript son 0-indexados
-  } else {
-    this.selectedDate = null;
+  ngOnInit(): void {
+    if (this.data?.delivered_at) {
+      const date = new Date(this.data.delivered_at);
+      const yyyy = date.getFullYear();
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const dd = String(date.getDate()).padStart(2, '0');
+      this.deliveredDateString = `${yyyy}-${mm}-${dd}`;
+      this.selectedDate = date;
+    }
+
+    this.status = this.data?.status || 'Pending';
   }
-  console.log('Fecha seleccionada:', this.selectedDate);
-}
 
   /**
-   * Cierra el modal sin guardar cambios.
+   * Maneja el cambio en el campo de fecha.
+   */
+  onDateChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.deliveredDateString = input.value;
+
+    if (input.value) {
+      const [year, month, day] = input.value.split('-').map(Number);
+      this.selectedDate = new Date(year, month - 1, day);
+
+      // Cambiar estado automáticamente si es válido
+      if (this.status != 'Pending') {
+        this.status = 'In Progress';
+      }
+    } else {
+      this.selectedDate = null;
+    }
+
+    console.log('Fecha seleccionada:', this.selectedDate);
+  }
+
+  /**
+   * Cierra el modal sin guardar.
    */
   closeModal(): void {
     this.dialogRef.close();
   }
 
   /**
-   * Valida la fecha seleccionada y cierra el modal devolviendo los datos.
+   * Guarda y devuelve los datos si la fecha es válida.
    */
   saveDate(): void {
     if (!this.selectedDate) {
@@ -53,10 +82,13 @@ onDateChange(event: Event): void {
       return;
     }
 
-    console.log('Fecha seleccionada:', this.selectedDate);
-    console.log('Datos de la fila:', this.data);
+    console.log('Fecha guardada:', this.selectedDate);
+    console.log('Estado:', this.status);
 
-    // Simula el guardado devolviendo los datos al componente padre
-    this.dialogRef.close({ selectedDate: this.selectedDate, rowData: this.data });
+    this.dialogRef.close({
+      selectedDate: this.selectedDate,
+      status: this.status,
+      rowData: this.data
+    });
   }
 }
