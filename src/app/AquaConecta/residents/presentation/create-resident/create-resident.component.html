@@ -1,7 +1,7 @@
 <app-header-content></app-header-content>
 
 <div class="form-section">
-    <h2 class="form-title">Create new resident</h2>
+    <h2 class="form-title">New resident</h2>
 
     <form [formGroup]="residentForm" (ngSubmit)="onSubmit()">
         <div class="form-layout">
@@ -9,29 +9,34 @@
             <div class="form-column left-column">
                 <div class="form-group">
                     <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" formControlName="firstName" placeholder="First Name"
+                    <input type="text" id="firstName" formControlName="firstName" placeholder="ej. Italo"
                         class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label for="documentType">Document type</label>
-                    <input type="text" id="documentType" formControlName="documentType" placeholder="Document type"
-                        class="form-control">
+                <label for="documentType">Document type</label>
+                <select id="documentType" formControlName="documentType" class="form-control">
+                    <option value="" disabled selected>Select a document type</option>
+                    <option value="DNI">DNI</option>
+                    <option value="Passport">Passport</option>
+                    <option value="RUC">RUC</option>
+                </select>
                 </div>
+
             </div>
 
             <!-- Segunda columna -->
             <div class="form-column middle-column">
                 <div class="form-group">
                     <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" formControlName="lastName" placeholder="Last Name"
+                    <input type="text" id="lastName" formControlName="lastName" placeholder="ej. Kunimoto"
                         class="form-control">
                 </div>
 
                 <div class="form-group">
                     <label for="documentNumber">Document Number</label>
                     <input type="text" id="documentNumber" formControlName="documentNumber"
-                        placeholder="Document Number" class="form-control">
+                        placeholder="ej. 71323245" class="form-control">
                 </div>
             </div>
 
@@ -39,7 +44,7 @@
             <div class="form-column right-column">
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" formControlName="email" placeholder="Email" class="form-control">
+                    <input type="email" id="email" formControlName="email" placeholder="ej. tato@gmail.com" class="form-control">
                 </div>
 
                 <div class="form-group">

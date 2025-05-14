@@ -58,6 +58,7 @@ openScheduleModal(row: WaterRequestEntity): void {
 
       // Actualiza la fecha en la fila correspondiente
       row.delivered_at = result.selectedDate;
+      row.status = result.status || row.status; // Por si se envía el status desde el modal
 
       // Refresca la tabla para reflejar el cambio en la UI
       this.requests.data = [...this.requests.data];
