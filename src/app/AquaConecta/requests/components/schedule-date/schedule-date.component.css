@@ -1,37 +1,40 @@
-
-
-
-
 /* Tarjeta principal */
 .container-card {
-  max-width: 1200px;
   width: 100%;
   padding: 2rem;
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   border: 1px solid #e0e0e0;
-    font-family: "Inter-Regular", sans-serif;
-
+  font-family: "Inter-Regular", sans-serif;
+  box-sizing: border-box;
 }
 
+/* Contenido de la tarjeta */
 .custom-scheduled-card {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-/* Encabezados de tarjeta */
-.card-header {
+/* Secciones de información */
+.info-section {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1.5rem;
+}
+
+.info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .card-title {
   font-size: 1.1rem;
   font-weight: 600;
   color: #222;
+  margin-bottom: 2px;
 }
 
 .card-content {
@@ -39,40 +42,51 @@
   color: #666;
 }
 
-/* Sección de fechas */
+/* Separador visual */
+.card-separator {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 1rem 0;
+}
+
+/* Fechas */
 .container-dates {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
+  width: 100%;
 }
 
 .header-date {
   flex: 1;
   min-width: 260px;
+  box-sizing: border-box;
 }
 
 .header-date label {
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 0.5rem;
   display: block;
 }
 
 .date-input {
   font-size: 1rem;
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   border-radius: 8px;
-  border: 1px solid #ccc;
-  width: 60%;
+  border: 1px solid #1976d2;
+  width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
 }
 
 /* Botones */
 .card-actions {
   display: flex;
-  justify-content: center;
-  gap: 1.5rem;
+  justify-content: flex-end;
+  gap: 1rem;
   margin-top: 2rem;
+  flex-wrap: wrap;
 }
 
 .button-cancel,
@@ -82,9 +96,10 @@
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.2s ease;
   min-width: 120px;
   text-align: center;
+  box-sizing: border-box;
 }
 
 /* Botón Cancelar */
@@ -96,6 +111,7 @@
 
 .button-cancel:hover {
   background-color: rgba(229, 57, 53, 0.1);
+  box-shadow: 0 2px 6px rgba(229, 57, 53, 0.2);
 }
 
 /* Botón Guardar */
@@ -109,14 +125,14 @@
   background-color: #1976d2;
 }
 
-/* Responsive para tablets y móviles */
+/* Responsive */
 @media (max-width: 768px) {
   .container-card {
     padding: 1.5rem;
   }
 
   .card-title {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
   }
 
   .card-content {
@@ -128,5 +144,45 @@
     font-size: 0.95rem;
     padding: 0.6rem 1.2rem;
   }
+
+  .date-input {
+    font-size: 0.95rem;
+  }
 }
 
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 30%;
+}
+
+.field-group label {
+  font-weight: 600;
+  color: #333;
+}
+
+.status-selector {
+  width: 100%;
+  max-width: 420px;
+  min-height: 48px;
+  padding: 0.75rem 1.25rem;
+  font-size: 1.05rem;
+  border: 1.5px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #333;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.25s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20fill%3D%22%23666%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M7%2010l5%205%205-5z%22/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+.status-selector:focus {
+  border-color: #2196f3;
+  outline: none;
+}

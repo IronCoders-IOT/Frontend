@@ -1,42 +1,49 @@
-
-
 <div class="request-container">
   <div class="container-card">
     <div class="custom-scheduled-card">
-
-      <!-- Resident -->
+      
+      <!-- Información del residente -->
       <div class="card-header">
-        <div class="card-title">Resident </div>
+        <div class="card-title">Resident</div>
         <div class="card-content">{{ data?.resident_name }}</div>
       </div>
 
-      <!-- Water Quantity -->
+      <!-- Cantidad de agua solicitada -->
       <div class="card-header">
         <div class="card-title">Water Quantity Request (Liters)</div>
         <div class="card-content">{{ data?.requested_liters }}</div>
       </div>
 
-      <!-- Emission Date -->
+      <!-- Fechas -->
       <div class="container-dates">
+        <!-- Fecha de emisión -->
         <div class="header-date">
-          <div class="card-title">Emission Date:</div>
+          <label class="card-title">Emission Date:</label>
           <div class="card-content">{{ data?.emission_date }}</div>
-          <br>
+        </div>
 
-          <div for="date-picker" class="card-title">Delivered Date:</div>
-          <br>
+        <div class="field-group">
+          <label for="status-selector">Status:</label>
+          <select [(ngModel)]="status" id="status-selector" class="status-selector">
+            <option value="In Progress">In Progress</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+
+        <!-- Fecha de entrega -->
+        <div class="header-date">
+          <label for="date-picker" class="card-title">Delivered Date:</label>
           <input
             id="date-picker"
             type="date"
             class="date-input"
-            placeholder="MM/DD/YYYY"
+            [(ngModel)]="deliveredDateString"
             (change)="onDateChange($event)"
           />
         </div>
       </div>
 
-      <!-- Actions -->
-      <!-- Actions -->
+      <!-- Botones de acción -->
       <div class="card-actions">
         <button class="button-cancel" (click)="closeModal()">Cancel</button>
         <button class="button-save" (click)="saveDate()">Save</button>
