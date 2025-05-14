@@ -5,7 +5,7 @@ import { LoginComponent } from './AquaConecta/auth/presentation/pages/login/logi
 import { SignupComponent } from './AquaConecta/auth/presentation/pages/signup/signup.component';
 import { CreateResidentComponent } from './AquaConecta/residents/presentation/create-resident/create-resident.component';
 import {ScheduleDateComponent} from './AquaConecta/requests/components/schedule-date/schedule-date.component';
-import {ViewHistoryComponent } from './AquaConecta/residents/presentation/view-history/view-history/view-history.component';
+import {ViewHistoryComponent } from './AquaConecta/residents/presentation/view-history/view-history.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },

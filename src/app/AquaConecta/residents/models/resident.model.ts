@@ -6,7 +6,9 @@ export class Resident {
   documentNumber: string;
   email: string;
   password?: string;
-  
+  sensor_events?: Event[];
+  phone?: string;
+  address?: string;
   constructor(params: Partial<Resident> = {}) {
     this.id = params.id;
     this.firstName = params.firstName || '';
@@ -15,6 +17,9 @@ export class Resident {
     this.documentNumber = params.documentNumber || '';
     this.email = params.email || '';
     this.password = params.password;
+    this.sensor_events = params.sensor_events || [];
+    this.phone = params.phone || '';
+    this.address = params.address || '';
   }
   
   get fullName(): string {
