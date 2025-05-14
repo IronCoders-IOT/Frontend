@@ -136,21 +136,24 @@ tr:hover {
 
 /*-----Status----------------------*/
 .custom-cell-status{
-  text-align: center;
+  text-align: left;
   width: 15%;
+  padding-left: 10px; /* opcional para dar espacio desde el borde izquierdo */
 }
 
 .status-normal,
 .status-alert,
 .status-critical {
-  display: inline-block; /* Asegura que el tamaño sea consistente */
-  width: 90%; /* Define un ancho fijo */
+  display: inline-block;
+  width: 100px; /* <-- establece un ancho fijo */
   border-radius: 15px;
-  padding: 6px;
+  padding: 6px 0; /* evita extra padding lateral */
+  margin-left: 0;
+  text-align: center;
 }
 
 .status-normal {
-  background-color: #0FC87B;
+  background-color: #8de6c5ac;
   color: #007606;
 }
 
