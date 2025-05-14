@@ -1,0 +1,47 @@
+
+
+<div class="request-container">
+  <div class="container-card">
+    <div class="custom-scheduled-card">
+
+      <!-- Resident -->
+      <div class="card-header">
+        <div class="card-title">Resident </div>
+        <div class="card-content">{{ data?.resident_name }}</div>
+      </div>
+
+      <!-- Water Quantity -->
+      <div class="card-header">
+        <div class="card-title">Water Quantity Request (Liters)</div>
+        <div class="card-content">{{ data?.requested_liters }}</div>
+      </div>
+
+      <!-- Emission Date -->
+      <div class="container-dates">
+        <div class="header-date">
+          <div class="card-title">Emission Date:</div>
+          <div class="card-content">{{ data?.emission_date }}</div>
+          <br>
+
+          <div for="date-picker" class="card-title">Delivered Date:</div>
+          <br>
+          <input
+            id="date-picker"
+            type="date"
+            class="date-input"
+            placeholder="MM/DD/YYYY"
+            (change)="onDateChange($event)"
+          />
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <!-- Actions -->
+      <div class="card-actions">
+        <button class="button-cancel" (click)="closeModal()">Cancel</button>
+        <button class="button-save" (click)="saveDate()">Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>
