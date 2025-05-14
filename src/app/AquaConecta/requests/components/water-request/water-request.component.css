@@ -1,22 +1,22 @@
-.provider-container{
+.request-container{
   margin: 0 auto;
   width: 119rem;
 
 }
-.provider-title-search{
+.request-title-search{
   margin: 0 auto;
   margin-top: 3%;
   width: 92.5%;
   display: flex;
   align-items: center;
 }
-.title-provider {
+.title-request {
   font-size: 40px;
   color: #333333;
   font-family: "Inter-Regular", sans-serif;
 }
 @media (max-width: 1822px) {
-  .provider-container {
+  .request-container {
     width: 100%;
   }
 }
@@ -91,6 +91,7 @@ input:focus {
 }
 
 /*----------------------------------------------*/
+
 /* Structure */
 .example-container {
   position: relative;
@@ -164,15 +165,46 @@ tr:hover {
 }
 
 
+/*-----Status----------------------*/
+.custom-cell-status{
+  text-align: center;
+  width: 15%;
+}
 
+.status-received,
+.status-in-progress,
+.status-closed {
+  display: inline-block; /* Asegura que el tamaño sea consistente */
+  width: 90%; /* Define un ancho fijo */
+  border-radius: 15px;
+  padding: 6px;
+}
+
+.status-received {
+  background-color: #E5F0FF;
+  color: #2197DF;
+
+}
+
+.status-in-progress {
+  background-color: #FFED92;
+  color: #A68F12;
+
+}
+
+.status-closed {
+  background-color: #8de6c5ac;  /* Color más claro */
+  color: #007606;
+
+}
 @media (max-width: 1200px) {
-  .provider-container {
+  .request-container {
     width: 90%;
     padding: 0 10px;
     margin-top: 20px;
   }
 
-  .provider-title-search {
+  .request-title-search {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -182,7 +214,7 @@ tr:hover {
     text-align: center;
   }
 
-  .title-provider {
+  .title-request {
     font-size: 30px;
     margin: 0;
     text-align: center;
@@ -222,4 +254,7 @@ tr:hover {
   }
 }
 
-
+.schedule-link {
+  color: blue;
+  text-decoration: underline; /* Opcional, para que parezca un enlace */
+}
