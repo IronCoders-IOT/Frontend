@@ -15,6 +15,7 @@ export class HomeComponent {
   options = [
     {path: '/requests', name: 'Solicitud de Agua Potable'},
     {path: '/login', name: 'Iniciar Sesión'},
-    {path: '/signup', name: 'Registrarse'}
+    {path: '/signup', name: 'Registrarse'},
+    {path: '/report', name: 'Lista de Reportes'}
   ];
 }
