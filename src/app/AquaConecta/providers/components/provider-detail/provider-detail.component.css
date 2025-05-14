@@ -41,6 +41,29 @@
 
 }
 
+.provider-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-profile {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-family: "Inter-Medium", sans-serif;
+}
+
+.btn-profile:hover {
+  background-color: #1976d2;
+  transform: translateY(-2px);
+}
+
 @media (max-width: 1822px) {
   .details-container {
     width: 97.7%;

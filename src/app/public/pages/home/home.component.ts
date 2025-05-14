@@ -18,6 +18,6 @@ export class HomeComponent {
     {path: '/signup', name: 'Registrarse'},
     {path: '/report', name: 'Lista de Reportes'},
     {path: '/providers', name: 'Lista de provedores'},
-    {path: '/provider', name: 'Detalles del proveedor'}
+    {path: '/provider', name: 'Detalles del proveedor'},
   ];
 }
