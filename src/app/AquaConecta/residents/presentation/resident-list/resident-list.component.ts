@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HeaderContentComponent} from '../../../../public/components/header-content/header-content.component';
 import {CommonModule} from '@angular/common';
+import {MatTableDataSource} from '@angular/material/table';
 import {
   MatCell,
   MatColumnDef,
@@ -14,6 +15,7 @@ import {MatInput} from '@angular/material/input';
 import {RouterLink, RouterModule} from '@angular/router';
 import {Resident} from '../../models/resident.model';
 import {ResidentService} from '../../services/resident.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-resident-list',
@@ -24,52 +26,40 @@ import {ResidentService} from '../../services/resident.service';
     MatTableModule,
     MatColumnDef,
     MatHeaderCell,
-    MatCell,
     MatHeaderRow,
     MatRow,
     MatInput,
-    RouterModule,
-    RouterLink
+    RouterModule
   ],
   templateUrl: './resident-list.component.html',
   styleUrl: './resident-list.component.css'
 })
 export class ResidentListComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phone', 'address'];
+  residents: MatTableDataSource<Resident> = new MatTableDataSource<Resident>();
+displayedColumns: string[] = ['id', 'first_name', 'last_name', 'phone', 'address', 'actions'];	
   dataSource: Resident[] = [];
   originalDataSource: Resident[] = [];
+  isLoadingResults = true;
+  resultsLength = 0;
+
 
   constructor(private residentService: ResidentService) {}
 
   ngOnInit(): void {
-    this.loadResidents();
+    this.getAllResidents();
   }
 
-  loadResidents(): void {
-    this.residentService.getAllResidents().subscribe({
-      next: (residents) => {
-        this.dataSource = residents;
-        this.originalDataSource = [...residents];
-      },
-      error: (error) => {
-        console.error('Error loading residents:', error);
-      }
-    });
+  getAllResidents(): void {
+    this.isLoadingResults = true;
+  this.residentService.getAllResidents().subscribe(
+  (response: Resident[]) => {
+    this.residents.data = response;
+    this.isLoadingResults = false;
+    this.resultsLength = this.residents.data.length;
+    console.log(this.residents);
   }
+);
+}
 
-  applyFilter(event:Event): void {
-    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
-
-    if (!filterValue) {
-      this.dataSource = [...this.originalDataSource];
-      return;
-    }
-
-    this.dataSource = this.originalDataSource.filter(resident =>
-      resident.id?.toString().includes(filterValue) ||
-      resident.firstName.toLowerCase().includes(filterValue) ||
-      resident.lastName.toLowerCase().includes(filterValue)
-    );
-  }
 
 }

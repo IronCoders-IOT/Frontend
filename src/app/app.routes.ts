@@ -13,8 +13,8 @@ export const routes: Routes = [
   { path: 'requests', component: WaterRequestComponent },
   { path: 'schedule', component: ScheduleDateComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'residents/create', component: CreateResidentComponent },
+  { path: 'signup', component: SignupComponent },  
   { path: 'residents', component: ResidentListComponent },
+  { path: 'residents/create', component: CreateResidentComponent },
   //{ path: 'residents', redirectTo: '/residents/create', pathMatch: 'full' }
 ];

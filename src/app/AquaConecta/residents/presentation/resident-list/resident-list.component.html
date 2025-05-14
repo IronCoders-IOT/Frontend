@@ -1,56 +1,86 @@
 <app-header-content></app-header-content>
 
-<div class="resident-list-container">
-  <div class="header-section">
-    <h1>Residents</h1>
-    <div class="search-container">
+<div class="request-container">
 
+  <div class="request-title-search">
+    <h1 class="title-request">Residents</h1>
+
+    <div class="search-container">
       <div class="input-wrapper">
         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00a0ff" stroke-width="2">
           <path d="M21.71 20.29l-5.4-5.4a7.5 7.5 0 1 0-1.42 1.42l5.4 5.4a1 1 0 0 0 1.42-1.42zM10.5 17a6.5 6.5 0 1 1 6.5-6.5 6.51 6.51 0 0 1-6.5 6.5z"/>
         </svg>
-        <input matInput (input)="applyFilter($event)" placeholder="Enter ID">
+        <input matInput  placeholder="Enter ID">
       </div>
 
       <button class="search-button">Search</button>
     </div>
   </div>
 
-  <div class="create-link">
-    <a routerLink="/residents/create" class="create-new">
-      <span>New Resident</span>
-    </a>
+<div style="margin-top: 6px; display: flex;" class="request-title-search">
+  <a [routerLink]="['/residents/create']"
+     style="color: #00a0ff; text-decoration: underline; font-weight: 500; margin-left: auto;">
+    New Resident
+  </a>
+</div>
+
+    
+  <div class="example-container mat-elevation-z8">
+    <div class="example-table-container">
+      <table mat-table [dataSource]="residents" class="example-table" matSort>
+
+        <!-- ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+        </ng-container>
+
+        <!-- Name -->
+        <ng-container matColumnDef="first_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let row">{{ row.first_name }}</td>
+        </ng-container>
+
+        <!-- Last Name -->
+        <ng-container matColumnDef="last_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+          <td mat-cell *matCellDef="let row">{{ row.last_name }}</td>
+        </ng-container>
+
+        <!-- Phone -->
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
+          <td mat-cell *matCellDef="let row">{{ row.phone }}</td>
+        </ng-container>
+
+        <!-- Address -->
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
+          <td mat-cell *matCellDef="let row">{{ row.address }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+          <td mat-cell *matCellDef="let row">
+            <a
+              [routerLink]="['/residents', row.id]"
+              style="color: #00a0ff; cursor: pointer; text-decoration: underline;"
+            >
+              Ver más
+            </a>
+          </td>
+        </ng-container>
+
+        
+        <!-- Filas -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns;"
+          style="cursor: pointer;"
+        ></tr>
+      </table>
+    </div>
   </div>
 
-  <div class="table-container">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> ID </th>
-        <td mat-cell *matCellDef="let resident"> {{resident.id}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="firtName">
-        <th mat-header-cell *matHeaderCellDef> First Name </th>
-        <td mat-cell *matCellDef="let resident"> {{resident.firstName}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="lastName">
-        <th mat-header-cell *matHeaderCellDef> Last Name </th>
-        <td mat-cell *matCellDef="let resident"> {{resident.lastName}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="phone">
-        <th mat-header-cell *matHeaderCellDef> Phone </th>
-        <td mat-cell *matCellDef="let resident"> {{resident.phone || 'N/A'}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="address">
-        <th mat-header-cell *matHeaderCellDef> Address </th>
-        <td mat-cell *matCellDef="let resident"> {{resident.address || 'N/A'}} </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </div>
 </div>
