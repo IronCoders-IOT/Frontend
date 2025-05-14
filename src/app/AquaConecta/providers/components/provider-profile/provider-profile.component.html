@@ -1,3 +1,4 @@
+<!-- provider-profile.component.html -->
 <app-header-content></app-header-content>
 
 <div class="profile-container">
@@ -5,20 +6,38 @@
         <h1 class="profile-title">Provider Profile</h1>
         <div class="action-buttons">
             <button *ngIf="!isEditing" class="btn-edit" (click)="toggleEditMode()">
-                Edit Profile
+                <i class="fa fa-pencil-alt"></i> Edit Profile
             </button>
             <div *ngIf="isEditing" class="edit-buttons">
                 <button class="btn-cancel" (click)="toggleEditMode()">
-                    Cancel
+                    <i class="fa fa-times"></i> Cancel
                 </button>
                 <button class="btn-save" [disabled]="profileForm.invalid || submitInProgress" (click)="onSubmit()">
+                    <i *ngIf="!submitInProgress" class="fa fa-check"></i>
+                    <i *ngIf="submitInProgress" class="fa fa-spinner fa-spin"></i>
                     {{ submitInProgress ? 'Saving...' : 'Save Changes' }}
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="profile-card" *ngIf="!isLoading; else loadingTemplate">
+    <div *ngIf="isLoading" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Loading provider information...</p>
+    </div>
+
+    <div *ngIf="loadError" class="error-container">
+        <div class="error-icon">
+            <i class="fa fa-exclamation-triangle"></i>
+        </div>
+        <h3>Unable to load provider data</h3>
+        <p>There was a problem retrieving the provider information. Please try again.</p>
+        <button class="btn-retry" (click)="retry()">
+            <i class="fa fa-sync-alt"></i> Retry
+        </button>
+    </div>
+
+    <div class="profile-card" *ngIf="!isLoading && !loadError">
         <form [formGroup]="profileForm">
             <div class="form-layout">
                 <!-- First column -->
@@ -92,17 +111,40 @@
             </div>
         </form>
 
+        <div class="provider-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>25</h3>
+                    <p>Residents</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa fa-tint"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>{{ provider.sensors_number }}</h3>
+                    <p>Sensors</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa fa-clipboard-list"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>12</h3>
+                    <p>Active Plans</p>
+                </div>
+            </div>
+        </div>
+
         <div class="card-actions">
             <button class="btn-view-details" (click)="goToDetails()">
-                View Active Plans.
+                <i class="fa fa-clipboard-list"></i> View Active Plans
             </button>
         </div>
     </div>
-
-    <ng-template #loadingTemplate>
-        <div class="loading-container">
-            <div class="loading-spinner"></div>
-            <p>Loading provider information...</p>
-        </div>
-    </ng-template>
 </div>
