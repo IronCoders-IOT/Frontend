@@ -31,14 +31,17 @@
 }
 
 .form-section {
-    padding: 20px;
+    padding: 10px;
+    font-family: "Inter-Regular", sans-serif;
+
 }
 
 .form-title {
-    font-size: 22px;
+    font-size: 40px;
     color: #333;
     margin-bottom: 25px;
     font-weight: 500;
+    font-weight: bold;
 }
 
 .form-layout {
@@ -75,6 +78,7 @@ label {
     margin-bottom: 8px;
     font-size: 14px;
     color: #333;
+    font-weight: bold;
 }
 
 .form-control {
@@ -121,7 +125,12 @@ label {
         flex-direction: column;
     }
 
-    .form-column {
-        width: 100%;
-    }
+    .form-title {
+    font-size: 30px;
+    color: #333;
+    margin-bottom: 25px;
+    font-weight: 500;
+    font-weight: bold;
+    text-align: center;
+}
 }
