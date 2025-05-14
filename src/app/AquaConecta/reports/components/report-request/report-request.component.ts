@@ -27,7 +27,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ReportRequestComponent implements AfterViewInit {
   tittle = 'Lista de Reportes';
-  //requests:  Array<WaterRequestEntity> = [];
+
   requests: MatTableDataSource<ReportRequestEntity> = new MatTableDataSource<ReportRequestEntity>();
 
   displayedColumns: string[] = ['id', 'resident_name', 'title', 'emission_date', 'status'];
@@ -96,7 +96,7 @@ export class ReportRequestComponent implements AfterViewInit {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.sensordataApiService.getAllRequests().pipe(catchError(() => observableOf(null)));
+          return this.reportdataApiService.getAllRequests().pipe(catchError(() => observableOf(null)));
         }),
         map(data => {
           this.isLoadingResults = false;
