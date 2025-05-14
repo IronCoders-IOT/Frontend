@@ -6,7 +6,8 @@ import { Resident } from '../models/resident.model';
 import { BaseService } from '../../../shared/services/base.service';
 import { OperatorFunction, throwError, timer } from 'rxjs';
 import { retryWhen, mergeMap } from 'rxjs/operators';
-
+import { Event } from '../models/event.model';
+import { map } from 'rxjs/operators';
 @Injectable({
     providedIn: 'root'
 })
@@ -23,12 +24,47 @@ export class ResidentService extends BaseService<Resident> {
         return this.getAll();
     }
 
+    getAllEventsByResidentId(residentId: number): Observable<Event[]> {
+        return this.http.get<Resident[]>(`${this.basePath}${this.resourceEndpoint}`, this.httpOptions).pipe(
+            map((residents: any[]) => {
+            const allEvents: Event[] = [];
+            const resident = residents.find((r: any) => r.id === residentId);
+
+            if (resident && Array.isArray(resident.sensor_events)) {
+                resident.sensor_events.forEach((event: any, index: number) => {
+                allEvents.push({
+                    id: index + 1,
+                    event_type: event.event,
+                    quality_value: event.water_quality,
+                    status: event.status,
+                    level_value: event.water_level
+                });
+                });
+            }
+
+            return allEvents;
+            }),
+            catchError(this.handleError)
+        );
+    }
+
     getResidentById(id: number): Observable<Resident> {
-        return this.http.get<Resident>(`${this.basePath}${this.resourceEndpoint}/${id}`, this.httpOptions)
+        return this.http.get<any>(`${this.basePath}${this.resourceEndpoint}/${id}`, this.httpOptions)
             .pipe(
-                retry(2),
-                catchError(this.handleError)
-            );
+            map(data => new Resident({
+                id: data.id,
+                firstName: data.first_name,
+                lastName: data.last_name,
+                documentType: data.document_type,
+                documentNumber: data.document_number,
+                email: data.email,
+                sensor_events: data.sensor_events,
+                phone: data.phone,
+                address: data.address
+            })),
+            retry(2),
+            catchError(this.handleError)
+        );
     }
 
     createResident(resident: Resident): Observable<Resident> {

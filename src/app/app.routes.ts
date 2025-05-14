@@ -8,6 +8,7 @@ import {ScheduleDateComponent} from './AquaConecta/requests/components/schedule-
 import {ReportRequestComponent} from './AquaConecta/reports/components/report-request/report-request.component';
 import {ProviderDetailComponent} from './AquaConecta/providers/components/provider-detail/provider-detail.component';
 import {ProviderListComponent} from './AquaConecta/providers/components/provider-list/provider-list.component';
+import {ViewHistoryComponent } from './AquaConecta/residents/presentation/view-history/view-history.component';
 
 
 export const routes: Routes = [
@@ -21,5 +22,7 @@ export const routes: Routes = [
   { path: 'reports', component: ReportRequestComponent},
   { path: 'signup', component: SignupComponent },
   { path: 'residents/create', component: CreateResidentComponent },
-  { path: 'residents', redirectTo: '/residents/create', pathMatch: 'full' }
+  { path: 'residents', redirectTo: '/residents/create', pathMatch: 'full' },
+  {path : 'history', component: ViewHistoryComponent}
 ];
+

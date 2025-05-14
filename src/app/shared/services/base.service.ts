@@ -10,7 +10,7 @@ export class BaseService<T> {
 
   basePath: string = `${environment.serverBasePath}`;
   resourceEndpoint: string = '/resources';
-
+  
 
 
   httpOptions = {
