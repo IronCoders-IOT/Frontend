@@ -20,7 +20,10 @@ export class ProviderApiServiceService extends BaseService<Provider> {
     return this.getAll();
   }
 
-
+  getProviderById(id: number): Observable<Provider> {
+    const url = `https://my-json-server.typicode.com/IronCoders-IOT/fake-api-server/providers/${id}`;
+    return this.http.get<Provider>(url);
+  }
 }
 
 
