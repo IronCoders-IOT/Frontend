@@ -1,9 +1,11 @@
+/* signup.component.scss */
 @use "sass:color";
 
 .signup-container {
     display: flex;
     height: 100vh;
     width: 100vw;
+    font-family: sans-serif;
 }
 
 .image-section {
@@ -33,6 +35,7 @@
     margin-bottom: 1.5rem;
     color: #333;
     text-align: center;
+    font-family: sans-serif;
 }
 
 .highlight {
@@ -43,6 +46,7 @@
     color: #666;
     margin-bottom: 2rem;
     text-align: center;
+    font-family: sans-serif;
 }
 
 .signup-form {
@@ -59,6 +63,8 @@ label {
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
     color: #333;
+    font-family: sans-serif;
+    font-weight: 500;
 }
 
 .form-control {
@@ -68,6 +74,7 @@ label {
     border: 1px solid #6dc2ff;
     font-size: 1rem;
     transition: border-color 0.3s;
+    font-family: sans-serif;
 
     &:focus {
         outline: none;
@@ -83,6 +90,7 @@ label {
     color: #f44336;
     font-size: 0.8rem;
     margin-top: 0.25rem;
+    font-family: sans-serif;
 }
 
 .btn-signup {
@@ -95,9 +103,11 @@ label {
     cursor: pointer;
     transition: background-color 0.3s;
     margin-bottom: 1rem;
+    font-family: sans-serif;
+    font-weight: 500;
 
     &:hover {
-        background-color: color.adjust(#2196f3, $lightness: -10%);
+        background-color: #1976d2;
     }
 
     &:disabled {
@@ -109,6 +119,7 @@ label {
 .login-section {
     text-align: center;
     font-size: 0.9rem;
+    font-family: sans-serif;
 
     span {
         color: #666;
@@ -119,6 +130,7 @@ label {
     color: #2196f3;
     cursor: pointer;
     margin-left: 0.5rem;
+    font-family: sans-serif;
 
     &:hover {
         text-decoration: underline;

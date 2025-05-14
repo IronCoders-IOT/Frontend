@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HeaderContentComponent} from '../../../../public/components/header-content/header-content.component';
 import {Subscription} from '../../model/subscription.entity';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProviderApiServiceService} from '../../services/provider-api.service.service';
 import {Resident} from '../../model/resident.entity';
 import {ResidentApiServiceService} from '../../services/resident-api.service.service';
@@ -48,7 +48,8 @@ export class ProviderDetailComponent implements OnInit{
     private residentService: ResidentApiServiceService,
     private subscriptionService: SubscriptionApiServiceService,
     private providerService: ProviderApiServiceService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -101,5 +102,7 @@ export class ProviderDetailComponent implements OnInit{
     }
   }
 
-
+  goToProfile(): void {
+    this.router.navigate([`/provider/${this.providerId}/profile`]);
+  }
 }
