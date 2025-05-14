@@ -30,6 +30,7 @@ export class ReportRequestComponent implements AfterViewInit {
 
   requests: MatTableDataSource<ReportRequestEntity> = new MatTableDataSource<ReportRequestEntity>();
 
+  // Update displayedColumns to include 'title' instead of 'requested_liters'
   displayedColumns: string[] = ['id', 'resident_name', 'title', 'emission_date', 'status'];
   resultsLength = 0;
   isLoadingResults = true;
@@ -51,14 +52,17 @@ export class ReportRequestComponent implements AfterViewInit {
 
     this.reportdataApiService.getAllRequests().subscribe(
       (response: ReportRequestEntity[]) => {
-        //this.requests = response;
-        this.requests.data= response;
+        // Set the data directly to the MatTableDataSource
+        this.requests.data = response;
 
         this.isLoadingResults = false;
         this.resultsLength = this.requests.data.length;
-        console.log(this.requests);
+        console.log('Reports loaded:', this.requests.data);
+      },
+      error => {
+        console.error('Error loading reports:', error);
+        this.isLoadingResults = false;
       }
-
     );
   }
 
@@ -106,6 +110,3 @@ export class ReportRequestComponent implements AfterViewInit {
     }
   }
 }
-
-
-
