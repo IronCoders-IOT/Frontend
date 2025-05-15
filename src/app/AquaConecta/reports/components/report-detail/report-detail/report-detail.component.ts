@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ReportdataApiService } from '../../services/reportdata-api.service';
-import { ReportRequestEntity } from '../../model/report-request.entity';
+import { ReportdataApiService } from '../../../services/reportdata-api.service';
+import { ReportRequestEntity } from '../../../model/report-request.entity';
 
 @Component({
   selector: 'app-report-detail',
@@ -25,3 +25,4 @@ export class ReportDetailComponent implements OnInit {
       });
     }
   }
+}
