@@ -15,6 +15,7 @@ import {CommonModule, DatePipe} from '@angular/common';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -26,6 +27,10 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrl: './report-request.component.css'
 })
 export class ReportRequestComponent implements AfterViewInit {
+
+  goToDetail(id: number): void {
+    this.router.navigate(['/reports', id]);
+  }
   tittle = 'Lista de Reportes';
 
   requests: MatTableDataSource<ReportRequestEntity> = new MatTableDataSource<ReportRequestEntity>();
@@ -36,7 +41,9 @@ export class ReportRequestComponent implements AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  constructor(private reportdataApiService: ReportdataApiService, private dialog: MatDialog) {}
+  constructor(  private router: Router,
+                private reportdataApiService: ReportdataApiService,
+                private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getAllRequests();
