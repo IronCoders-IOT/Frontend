@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable, throwError, timer } from 'rxjs';
-import { catchError, tap, mergeMap, retryWhen } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Resident } from '../models/resident.model';
 import { BaseService } from '../../../shared/services/base.service';
 import { OperatorFunction, throwError, timer } from 'rxjs';
@@ -9,14 +9,16 @@ import { retryWhen, mergeMap } from 'rxjs/operators';
 import { Event } from '../models/event.model';
 import { map } from 'rxjs/operators';
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ResidentService extends BaseService<Resident> {
+    // Simular datos locales para desarrollo
+    private residents: Resident[] = [];
 
-  constructor(http: HttpClient) {
-    super(http);
-    this.resourceEndpoint = 'residents';
-  }
+    constructor(http: HttpClient) {
+        super(http);
+        this.resourceEndpoint = 'residents';
+    }
 
     getAllResidents(): Observable<Resident[]> {
         return this.getAll();
@@ -45,9 +47,6 @@ export class ResidentService extends BaseService<Resident> {
             catchError(this.handleError)
         );
     }
-  getAllResidents(): Observable<Resident[]> {
-    return this.getAll();
-  }
 
     getResidentById(id: number): Observable<Resident> {
         return this.http.get<any>(`${this.basePath}${this.resourceEndpoint}/${id}`, this.httpOptions)
