@@ -25,6 +25,5 @@ export const routes: Routes = [
   { path: 'residents', redirectTo: '/residents/create', pathMatch: 'full' },
   {path : 'history', component: ViewHistoryComponent},
   { path: 'reports/:id', component: ReportDetailComponent },
-  { path: '', redirectTo: '/reports', pathMatch: 'full' },
 ];
 
