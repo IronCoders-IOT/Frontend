@@ -37,7 +37,8 @@ export class ProviderDetailComponent implements OnInit{
   subscriptions: { [residentId: number]: Subscription[] } = {};
 
   provider!: Provider;
-  displayedColumns: string[] = ['ID', 'Start date', 'End date', 'Status'];
+
+  displayedColumns: string[] = ['id', 'start_date', 'end_date', 'status'];
 
 
   providerId!: number;

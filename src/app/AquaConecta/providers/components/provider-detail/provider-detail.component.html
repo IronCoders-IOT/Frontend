@@ -9,15 +9,15 @@
     </div>
 
     <div class="provider-ruc-phone">
-      <p class="ruc">Ruc: {{ provider.ruc }}</p>
-      <p class="tlf">tlf: {{ provider.phone }}</p>
+      <p> <span class="subtitle">RUC: </span><span class="ruc">{{ provider.ruc }}</span> </p>
+      <p><span class="subtitle">Phone: </span><span class="tlf">{{ provider.phone }}</span></p>
     </div>
 
-    <p>direccion</p>
-    
-    <div class="provider-actions">
+    <p class="subtitle" style="margin-top: 20px;">Av. Hermilio Valdizan 225 Jesús María</p>
+
+    <!-- <div class="provider-actions">
       <button class="btn-profile" (click)="goToProfile()">View Profile</button>
-    </div>
+    </div> -->
   </div>
 
   <p class="title-active-plans">Active Plans</p>
@@ -28,29 +28,29 @@
           The actual rendered columns are set as a property on the row definition" -->
 
     <!-- Position Column -->
-    <ng-container matColumnDef="ID">
+    <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      <td mat-cell *matCellDef="">1</td>
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container matColumnDef="Start date">
+    <ng-container matColumnDef="start_date">
       <th mat-header-cell *matHeaderCellDef>Start date</th>
-      <td mat-cell *matCellDef="let element"> {{element.start_date | date:'dd/MM/yyyy'}} </td>
+      <td mat-cell *matCellDef="let row"> {{row.start_date | date:'dd/MM/yyyy'}} </td>
     </ng-container>
 
     <!-- Weight Column -->
-    <ng-container matColumnDef="End date">
+    <ng-container matColumnDef="end_date">
       <th mat-header-cell *matHeaderCellDef>End date</th>
-      <td mat-cell *matCellDef="let element"> {{element.end_date | date:'dd/MM/yyyy' }} </td>
+      <td mat-cell *matCellDef="let row"> {{row.end_date | date:'dd/MM/yyyy' }} </td>
     </ng-container>
 
     <!-- Symbol Column -->
-    <ng-container matColumnDef="Status" >
+    <ng-container matColumnDef="status" >
       <th mat-header-cell class="cell-status" *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let element" class="custom-status-column">
-        <span [ngClass]="getStatusClass(element.status)">
-              {{ element.status }}
+      <td mat-cell *matCellDef="let row" class="custom-status-column">
+        <span [ngClass]="getStatusClass(row.status)">
+              {{ row.status }}
         </span>
       </td>
     </ng-container>
