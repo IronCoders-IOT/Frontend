@@ -1,0 +1,54 @@
+<div class="request-container">
+  <div class="container-card">
+    <div class="custom-scheduled-card">
+      
+      <!-- Información del residente -->
+      <div class="card-header">
+        <div class="card-title">Resident</div>
+        <div class="card-content">{{ data?.resident_name }}</div>
+      </div>
+
+      <!-- Cantidad de agua solicitada -->
+      <div class="card-header">
+        <div class="card-title">Water Quantity Request (Liters)</div>
+        <div class="card-content">{{ data?.requested_liters }}</div>
+      </div>
+
+      <!-- Fechas -->
+      <div class="container-dates">
+        <!-- Fecha de emisión -->
+        <div class="header-date">
+          <label class="card-title">Emission Date:</label>
+          <div class="card-content">{{ data?.emission_date }}</div>
+        </div>
+
+        <div class="field-group">
+          <label for="status-selector">Status:</label>
+          <select [(ngModel)]="status" id="status-selector" class="status-selector">
+            <option value="In Progress">In Progress</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+
+        <!-- Fecha de entrega -->
+        <div class="header-date">
+          <label for="date-picker" class="card-title">Delivered Date:</label>
+          <input
+            id="date-picker"
+            type="date"
+            class="date-input"
+            [(ngModel)]="deliveredDateString"
+            (change)="onDateChange($event)"
+          />
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="card-actions">
+        <button class="button-cancel" (click)="closeModal()">Cancel</button>
+        <button class="button-save" (click)="saveDate()">Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>

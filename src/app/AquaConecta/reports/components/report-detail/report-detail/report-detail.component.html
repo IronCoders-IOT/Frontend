@@ -1,0 +1,37 @@
+<app-header-content></app-header-content>
+
+<div class="report-detail-container">
+  <div class="report-header">
+    <h2>REPORT Nº {{ report.id }}</h2>
+    <h1>{{ report.title }}</h1>
+    <button mat-button class="status-button">
+      STATUS <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+  </div>
+
+  <hr />
+
+  <div class="report-info">
+    <div class="resident-info">
+      <h3>Resident</h3>
+      <p>{{ report.resident_name }}</p>
+      <p>{{ report.resident_address }}</p>
+      <p>{{ report.resident_phone }}</p>
+    </div>
+
+    <div class="technician-info">
+      <h3><strong>TECHNICIAN IN CHARGE</strong></h3>
+      <p>{{ report.technician_name }}</p>
+      <p>{{ report.visit_date }}</p>
+      <p>{{ report.technician_company }}</p>
+      <p>{{ report.technician_phone }}</p>
+    </div>
+  </div>
+
+  <div class="description-section">
+    <label for="description"><strong>Description</strong></label>
+    <textarea id="description" [(ngModel)]="report.description"></textarea>
+  </div>
+
+  <button mat-stroked-button class="back-button" routerLink="/reports">BACK</button>
+</div>

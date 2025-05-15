@@ -1,0 +1,153 @@
+/* signup.component.scss */
+@use "sass:color";
+
+.signup-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    font-family: sans-serif;
+}
+
+.image-section {
+    flex: 1;
+    background-image: url('/assets/images/imagen_aquaconecta.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.form-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 2rem;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 350px;
+}
+
+.app-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.highlight {
+    color: #2196f3;
+}
+
+.welcome-message {
+    color: #666;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #333;
+    font-family: sans-serif;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 4px;
+    border: 1px solid #6dc2ff;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    font-family: sans-serif;
+
+    &:focus {
+        outline: none;
+        border-color: #2196f3;
+    }
+
+    &.invalid {
+        border-color: #f44336;
+    }
+}
+
+.error-message {
+    color: #f44336;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    font-family: sans-serif;
+}
+
+.btn-signup {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 1rem;
+    font-family: sans-serif;
+    font-weight: 500;
+
+    &:hover {
+        background-color: #1976d2;
+    }
+
+    &:disabled {
+        background-color: #b3d9ff;
+        cursor: not-allowed;
+    }
+}
+
+.login-section {
+    text-align: center;
+    font-size: 0.9rem;
+    font-family: sans-serif;
+
+    span {
+        color: #666;
+    }
+}
+
+.login-link {
+    color: #2196f3;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    font-family: sans-serif;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .signup-container {
+        flex-direction: column;
+    }
+
+    .image-section {
+        height: 30vh;
+    }
+
+    .form-section {
+        height: 70vh;
+    }
+}
