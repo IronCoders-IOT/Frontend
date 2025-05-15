@@ -1,0 +1,47 @@
+.report-detail-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-button {
+  background-color: #00a0ff;
+  color: white;
+  border-radius: 20px;
+}
+
+.report-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.resident-info, .technician-info {
+  width: 45%;
+}
+
+.description-section {
+  margin-top: 30px;
+}
+
+textarea {
+  width: 100%;
+  height: 120px;
+  border: 2px solid #00a0ff;
+  border-radius: 8px;
+  padding: 10px;
+  resize: vertical;
+}
+
+.back-button {
+  margin-top: 20px;
+  border-color: #00a0ff;
+  color: #00a0ff;
+}

@@ -1,18 +1,18 @@
+// header-content.component.ts
 import { Component } from '@angular/core';
-import {NgOptimizedImage} from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatButtonModule} from '@angular/material/button';
 @Component({
   selector: 'app-header-content',
-  imports: [
-     MatButtonModule, MatDividerModule, MatIconModule
-  ],
   templateUrl: './header-content.component.html',
+  styleUrls: ['./header-content.component.css'],
   standalone: true,
-  styleUrl: './header-content.component.css'
+  imports: [
+    RouterModule,
+    CommonModule
+  ]
 })
 export class HeaderContentComponent {
-
+  constructor() {}
 }

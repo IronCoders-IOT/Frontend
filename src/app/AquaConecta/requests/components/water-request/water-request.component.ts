@@ -14,13 +14,14 @@ import {CommonModule, DatePipe} from '@angular/common';
 
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import { MatDialog } from '@angular/material/dialog';
+import { ScheduleDateComponent } from '../schedule-date/schedule-date.component';
 
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-water-request',
   imports: [CommonModule,HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
-    MatPaginatorModule, DatePipe, MatFormFieldModule,MatInputModule, RouterLink],
+    MatPaginatorModule, DatePipe, MatFormFieldModule,MatInputModule],
   templateUrl: './water-request.component.html',
   standalone: true,
   styleUrl: './water-request.component.css'
@@ -30,12 +31,12 @@ export class WaterRequestComponent implements AfterViewInit {
   //requests:  Array<WaterRequestEntity> = [];
   requests: MatTableDataSource<WaterRequestEntity> = new MatTableDataSource<WaterRequestEntity>();
 
-  displayedColumns: string[] = ['id', 'resident_id', 'requested_liters', 'provider_id', 'delivered_at', 'status'];
+  displayedColumns: string[] = ['id', 'resident_name', 'requested_liters', 'emission_date', 'delivered_at', 'status'];
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  constructor(private sensordataApiService: SensordataApiService) {}
+  constructor(private sensordataApiService: SensordataApiService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getAllRequests();
@@ -45,6 +46,25 @@ export class WaterRequestComponent implements AfterViewInit {
     };
   }
 
+openScheduleModal(row: WaterRequestEntity): void {
+  const dialogRef = this.dialog.open(ScheduleDateComponent, {
+    width: '550px',
+    data: row, // Pasamos la información de la fila al modal
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result && result.selectedDate) {
+      console.log('Modal result:', result);
+
+      // Actualiza la fecha en la fila correspondiente
+      row.delivered_at = result.selectedDate;
+      row.status = result.status || row.status; // Por si se envía el status desde el modal
+
+      // Refresca la tabla para reflejar el cambio en la UI
+      this.requests.data = [...this.requests.data];
+    }
+  });
+}
   getAllRequests(): void {
     this.isLoadingResults = true;
 
