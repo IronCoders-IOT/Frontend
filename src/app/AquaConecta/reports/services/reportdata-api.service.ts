@@ -79,4 +79,23 @@ export class ReportdataApiService {
       })
     );
   }
+  getReportById(id: string): Observable<ReportRequestEntity> {
+    // Simulación de backend, reemplaza luego con endpoint real
+    return of({
+      id: 1,
+      title: 'LOW QUALITY SENSOR',
+      resident_name: 'Juan Luis Guerra',
+      resident_address: 'Amarillis 177, Ica',
+      resident_phone: '968788999',
+      technician_name: 'Juan Luis Guerra',
+      visit_date: '2024-05-01',
+      company: 'Enercom',
+      technician_phone: '968788999',
+      description: 'Low quality sensor detected in zone 5',
+      status: 'Received',
+      emission_date: new Date().toISOString()
+    });
+  }
+
+
 }
