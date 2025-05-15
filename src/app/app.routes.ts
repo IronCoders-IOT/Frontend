@@ -11,12 +11,11 @@ import { ProviderListComponent} from './AquaConecta/providers/components/provide
 import { ViewHistoryComponent } from './AquaConecta/residents/presentation/view-history/view-history.component';
 import { ReportDetailComponent } from './AquaConecta/reports/components/report-detail/report-detail/report-detail.component';
 import { AdminDashboardComponent } from './AquaConecta/admin/presentation/dashboard/admin-dashboard.component';
+import { ProviderProfileComponent } from './AquaConecta/providers/components/provider-profile/provider-profile.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path:'providers', component: ProviderListComponent},
-  { path: 'provider/:id', redirectTo: 'provider/:id/detail', pathMatch: 'full' },
-  { path: 'provider/:id/detail', component: ProviderDetailComponent },
   { path: 'requests', component: WaterRequestComponent },
   { path: 'schedule', component: ScheduleDateComponent },
   { path: 'login', component: LoginComponent },
@@ -27,4 +26,8 @@ export const routes: Routes = [
   {path : 'history', component: ViewHistoryComponent},
   { path: 'reports/:id', component: ReportDetailComponent },
   { path: 'admin/dashboard', component: AdminDashboardComponent },
+  { path: 'provider/:id', redirectTo: 'provider/:id/detail', pathMatch: 'full' },
+  { path: 'provider/:id/detail', component: ProviderDetailComponent },
+  { path: 'provider/:id/profile', component: ProviderProfileComponent }, // Add this line
+  
 ];
