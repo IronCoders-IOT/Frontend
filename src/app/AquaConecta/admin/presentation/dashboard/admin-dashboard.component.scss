@@ -4,6 +4,7 @@ html,
 app-admin-dashboard {
     background-color: #ffffff !important;
     color: #333333 !important;
+    
 }
 
 mat-card,
@@ -12,6 +13,8 @@ mat-card-header,
 mat-card-title {
     background-color: #ffffff !important;
     color: #333333 !important;
+    font-family: "Inter-Regular", sans-serif;
+
 }
 
 .status-header h3,
@@ -25,6 +28,8 @@ mat-card-title,
 th,
 td {
     color: #333333 !important;
+    font-family: "Inter-Regular", sans-serif;
+
 }
 
 .activity-table th,

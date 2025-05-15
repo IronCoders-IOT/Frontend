@@ -6,6 +6,10 @@ export class Provider {
   ruc: string;
   phone: number;
   sensors_number: number;
+  start_date: string;
+  end_date: string;
+  status: string;
+
 
   constructor() {
     this.id = 0;
@@ -15,5 +19,8 @@ export class Provider {
     this.user_id = 0;
     this.phone = 0;
     this.sensors_number = 0;
+    this.start_date = "";
+    this.end_date = "";
+    this.status = "";
   }
 }

@@ -25,19 +25,28 @@
   justify-content: center;
   margin: 0 auto;
   margin-bottom: -1.5%;
+  padding: 0;
+}
+.mat-elevation-z8{
+  padding: 0 0px;
+  
+}
+.subtitle {
+  font-size: 20px;
+  margin: 0;
 }
 
 .ruc, .tlf{
-  background-color: rgba(255, 255, 255, 0.75);
   color:#2197DF;
-  padding:2px;
   border-radius: 8px;
+
 }
 
 .title-active-plans{
   text-decoration: underline;
   font-family: "Inter-Bold", sans-serif;
   font-size: 25px;
+  padding: 0 20px; /* Espacio lateral */
 
 }
 
