@@ -10,6 +10,7 @@ import { ProviderDetailComponent} from './AquaConecta/providers/components/provi
 import { ProviderListComponent} from './AquaConecta/providers/components/provider-list/provider-list.component';
 import { ViewHistoryComponent } from './AquaConecta/residents/presentation/view-history/view-history.component';
 import { ReportDetailComponent } from './AquaConecta/reports/components/report-detail/report-detail/report-detail.component';
+import { AdminDashboardComponent } from './AquaConecta/admin/presentation/dashboard/admin-dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,5 +26,5 @@ export const routes: Routes = [
   { path: 'residents', redirectTo: '/residents/create', pathMatch: 'full' },
   {path : 'history', component: ViewHistoryComponent},
   { path: 'reports/:id', component: ReportDetailComponent },
+  { path: 'admin/dashboard', component: AdminDashboardComponent },
 ];
-

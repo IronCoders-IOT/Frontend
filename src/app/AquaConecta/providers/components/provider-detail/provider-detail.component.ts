@@ -22,10 +22,9 @@ import {MatDialog} from '@angular/material/dialog';
   selector: 'app-provider-detail',
   imports: [
     HeaderContentComponent,
-    NgForOf,
-    CommonModule,HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
-    MatPaginatorModule, MatFormFieldModule,MatInputModule,
-  ],
+    CommonModule, HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
+    MatPaginatorModule, MatFormFieldModule, MatInputModule
+],
   templateUrl: './provider-detail.component.html',
   standalone: true,
   styleUrl: './provider-detail.component.css'
