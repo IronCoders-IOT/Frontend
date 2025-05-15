@@ -28,6 +28,6 @@ export const routes: Routes = [
   { path: 'admin/dashboard', component: AdminDashboardComponent },
   { path: 'provider/:id', redirectTo: 'provider/:id/detail', pathMatch: 'full' },
   { path: 'provider/:id/detail', component: ProviderDetailComponent },
-  { path: 'provider/:id/profile', component: ProviderProfileComponent }, // Add this line
+  { path: 'provider/:id/profile', component: ProviderProfileComponent },
   
 ];
