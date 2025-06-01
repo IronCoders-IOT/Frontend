@@ -94,7 +94,7 @@ export class AuthService extends BaseService<User> {
           loginPayload
         ).pipe(
           tap(loginResponse => {
-            console.log('Respuesta del login:', loginResponse);
+            console.log('Respuesta del login:');
 
             // Verificar que el token existe
             if (!loginResponse.token) {
@@ -121,10 +121,10 @@ export class AuthService extends BaseService<User> {
               userId: signupResponse.id
             };
 
-            console.log('Payload del perfil:', profilePayload);
+            console.log('Payload del perfil:');
             console.log('URL del perfil:', `${environment.serverBasePath}profiles`);
             console.log('Headers que se enviarán:', {
-              'Authorization': `Bearer ${token}`,
+              'Authorization': `Bearer `,
               'Content-Type': 'application/json'
             });
 
