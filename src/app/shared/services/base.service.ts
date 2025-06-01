@@ -10,13 +10,11 @@ export class BaseService<T> {
 
   basePath: string = `${environment.serverBasePath}`;
   resourceEndpoint: string = '/resources';
-  
-
 
   httpOptions = {
     headers: new HttpHeaders({
       'Content-type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
+      'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
     })
   }
   constructor(protected http: HttpClient) {  }
