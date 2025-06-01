@@ -1,4 +1,6 @@
 export class ProviderDetails {
+
+
   id?: number;
   taxName: string;
   ruc: string;
@@ -10,5 +12,6 @@ export class ProviderDetails {
     this.ruc = '';
     this.userId = 0;
   }
+
 }
 

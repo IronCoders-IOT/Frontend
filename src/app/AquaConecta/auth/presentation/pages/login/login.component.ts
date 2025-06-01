@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
 
         this.authService.login(credentials).subscribe({
             next: (user: User) => {
-              console.log('Usuario autenticado:', user);
+              console.log('Usuario autenticado:');
 
               // Navigate to the home page or dashboard after successful login
                 this.router.navigate(['/home']);
