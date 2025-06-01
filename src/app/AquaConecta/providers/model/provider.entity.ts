@@ -1,14 +1,19 @@
 export class Provider {
   id: number;
-  tax_name: string;
-  profile_id: number;
-  user_id: number;
-  ruc: string;
+  company_name: string;
+  email: string;
+  direction: string;
   phone: number;
+  user_id: number;
+  profile_id: number;
+
+  tax_name: string;
+  ruc: string;
   sensors_number: number;
-  start_date: string;
-  end_date: string;
-  status: string;
+
+  //start_date: string;
+  //end_date: string;
+  //status: string;
 
 
   constructor() {
@@ -19,8 +24,11 @@ export class Provider {
     this.user_id = 0;
     this.phone = 0;
     this.sensors_number = 0;
-    this.start_date = "";
-    this.end_date = "";
-    this.status = "";
+    this.company_name = "";
+    this.email = "";
+    this.direction = "";
+    //this.start_date = "";
+    //this.end_date = "";
+    //this.status = "";
   }
 }

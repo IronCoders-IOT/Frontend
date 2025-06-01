@@ -137,6 +137,20 @@ label {
     }
 }
 
+.success-message {
+  color: #4caf50; /* Verde */
+  background-color: #e8f5e9; /* Fondo verde claro */
+  border: 1px solid #4caf50; /* Borde verde */
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 1rem;
+  font-family: sans-serif;
+
+  margin-bottom: 20px;
+}
+
 // Responsive design
 @media (max-width: 768px) {
     .signup-container {
