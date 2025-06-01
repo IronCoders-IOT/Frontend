@@ -9,25 +9,66 @@
 
             <p class="welcome-message">Create your account</p>
 
+          <div class="success-message" *ngIf="successMessage" style="color: green;">
+            {{ successMessage }}
+          </div>
+          <div class="error-message" *ngIf="errorMessage" style="color: red;">
+            {{ errorMessage }}
+          </div>
+
+
             <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
-                <div class="form-group">
+
+              <div class="form-group">
+                <label for="roles">Roles</label>
+                <select id="roles" formControlName="roles" class="form-control" (change)="onRoleChange($event)">
+                  <option value="" disabled selected>Select a role</option>
+                  <option value="ROLE_ADMIN">Admin</option>
+                  <option value="ROLE_PROVIDER">Provider</option>
+                </select>
+                <div class="error-message" *ngIf="hasError('roles', 'required')">
+                  Roles are required
+                </div>
+              </div>
+
+                <div class="form-group" *ngIf="!isProviderRole">
                     <label for="name">Name</label>
-                    <input type="text" id="name" formControlName="name" placeholder="Full Name" class="form-control"
+                    <input type="text" id="name" formControlName="name" placeholder="Name" class="form-control"
                         [ngClass]="{'invalid': hasError('name', 'required')}">
                     <div class="error-message" *ngIf="hasError('name', 'required')">
                         Name is required
                     </div>
 
                 </div>
-                <div class="form-group">
-                    <label for="lastname">Last name</label>
-                    <input type="text" id="name" formControlName="name" placeholder="Full Name" class="form-control"
-                        [ngClass]="{'invalid': hasError('name', 'required')}">
-                    <div class="error-message" *ngIf="hasError('name', 'required')">
+                <div class="form-group" *ngIf="!isProviderRole">
+                    <label for="lastName">Last name</label>
+                    <input type="text" id="lastName" formControlName="lastName" placeholder="Last Name" class="form-control"
+                        [ngClass]="{'invalid': hasError('lastName', 'required')}">
+                    <div class="error-message" *ngIf="hasError('lastName', 'required')">
                         Last
                     </div>
                 </div>
+              <!-- Campos específicos para el rol de Provider -->
+              <div *ngIf="isProviderRole">
+                <div class="form-group">
+                  <label for="companyName">Company Name</label>
+                  <input type="text" id="companyName" formControlName="companyName" placeholder="Company Name" class="form-control"
+                         [ngClass]="{'invalid': hasError('companyName', 'required')}">
+                  <div class="error-message" *ngIf="hasError('companyName', 'required')">
+                    Company Name is required
+                  </div>
+                </div>
 
+                <div class="form-group">
+                  <label for="ruc">RUC</label>
+                  <input type="text" id="ruc" formControlName="ruc" placeholder="RUC" class="form-control"
+                         [ngClass]="{'invalid': hasError('ruc', 'required')}">
+                  <div class="error-message" *ngIf="hasError('ruc', 'required')">
+                    RUC is required
+                  </div>
+                </div>
+
+              </div>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" formControlName="email" placeholder="Email" class="form-control"
@@ -39,6 +80,41 @@
                         Please enter a valid email
                     </div>
                 </div>
+              <div class="form-group">
+                <label for="direction">Direction</label>
+                <input type="text" id="direction" formControlName="direction" placeholder="Direction" class="form-control"
+                       [ngClass]="{'invalid': hasError('direction', 'required')}">
+                <div class="error-message" *ngIf="hasError('direction', 'required')">
+                  Direction is required
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="!isProviderRole">
+                <label for="documentNumber">Document Number</label>
+                <input type="text" id="documentNumber" formControlName="documentNumber" placeholder="Document Number" class="form-control"
+                       [ngClass]="{'invalid': hasError('documentNumber', 'required')}">
+                <div class="error-message" *ngIf="hasError('documentNumber', 'required')">
+                  Document Number is required
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="!isProviderRole">
+                <label for="documentType">Document Type</label>
+                <input type="text" id="documentType" formControlName="documentType" placeholder="Document Type" class="form-control"
+                       [ngClass]="{'invalid': hasError('documentType', 'required')}">
+                <div class="error-message" *ngIf="hasError('documentType', 'required')">
+                  Document Type is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" formControlName="phone" placeholder="Phone" class="form-control"
+                       [ngClass]="{'invalid': hasError('phone', 'required')}">
+                <div class="error-message" *ngIf="hasError('phone', 'required')">
+                  Phone is required
+                </div>
+              </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
@@ -67,13 +143,10 @@
                     </div>
                 </div>
 
-                <div class="error-container" *ngIf="errorMessage">
-                    <p class="error-message">{{ errorMessage }}</p>
-                </div>
-
-                <button type="submit" class="btn-signup" [disabled]="isSubmitting || signupForm.invalid">
+                <button type="submit" class="btn-signup" [disabled]="signupForm.invalid || isSubmitting">
                     {{ isSubmitting ? 'Creating account...' : 'Sign up' }}
                 </button>
+
 
                 <div class="login-section">
                     <span>Already have an account?</span>

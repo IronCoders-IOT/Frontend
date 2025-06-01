@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../application/services/auth.service';
 import { AuthCredentials } from '../../../domain/models/auth-credentials.model';
+import {User} from '../../../domain/models/user.model';
 
 @Component({
     selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent implements OnInit {
     loginForm!: FormGroup;
     isSubmitting = false;
     errorMessage = '';
-
+    // Fix: Add explicit type for the errorMessage property
     constructor(
         private formBuilder: FormBuilder,
         private authService: AuthService,
@@ -25,7 +26,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit(): void {
         this.loginForm = this.formBuilder.group({
-            email: ['', [Validators.required, Validators.email]],
+            username: ['', [Validators.required, Validators.maxLength(100)]],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
     }
@@ -40,13 +41,15 @@ export class LoginComponent implements OnInit {
         this.errorMessage = '';
 
         const credentials = new AuthCredentials(
-            this.loginForm.value.email,
+            this.loginForm.value.username,
             this.loginForm.value.password
         );
 
         this.authService.login(credentials).subscribe({
-            next: () => {
-                // Navigate to the home page or dashboard after successful login
+            next: (user: User) => {
+              console.log('Usuario autenticado:', user);
+
+              // Navigate to the home page or dashboard after successful login
                 this.router.navigate(['/home']);
             },
             // Fix: Add explicit type for the error parameter
@@ -57,6 +60,7 @@ export class LoginComponent implements OnInit {
             complete: () => {
                 this.isSubmitting = false;
             }
+
         });
     }
 
