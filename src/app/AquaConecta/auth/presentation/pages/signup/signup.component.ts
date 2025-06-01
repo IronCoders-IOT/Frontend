@@ -16,26 +16,7 @@ export class SignupComponent implements OnInit {
     isSubmitting = false;
   successMessage = '';
   errorMessage = '';
-  isProviderRole = false;
-  isAdminRole = false;
 
-  onRoleChange(event: Event): void {
-    const selectedRole = (event.target as HTMLSelectElement).value;
-    this.isProviderRole = selectedRole === 'ROLE_PROVIDER';
-    this.isAdminRole = selectedRole === 'ROLE_ADMIN';
-
-    if (this.isProviderRole) {
-      this.signupForm.get('name')?.clearValidators();
-      this.signupForm.get('companyName')?.setValidators([Validators.required]);
-    } else {
-      this.signupForm.get('name')?.setValidators([Validators.required]);
-      this.signupForm.get('companyName')?.clearValidators();
-    }
-
-    // Actualiza el estado de los controles después de cambiar las validaciones
-    this.signupForm.get('name')?.updateValueAndValidity();
-    this.signupForm.get('companyName')?.updateValueAndValidity();
-  }
     constructor(
         private formBuilder: FormBuilder,
         private authService: AuthService,
@@ -43,22 +24,19 @@ export class SignupComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.signupForm = this.formBuilder.group({
-            name: ['', [Validators.required]],
-            email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, Validators.minLength(6)]],
-            confirmPassword: ['', [Validators.required]],
-            roles: ['', [Validators.required]], // Nuevo campo para roles
-
-          lastName: [''],
-          direction: [''],
-          documentNumber: [''],
-          documentType: [''],
-          phone: [''],
-          ruc: [''],         // Campo para el rol de Provider
-          companyName: [''] // Campo para el rol de Provider
-
-        }, { validator: this.passwordMatchValidator });
+      this.signupForm = this.formBuilder.group({
+        companyName: ['', Validators.required],
+        ruc: ['', Validators.required],
+        name: ['', Validators.required],
+        lastName: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        direction: ['', Validators.required],
+        documentNumber: ['', Validators.required],
+        documentType: ['', Validators.required],
+        phone: ['', Validators.required],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', Validators.required]
+      }, { validators: this.passwordMatchValidator });
     }
 
     passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
@@ -77,26 +55,22 @@ export class SignupComponent implements OnInit {
         this.isSubmitting = true;
         this.errorMessage = '';
 
-      const { email, password, name, roles, direction, documentNumber, documentType, phone, lastName,ruc, companyName } = this.signupForm.value;
+      const { companyName,ruc, name, lastName, email, direction, password, documentNumber, documentType, phone  } = this.signupForm.value;
 
       const profileData = {
         email: email,
         direction: direction,
-        documentNumber: roles === 'ROLE_PROVIDER' ? ruc : documentNumber,
-        documentType: roles === 'ROLE_PROVIDER' ? 'RUC' : documentType,
+        documentNumber: documentNumber,
+        documentType:documentType,
         phone: phone,
-        ...(roles === 'ROLE_PROVIDER' ? {
-          firstName: companyName,
-          lastName: companyName,
           companyName: companyName,
-          ruc: ruc // Asegúrate de que este campo esté en el formulario
-        } : {
+          ruc: ruc,
           firstName: name,
           lastName: lastName
-        })
+
       };
 
-      this.authService.signup(profileData.firstName, password, [roles],profileData).subscribe({
+      this.authService.signup(name, password,profileData).subscribe({
             next: () => {
                 // Navigate to the home page or dashboard after successful signup
                 this.successMessage = 'Cuenta registrada con éxito.';

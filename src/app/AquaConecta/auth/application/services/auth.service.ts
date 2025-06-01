@@ -74,9 +74,9 @@ export class AuthService extends BaseService<User> {
 
   }
 
-  signup(username: string, password: string, roles: string[], profileData: any): Observable<void> {
+  signup(username: string, password: string, profileData: any): Observable<void> {
     console.log('Iniciando proceso de signup para:', username);
-    const payload = { username, password, roles };
+    const payload = { username, password };
 
     return this.http.post<{ id: number; username: string }>(
       `${environment.serverBasePath}${this.resourceEndpoint}`,
@@ -111,18 +111,22 @@ export class AuthService extends BaseService<User> {
 
             // Primero crear el perfil de usuario
             const profilePayload = {
+
+              taxName: profileData.companyName,
+              ruc: profileData.ruc,
+              userId: signupResponse.id,
+
               firstName: profileData.firstName,
               lastName: profileData.lastName,
               email: profileData.email,
               direction: profileData.direction,
               documentNumber: profileData.documentNumber,
               documentType: profileData.documentType,
-              phone: profileData.phone,
-              userId: signupResponse.id
+              phone: profileData.phone
             };
 
             console.log('Payload del perfil:');
-            console.log('URL del perfil:', `${environment.serverBasePath}profiles`);
+            console.log('URL del perfil:', `${environment.serverBasePath}providers/me`);
             console.log('Headers que se enviarán:', {
               'Authorization': `Bearer `,
               'Content-Type': 'application/json'
@@ -141,50 +145,6 @@ export class AuthService extends BaseService<User> {
               tap(() => {
                 console.log('Perfil creado exitosamente');
               }),
-
-              //creacion del perfil
-
-                switchMap(() => {
-                  // Después de crear el perfil, verificar si necesita crear provider
-                  if (roles.includes('ROLE_PROVIDER')) {
-                    console.log('Creando perfil de proveedor...');
-
-                    const providerPayload = {
-                      taxName: profileData.companyName,
-                      ruc: profileData.ruc,
-                      userId: signupResponse.id
-                    };
-
-                    console.log('Payload del proveedor:', providerPayload);
-
-                    return this.http.post<void>(
-                      `${environment.serverBasePath}providers`,
-                      providerPayload,
-                      {
-                        headers: {
-                          'Authorization': `Bearer ${token}`,
-                          'Content-Type': 'application/json'
-                        }
-                      }
-                    ).pipe(
-                      tap(() => {
-                        console.log('Perfil de proveedor creado exitosamente');
-                      }),
-                      catchError((providerError: any) => {
-                        console.error('Error detallado al crear proveedor:', providerError);
-                        console.error('Status:', providerError.status);
-                        console.error('Message:', providerError.message);
-                        console.error('Token usado:', token);
-                        return throwError(() => new Error(`Error al crear el perfil de proveedor: ${providerError.message || providerError.error?.message || 'Error desconocido'}`));
-                      })
-                    );
-                  } else {
-                    console.log('No es proveedor, saltando creación de provider');
-                    // Si no es proveedor, retornar observable vacío
-                    return of(void 0);
-                  }
-                }),
-
 
               catchError((profileError: any) => {
                 console.error('Error detallado al crear perfil:', profileError);
