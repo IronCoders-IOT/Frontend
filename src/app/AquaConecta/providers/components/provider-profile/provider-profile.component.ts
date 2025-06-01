@@ -10,6 +10,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { catchError, finalize, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import {AuthService} from '../../../auth/application/services/auth.service';
 
 @Component({
     selector: 'app-provider-profile',
@@ -38,19 +39,21 @@ export class ProviderProfileComponent implements OnInit {
         private providerService: ProviderApiServiceService,
         private route: ActivatedRoute,
         private router: Router,
-        private snackBar: MatSnackBar
-    ) { }
+        private snackBar: MatSnackBar,
+        private authService: AuthService
+) { }
 
     ngOnInit(): void {
         // Get provider_id from route parameters
         this.providerId = Number(this.route.snapshot.paramMap.get('id'));
         this.initializeForm();
         this.loadProviderData();
+
     }
 
     private initializeForm(): void {
         this.profileForm = this.formBuilder.group({
-            tax_name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+            taxName: ['', [Validators.required, Validators.minLength(3)]],
             ruc: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]],
             phone: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
             address: ['', [Validators.required, Validators.minLength(5)]],
@@ -59,42 +62,54 @@ export class ProviderProfileComponent implements OnInit {
         });
     }
 
-    private loadProviderData(): void {
-        this.isLoading = true;
-        this.loadError = false;
-        
-        this.providerService.getProviderById(this.providerId)
-            .pipe(
-                tap(provider => {
-                    this.provider = provider;
-                    this.populateForm();
-                }),
-                catchError(error => {
-                    console.error('Error fetching provider details:', error);
-                    this.loadError = true;
-                    this.snackBar.open('Failed to load provider data. Please try again.', 'Close', {
-                        duration: 5000,
-                        panelClass: 'error-snackbar'
-                    });
-                    return of(null);
-                }),
-                finalize(() => {
-                    this.isLoading = false;
-                })
-            )
-            .subscribe();
+  private loadProviderData(): void {
+    this.isLoading = true;
+    this.loadError = false;
+
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      console.log('El token está almacenado:');
+      this.providerService.getProvidersProfile().subscribe({
+        next: (profileData) => {
+          this.provider = profileData;
+          this.provider.sensors_number = this.provider.sensors_number || 0; // Ensure sensors_number is initialized
+          console.log('Datos del perfil:', this.provider);
+
+          // Llenar el formulario con los datos del proveedor
+          this.populateForm();
+        },
+        error: (error) => {
+          console.error('Error al obtener los datos del perfil:', error);
+          this.loadError = true;
+          this.snackBar.open('Failed to load profile data. Please try again.', 'Close', {
+            duration: 5000,
+            panelClass: 'error-snackbar'
+          });
+        },
+        complete: () => {
+          this.isLoading = false;
+        }
+      });
+    } else {
+      console.log('No hay token almacenado en localStorage.');
+      this.isLoading = false;
+      this.snackBar.open('No token found. Please log in.', 'Close', {
+        duration: 5000,
+        panelClass: 'warning-snackbar'
+      });
     }
+  }
 
     private populateForm(): void {
         if (!this.provider) return;
-        
+
         this.profileForm.patchValue({
-            tax_name: this.provider.tax_name,
+            taxName: this.provider.taxName,
             ruc: this.provider.ruc,
             phone: this.provider.phone,
             // Use dummy data for fields not in the current model
-            address: '123 Water St, Lima, Peru',
-            email: 'contact@' + this.provider.tax_name.toLowerCase().replace(/\s+/g, '-') + '.com',
+            address: this.provider.direction,
+            email: this.provider.email,
             sensors_number: this.provider.sensors_number
         });
         this.profileForm.disable(); // Initially disable form for view mode
@@ -125,26 +140,33 @@ export class ProviderProfileComponent implements OnInit {
         // Create updated provider object from form values
         const updatedProvider: Provider = {
             ...this.provider,
-            tax_name: this.profileForm.value.tax_name,
+            taxName: this.profileForm.value.taxName,
             ruc: this.profileForm.value.ruc,
-            phone: this.profileForm.value.phone,
-            sensors_number: this.profileForm.value.sensors_number
         };
 
-        // In a real scenario, you would update the provider via API
-        // For now, let's simulate an API call with timeout
-        setTimeout(() => {
-            // Simulate API call
-            this.provider = updatedProvider;
-            this.isEditing = false;
-            this.profileForm.disable();
-            this.submitInProgress = false;
+      this.providerService.UpdateProvider(updatedProvider).subscribe({
+        next: () => {
+          this.provider = updatedProvider;
+          this.isEditing = false;
+          this.profileForm.disable();
+          this.submitInProgress = false;
 
-            this.snackBar.open('Provider profile updated successfully', 'Close', {
-                duration: 3000,
-                panelClass: 'success-snackbar'
-            });
-        }, 1500);
+          console.log(updatedProvider)
+          this.snackBar.open('Perfil del proveedor actualizado con éxito', 'Cerrar', {
+            duration: 3000,
+            panelClass: 'success-snackbar'
+          });
+        },
+        error: (error) => {
+          console.error('Error al actualizar el perfil del proveedor:', error);
+          this.submitInProgress = false;
+
+          this.snackBar.open('Error al guardar los cambios. Inténtalo nuevamente.', 'Cerrar', {
+            duration: 3000,
+            panelClass: 'error-snackbar'
+          });
+        }
+      });
     }
 
     hasError(controlName: string, errorName: string): boolean {
@@ -160,7 +182,7 @@ export class ProviderProfileComponent implements OnInit {
     private markFormGroupTouched(formGroup: FormGroup) {
         Object.values(formGroup.controls).forEach(control => {
             control.markAsTouched();
-            
+
             if (control instanceof FormGroup) {
                 this.markFormGroupTouched(control);
             }
@@ -170,4 +192,9 @@ export class ProviderProfileComponent implements OnInit {
     retry(): void {
         this.loadProviderData();
     }
+
+    logout(): void {
+      this.authService.logout();
+    }
+
 }

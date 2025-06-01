@@ -43,10 +43,10 @@
                 <!-- First column -->
                 <div class="form-column">
                     <div class="form-group">
-                        <label for="tax_name">Company Name</label>
-                        <input type="text" id="tax_name" formControlName="tax_name" class="form-control"
-                            [ngClass]="{'invalid': hasError('tax_name', 'required')}">
-                        <div class="error-message" *ngIf="hasError('tax_name', 'required')">
+                        <label for="taxName">Company Name</label>
+                        <input type="text" id="taxName" formControlName="taxName" class="form-control"
+                            [ngClass]="{'invalid': hasError('taxName', 'required')}">
+                        <div class="error-message" *ngIf="hasError('taxName', 'required')">
                             Company name is required
                         </div>
                     </div>
@@ -140,7 +140,7 @@
                 </div>
             </div>
         </div>
-
+      <button (click)="logout()" class="logout-button">Cerrar sesión</button>
         <div class="card-actions">
             <button class="btn-view-details" (click)="goToDetails()">
                 <i class="fa fa-clipboard-list"></i> View Active Plans
