@@ -19,37 +19,8 @@
 
             <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
 
-              <div class="form-group">
-                <label for="roles">Roles</label>
-                <select id="roles" formControlName="roles" class="form-control" (change)="onRoleChange($event)">
-                  <option value="" disabled selected>Select a role</option>
-                  <option value="ROLE_ADMIN">Admin</option>
-                  <option value="ROLE_PROVIDER">Provider</option>
-                </select>
-                <div class="error-message" *ngIf="hasError('roles', 'required')">
-                  Roles are required
-                </div>
-              </div>
-
-                <div class="form-group" *ngIf="!isProviderRole">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" formControlName="name" placeholder="Name" class="form-control"
-                        [ngClass]="{'invalid': hasError('name', 'required')}">
-                    <div class="error-message" *ngIf="hasError('name', 'required')">
-                        Name is required
-                    </div>
-
-                </div>
-                <div class="form-group" *ngIf="!isProviderRole">
-                    <label for="lastName">Last name</label>
-                    <input type="text" id="lastName" formControlName="lastName" placeholder="Last Name" class="form-control"
-                        [ngClass]="{'invalid': hasError('lastName', 'required')}">
-                    <div class="error-message" *ngIf="hasError('lastName', 'required')">
-                        Last
-                    </div>
-                </div>
               <!-- Campos específicos para el rol de Provider -->
-              <div *ngIf="isProviderRole">
+              <div>
                 <div class="form-group">
                   <label for="companyName">Company Name</label>
                   <input type="text" id="companyName" formControlName="companyName" placeholder="Company Name" class="form-control"
@@ -67,8 +38,25 @@
                     RUC is required
                   </div>
                 </div>
-
               </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" formControlName="name" placeholder="Name" class="form-control"
+                        [ngClass]="{'invalid': hasError('name', 'required')}">
+                    <div class="error-message" *ngIf="hasError('name', 'required')">
+                        Name is required
+                    </div>
+
+                </div>
+                <div class="form-group" >
+                    <label for="lastName">Last name</label>
+                    <input type="text" id="lastName" formControlName="lastName" placeholder="Last Name" class="form-control"
+                        [ngClass]="{'invalid': hasError('lastName', 'required')}">
+                    <div class="error-message" *ngIf="hasError('lastName', 'required')">
+                        Last
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" formControlName="email" placeholder="Email" class="form-control"
@@ -89,7 +77,7 @@
                 </div>
               </div>
 
-              <div class="form-group" *ngIf="!isProviderRole">
+              <div class="form-group">
                 <label for="documentNumber">Document Number</label>
                 <input type="text" id="documentNumber" formControlName="documentNumber" placeholder="Document Number" class="form-control"
                        [ngClass]="{'invalid': hasError('documentNumber', 'required')}">
@@ -98,7 +86,7 @@
                 </div>
               </div>
 
-              <div class="form-group" *ngIf="!isProviderRole">
+              <div class="form-group" >
                 <label for="documentType">Document Type</label>
                 <input type="text" id="documentType" formControlName="documentType" placeholder="Document Type" class="form-control"
                        [ngClass]="{'invalid': hasError('documentType', 'required')}">
