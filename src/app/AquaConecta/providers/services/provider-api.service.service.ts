@@ -14,6 +14,16 @@ export class ProviderApiServiceService extends BaseService<Provider> {
   constructor(http: HttpClient) {
     super(http);
     this.resourceEndpoint = `providers`;
+
+  }
+
+  getProvidersProfile(): Observable<any> {
+    return this.http.get<any>(`${this.basePath}${this.resourceEndpoint}/me`, this.httpOptions);
+
+  }
+
+  UpdateProvider(provider: Partial<Provider>): Observable<any> {
+    return this.http.put<any>(`${this.basePath}${this.resourceEndpoint}/edit`, provider, this.httpOptions);
   }
 
   getAllProviders(): Observable<Provider[]> {

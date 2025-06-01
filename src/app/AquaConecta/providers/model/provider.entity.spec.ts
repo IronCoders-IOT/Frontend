@@ -1,4 +1,4 @@
-import { Provider } from './provider.entity';
+import { Provider } from './provider-details';
 
 describe('Provider', () => {
   it('should create an instance', () => {
