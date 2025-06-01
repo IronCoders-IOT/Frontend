@@ -74,9 +74,9 @@ export class AuthService extends BaseService<User> {
 
   }
 
-  signup(username: string, password: string, profileData: any): Observable<void> {
+  signup(username: string, password: string, roles: string[], profileData: any): Observable<void> {
     console.log('Iniciando proceso de signup para:', username);
-    const payload = { username, password };
+    const payload = { username, password, roles };
 
     return this.http.post<{ id: number; username: string }>(
       `${environment.serverBasePath}${this.resourceEndpoint}`,
@@ -126,14 +126,14 @@ export class AuthService extends BaseService<User> {
             };
 
             console.log('Payload del perfil:');
-            console.log('URL del perfil:', `${environment.serverBasePath}providers/me`);
+            console.log('URL del perfil:', `${environment.serverBasePath}providers`);
             console.log('Headers que se enviarán:', {
               'Authorization': `Bearer `,
               'Content-Type': 'application/json'
             });
 
             return this.http.post<void>(
-              `${environment.serverBasePath}profiles`,
+              `${environment.serverBasePath}providers`,
               profilePayload,
               {
                 headers: {
@@ -152,7 +152,7 @@ export class AuthService extends BaseService<User> {
                 console.error('Message:', profileError.message);
                 console.error('Error completo:', profileError);
                 console.error('Token usado:', token);
-                console.error('URL usada:', `${environment.serverBasePath}profiles`);
+                console.error('URL usada:', `${environment.serverBasePath}providers`);
 
                 // Verificar si el token está en localStorage
                 const storedToken = localStorage.getItem('auth_token');

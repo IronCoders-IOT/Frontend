@@ -27,7 +27,7 @@ export class SignupComponent implements OnInit {
       this.signupForm = this.formBuilder.group({
         companyName: ['', Validators.required],
         ruc: ['', Validators.required],
-        name: ['', Validators.required],
+        name: ['', Validators.required], // Manteniendo 'name' como en tu código original
         lastName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         direction: ['', Validators.required],
@@ -55,7 +55,9 @@ export class SignupComponent implements OnInit {
         this.isSubmitting = true;
         this.errorMessage = '';
 
-      const { companyName,ruc, name, lastName, email, direction, password, documentNumber, documentType, phone  } = this.signupForm.value;
+      const { companyName, ruc, name, lastName, email, direction, password, documentNumber, documentType, phone } = this.signupForm.value;
+
+      const roles = companyName ? ['ROLE_PROVIDER'] : [];
 
       const profileData = {
         email: email,
@@ -63,14 +65,14 @@ export class SignupComponent implements OnInit {
         documentNumber: documentNumber,
         documentType:documentType,
         phone: phone,
-          companyName: companyName,
-          ruc: ruc,
-          firstName: name,
-          lastName: lastName
-
+        companyName: companyName,
+        ruc: ruc,
+        firstName: name, // Mapeando 'name' a 'firstName'
+        lastName: lastName
       };
+      console.log('Datos enviados:', { username: name, password, roles, profileData });
 
-      this.authService.signup(name, password,profileData).subscribe({
+      this.authService.signup(name, password, roles, profileData).subscribe({
             next: () => {
                 // Navigate to the home page or dashboard after successful signup
                 this.successMessage = 'Cuenta registrada con éxito.';
