@@ -66,6 +66,10 @@ export class ProviderProfileComponent implements OnInit {
     this.isLoading = true;
     this.loadError = false;
 
+    // Limpiar datos anteriores
+    this.provider = new Provider();
+    this.profileForm.reset();
+
     const token = localStorage.getItem('auth_token');
     if (token) {
       console.log('El token está almacenado:');
@@ -193,8 +197,33 @@ export class ProviderProfileComponent implements OnInit {
         this.loadProviderData();
     }
 
-    logout(): void {
-      this.authService.logout();
-    }
+  logout(): void {
+    console.log('=== INICIO LOGOUT COMPONENT ===');
+
+    // Verificar token ANTES del logout del servicio
+    const tokenBefore = localStorage.getItem('auth_token');
+    console.log('Token ANTES de llamar authService.logout():', tokenBefore ? 'Existe' : 'No existe');
+
+    // Limpiar estado local PRIMERO
+    console.log('Limpiando estado local del componente...');
+    this.provider = new Provider();
+    this.profileForm.reset();
+    this.isEditing = false;
+    this.isLoading = false;
+    this.submitInProgress = false;
+    this.loadError = false;
+    console.log('Estado local limpiado');
+
+    // LLAMAR AL LOGOUT DEL SERVICIO
+    console.log('Llamando a authService.logout()...');
+    this.authService.logout();
+
+    // Verificar token DESPUÉS del logout del servicio
+    setTimeout(() => {
+      const tokenAfter = localStorage.getItem('auth_token');
+      console.log('Token DESPUÉS de authService.logout():', tokenAfter ? 'AÚN EXISTE!' : 'Eliminado');
+      console.log('=== FIN LOGOUT COMPONENT ===');
+    }, 100);
+  }
 
 }
