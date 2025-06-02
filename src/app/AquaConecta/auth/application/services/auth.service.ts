@@ -42,9 +42,10 @@ export class AuthService extends BaseService<User> {
 
     // Add the missing login method
   login(credentials: AuthCredentials): Observable<User> {
+    console.log('=== INICIO LOGIN ===');
     this.resourceEndpoint = 'authentication/sign-in';
     const payload = {
-      username: credentials.email, // Mapear email al campo username
+      username: credentials.email,
       password: credentials.password
     };
 
@@ -53,29 +54,56 @@ export class AuthService extends BaseService<User> {
       payload
     ).pipe(
       tap(response => {
+        console.log('Respuesta del login recibida:', response);
+
         const user = new User({
-          id: Number(response.id), // Convertir el valor a tipo number
+          id: Number(response.id),
           username: response.username,
           email: credentials.email
         });
 
+        console.log('Guardando en localStorage:');
+        console.log('- TOKEN_KEY:', this.TOKEN_KEY);
+        console.log('- USER_KEY:', this.USER_KEY);
+        console.log('- Token a guardar:', response.token);
+        console.log('- Usuario a guardar:', user);
+
+        // Guardar en localStorage
         localStorage.setItem(this.TOKEN_KEY, response.token);
         localStorage.setItem(this.USER_KEY, JSON.stringify(user));
-        this.currentUserSubject.next(user);
 
+        // Verificar que se guardaron
+        const savedToken = localStorage.getItem(this.TOKEN_KEY);
+        const savedUser = localStorage.getItem(this.USER_KEY);
+        console.log('Verificación después de guardar:');
+        console.log('- Token guardado:', savedToken ? 'Sí' : 'No');
+        console.log('- Usuario guardado:', savedUser ? 'Sí' : 'No');
+
+        // Actualizar subject
+        this.currentUserSubject.next(user);
+        console.log('CurrentUserSubject actualizado:', this.currentUserSubject.value);
+        console.log('=== FIN LOGIN ===');
       }),
       catchError((error: any) => {
         console.error('Error en el login:', error);
         return throwError(() => new Error('Error en el login'));
       })
     );
-
-
-
   }
 
   signup(username: string, password: string, roles: string[], profileData: any): Observable<void> {
-    console.log('Iniciando proceso de signup para:', username);
+    // Validar que los datos críticos estén presentes
+    const requiredFields = ['firstName', 'lastName', 'email', 'companyName', 'ruc'];
+    const missingFields = requiredFields.filter(field => !profileData[field] || profileData[field].trim() === '');
+
+    if (missingFields.length > 0) {
+      console.error('Campos faltantes:', missingFields);
+      return throwError(() => new Error(`Faltan campos requeridos: ${missingFields.join(', ')}`));
+    }
+
+    console.log('Datos del perfil validados:', profileData);
+
+      console.log('Iniciando proceso de signup para:', username);
     const payload = { username, password, roles };
 
     return this.http.post<{ id: number; username: string }>(
@@ -118,6 +146,7 @@ export class AuthService extends BaseService<User> {
 
               firstName: profileData.firstName,
               lastName: profileData.lastName,
+
               email: profileData.email,
               direction: profileData.direction,
               documentNumber: profileData.documentNumber,
@@ -172,6 +201,7 @@ export class AuthService extends BaseService<User> {
       }),
       map(() => {
         console.log('Proceso de signup completado exitosamente');
+        this.logout();
         return void 0;
       }),
       catchError((error: any) => {
@@ -182,12 +212,78 @@ export class AuthService extends BaseService<User> {
     );
   }
 
+
+// En auth.service.ts - Método logout mejorado con debugging
   logout(): void {
-        localStorage.removeItem(this.TOKEN_KEY);
-        localStorage.removeItem(this.USER_KEY);
-        this.currentUserSubject.next(null);
-        this.router.navigate(['/login']);
+    console.log('=== INICIO LOGOUT AUTH SERVICE ===');
+    console.log('Constantes utilizadas:');
+    console.log('- TOKEN_KEY:', this.TOKEN_KEY);
+    console.log('- USER_KEY:', this.USER_KEY);
+
+    // Verificar TODO el localStorage antes
+    console.log('TODO el localStorage ANTES:');
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      const value = localStorage.getItem(key!);
+      console.log(`- ${key}: ${value ? 'Tiene valor' : 'Sin valor'}`);
     }
+
+    // Verificar estado ANTES de limpiar
+    const tokenBefore = localStorage.getItem(this.TOKEN_KEY);
+    const userBefore = localStorage.getItem(this.USER_KEY);
+    const currentUserSubject = this.currentUserSubject.value;
+
+    console.log('Estado específico ANTES del logout:');
+    console.log('- Token en localStorage:', tokenBefore ? 'Existe' : 'No existe');
+    console.log('- Usuario en localStorage:', userBefore ? 'Existe' : 'No existe');
+    console.log('- CurrentUserSubject:', currentUserSubject);
+
+    // Limpiar localStorage - MÉTODO AGRESIVO
+    console.log('Limpiando localStorage con múltiples métodos...');
+
+    // Método 1: removeItem
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.USER_KEY);
+
+    // Método 2: setItem con null/undefined (por si acaso)
+    localStorage.setItem(this.TOKEN_KEY, '');
+    localStorage.setItem(this.USER_KEY, '');
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.USER_KEY);
+
+    // Método 3: También limpiar variantes comunes
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('auth_user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    // Verificar que se limpiaron
+    const tokenAfterRemove = localStorage.getItem(this.TOKEN_KEY);
+    const userAfterRemove = localStorage.getItem(this.USER_KEY);
+    console.log('Después de removeItem:');
+    console.log('- Token:', tokenAfterRemove ? 'AÚN EXISTE: ' + tokenAfterRemove : 'Eliminado correctamente');
+    console.log('- Usuario:', userAfterRemove ? 'AÚN EXISTE: ' + userAfterRemove : 'Eliminado correctamente');
+
+    // Verificar TODO el localStorage después
+    console.log('TODO el localStorage DESPUÉS:');
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      const value = localStorage.getItem(key!);
+      console.log(`- ${key}: ${value ? 'Tiene valor' : 'Sin valor'}`);
+    }
+
+    // Limpiar subject
+    console.log('Limpiando currentUserSubject...');
+    this.currentUserSubject.next(null);
+    console.log('CurrentUserSubject después:', this.currentUserSubject.value);
+
+    // Navegar
+    console.log('Navegando a /login...');
+    this.router.navigate(['/login']);
+
+    console.log('=== FIN LOGOUT AUTH SERVICE ===');
+  }
+
 
     private isValidEmail(email: string): boolean {
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

@@ -79,7 +79,8 @@ export class SignupComponent implements OnInit {
                 this.errorMessage = '';
                 this.signupForm.reset(); // Resetea el formulario
 
-                this.router.navigate(['/home']);
+
+                this.onLogin();
             },
             error: (error: Error) => {
                 this.errorMessage = error.message || 'Registration failed. Please try again.';
@@ -92,7 +93,9 @@ export class SignupComponent implements OnInit {
     }
 
     onLogin(): void {
+      setTimeout(() => {
         this.router.navigate(['/login']);
+      }, 3000); // Retraso de 3 segundos
     }
 
     hasError(controlName: string, errorName: string): boolean {
