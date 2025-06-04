@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import {catchError, retry, switchMap} from 'rxjs/operators';
 import { Resident } from '../models/resident.model';
 import { BaseService } from '../../../shared/services/base.service';
 import { OperatorFunction, throwError, timer } from 'rxjs';
@@ -12,64 +12,82 @@ import { map } from 'rxjs/operators';
     providedIn: 'root'
 })
 export class ResidentService extends BaseService<Resident> {
-    // Simular datos locales para desarrollo
-    private residents: Resident[] = [];
 
     constructor(http: HttpClient) {
         super(http);
         this.resourceEndpoint = 'residents';
     }
 
-    getAllResidents(): Observable<Resident[]> {
-        return this.getAll();
+    getProvidersProfile(): Observable<any> {
+      return this.http.get<any>(`${this.basePath}profiles/me`, this.httpOptions);
+    }
+
+  // Método que obtiene residentes por provider usando el perfil
+    getResidentsByProvider(): Observable<Resident[]> {
+      return this.getProvidersProfile().pipe(
+        switchMap(profile => {
+          console.log('Perfil obtenido:', profile);
+
+          // Extraer el userId del perfil (ajusta según la estructura de tu respuesta)
+          const providerId = profile.userId || profile.id || profile.providerId;
+
+          if (!providerId) {
+            throw new Error('No se pudo obtener el providerId del perfil');
+          }
+
+          const url = `${this.resourcePath()}/by-provider/${providerId}`;
+          console.log('URL para GET residents:', url);
+
+          return this.http.get<Resident[]>(url, this.httpOptions);
+        }),
+        retry(2),
+        catchError(this.handleError)
+      );
+    }
+
+    getResidents(): Observable<Resident[]> {
+      // Usar el método específico que obtiene por provider
+      return this.getResidentsByProvider();
+    }
+
+    createResident(resident: any): Observable<Resident> {
+      return this.create(resident);
+    }
+
+    // Método para obtener un residente por ID
+    getResidentById(id: number): Observable<Resident> {
+      const url = `${this.resourcePath()}/{id}?userId=${id}`;
+      console.log('URL para GET resident by ID:', url);
+
+      return this.http.get<Resident>(url, this.httpOptions).pipe(
+        retry(2),
+        catchError(this.handleError)
+      );
     }
 
     getAllEventsByResidentId(residentId: number): Observable<Event[]> {
-        return this.http.get<Resident[]>(`${this.basePath}${this.resourceEndpoint}`, this.httpOptions).pipe(
-            map((residents: any[]) => {
-            const allEvents: Event[] = [];
-            const resident = residents.find((r: any) => r.id === residentId);
+    return this.http.get<Resident[]>(`${this.basePath}${this.resourceEndpoint}`, this.httpOptions).pipe(
+      map((residents: any[]) => {
+        const allEvents: Event[] = [];
+        const resident = residents.find((r: any) => r.id === residentId);
 
-            if (resident && Array.isArray(resident.sensor_events)) {
-                resident.sensor_events.forEach((event: any, index: number) => {
-                allEvents.push({
-                    id: index + 1,
-                    event_type: event.event,
-                    quality_value: event.water_quality,
-                    status: event.status,
-                    level_value: event.water_level
-                });
-                });
-            }
+        if (resident && Array.isArray(resident.sensor_events)) {
+          resident.sensor_events.forEach((event: any, index: number) => {
+            allEvents.push({
+              id: index + 1,
+              event_type: event.event,
+              quality_value: event.water_quality,
+              status: event.status,
+              level_value: event.water_level
+            });
+          });
+        }
 
-            return allEvents;
-            }),
-            catchError(this.handleError)
-        );
-    }
-
-    getResidentById(id: number): Observable<Resident> {
-        return this.http.get<any>(`${this.basePath}${this.resourceEndpoint}/${id}`, this.httpOptions)
-            .pipe(
-            map(data => new Resident({
-                id: data.id,
-                firstName: data.first_name,
-                lastName: data.last_name,
-                documentType: data.document_type,
-                documentNumber: data.document_number,
-                email: data.email,
-                sensor_events: data.sensor_events,
-                phone: data.phone,
-                address: data.address
-            })),
-            retry(2),
-            catchError(this.handleError)
-        );
-    }
-
-    createResident(resident: Resident): Observable<Resident> {
-        return this.create(resident);
-    }
+        return allEvents;
+      }),
+      catchError(this.handleError)
+    );
+  }
 
     updateResident(id: number, resident: Resident): Observable<Resident> {
         return this.update(id, resident);
@@ -79,37 +97,4 @@ export class ResidentService extends BaseService<Resident> {
         return this.delete(id);
     }
 
-    // Para desarrollo local sin backend
-    simulateCreateResident(resident: Resident): Observable<Resident> {
-        // Simular ID generado
-        const newResident = new Resident({
-            ...resident,
-            id: this.generateId()
-        });
-
-        this.residents.push(newResident);
-
-        return of(newResident).pipe(
-            tap(_ => console.log(`Created resident w/ id=${newResident.id}`))
-        );
-    }
-
-    private generateId(): number {
-        return this.residents.length > 0
-            ? Math.max(...this.residents.map(resident => resident.id || 0)) + 1
-            : 1;
-    }
-}
-function retry<T>(count: number): OperatorFunction<T, T> {
-    return retryWhen(errors =>
-        errors.pipe(
-            mergeMap((error, i) => {
-                if (i < count - 1) {
-                    // Retry after 1 second
-                    return timer(1000);
-                }
-                return throwError(() => error);
-            })
-        )
-    );
 }
