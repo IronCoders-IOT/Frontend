@@ -5,24 +5,40 @@ export class Resident {
   documentType: string;
   documentNumber: string;
   email: string;
+  direction: string;
+  phone: string;
+
+  providerId?: number;
+  userId?: number;
+  username?: string;
   password?: string;
-  sensor_events?: Event[];
-  phone?: string;
-  address?: string;
-  constructor(params: Partial<Resident> = {}) {
-    this.id = params.id;
-    this.firstName = params.firstName || '';
-    this.lastName = params.lastName || '';
-    this.documentType = params.documentType || '';
-    this.documentNumber = params.documentNumber || '';
-    this.email = params.email || '';
-    this.password = params.password;
-    this.sensor_events = params.sensor_events || [];
-    this.phone = params.phone || '';
-    this.address = params.address || '';
+
+  constructor(data: any = {}) {
+    this.firstName = data.firstName || '';
+    this.lastName = data.lastName || '';
+    this.documentType = data.documentType || '';
+    this.documentNumber = data.documentNumber || '';
+    this.email = data.email || '';
+    this.direction = data.direction || '';
+    this.phone = data.phone || '';
+
+    this.id = data.id;
+    this.providerId = data.providerId;
+    this.userId = data.userId;
+    this.username = data.username;
+    this.password = data.password;
   }
-  
-  get fullName(): string {
-    return `${this.firstName} ${this.lastName}`;
+
+  toCreateRequest(): any {
+    return {
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      direction: this.direction,
+      documentNumber: this.documentNumber,
+      documentType: this.documentType,
+      phone: this.phone
+    };
   }
+
 }

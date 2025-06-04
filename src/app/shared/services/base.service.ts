@@ -59,7 +59,7 @@ export class BaseService<T> {
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  private resourcePath(): string {
+  protected resourcePath(): string {
     return `${this.basePath}${this.resourceEndpoint}`;
   }
 }
