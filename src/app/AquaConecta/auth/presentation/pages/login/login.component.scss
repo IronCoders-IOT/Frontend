@@ -1,32 +1,48 @@
-/* login.component.scss */
-@use "sass:color";
-
 .login-container {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    font-family: sans-serif;
+  display: flex;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 }
 
 .image-section {
-    flex: 1;
-    background-image: url('/assets/images/imagen_aquaconecta.png');
-    background-size: cover;
-    background-position: center;
+  flex: 1;
+  background-image: url('/assets/images/imagen_aquaconecta.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
 }
 
 .form-section {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    padding: 2rem;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%);
+  padding: 2rem;
+
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+  }
 }
 
 .form-container {
-    width: 100%;
-    max-width: 350px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 400px;
+  width: 100%;
+  padding: 2rem;
+
+  @media (max-width: 480px) {
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
 }
 
 .app-title {
@@ -39,115 +55,101 @@
 }
 
 .highlight {
-    color: #2196f3;
+  color: #2196f3;
 }
 
 .welcome-message {
-    color: #666;
-    margin-bottom: 2rem;
-    text-align: center;
-    font-family: sans-serif;
-}
-
-.login-form {
-    display: flex;
-    flex-direction: column;
+  opacity: 0.9;
+  font-size: 1rem;
+  margin: 0.5rem 0 2rem;
+  text-align: center;
+  font-family: sans-serif;
+  color: #666;
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    color: #333;
-    font-family: sans-serif;
-    font-weight: 500;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem;
 }
 
 .form-control {
-    width: 100%;
-    padding: 0.75rem;
-    border-radius: 4px;
-    border: 1px solid #6dc2ff;
-    font-size: 1rem;
-    transition: border-color 0.3s;
-    font-family: sans-serif;
+  width: 100%;
+  padding: 0.875rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+  box-sizing: border-box;
 
-    &:focus {
-        outline: none;
-        border-color: #2196f3;
-    }
+  &:focus {
+    outline: none;
+    border-color: #2196f3;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+  }
 
-    &.invalid {
-        border-color: #f44336;
-    }
+  &.invalid {
+    border-color: #f44336;
+    background: #fef7f7;
+  }
 }
 
 .error-message {
-    color: #f44336;
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
-    font-family: sans-serif;
+  color: #f44336;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
 }
 
 .btn-signin {
-    background-color: #2196f3;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 0.75rem;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-bottom: 1rem;
-    font-family: sans-serif;
-    font-weight: 500;
+  padding: 0.875rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: none;
+  background: linear-gradient(135deg, #2196f3 0%, #21cbf3 100%);
+  color: white;
+  margin-top: 1rem;
 
-    &:hover {
-        background-color: #1976d2;
-    }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
 
-    &:disabled {
-        background-color: #b3d9ff;
-        cursor: not-allowed;
-    }
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(33, 150, 243, 0.3);
+  }
 }
 
 .signup-section {
-    text-align: center;
-    font-size: 0.9rem;
-    font-family: sans-serif;
-
-    span {
-        color: #666;
-    }
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e1e5e9;
+  color: #666;
+  font-size: 0.9rem;
 }
 
 .signup-link {
-    color: #2196f3;
-    cursor: pointer;
-    margin-left: 0.5rem;
-    font-family: sans-serif;
-
-    &:hover {
-        text-decoration: underline;
-    }
-}
-
-// Responsive design
-@media (max-width: 768px) {
-    .login-container {
-        flex-direction: column;
-    }
-
-    .image-section {
-        height: 30vh;
-    }
-
-    .form-section {
-        height: 70vh;
-    }
+  color: #2196f3;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  padding-left: 0.5rem;
+  &:hover {
+    text-decoration: underline;
+  }
 }
