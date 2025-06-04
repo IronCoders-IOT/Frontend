@@ -32,7 +32,7 @@
     }
 
     <div class="example-table-container">
-      <table mat-table [dataSource]="requests" class="example-table" matSort>
+      <table mat-table [dataSource]="requests.data" class="example-table" matSort>
 
         <!-- ID -->
         <ng-container matColumnDef="id">
@@ -41,9 +41,11 @@
         </ng-container>
 
         <!-- Resident -->
-        <ng-container matColumnDef="resident_name">
+        <ng-container matColumnDef="firstName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Resident</th>
-          <td mat-cell *matCellDef="let row">{{ row.resident_name }}</td>
+          <td mat-cell *matCellDef="let row">
+            {{ row.resident?.[0]?.firstName }} {{ row.resident?.[0]?.lastName }}
+          </td>
         </ng-container>
 
         <!-- Emission Date -->
@@ -53,9 +55,9 @@
         </ng-container>
 
         <!-- Requested Liters -->
-        <ng-container matColumnDef="requested_liters">
+        <ng-container matColumnDef="requestedLiters">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Request Liters</th>
-          <td mat-cell *matCellDef="let row">{{ row.requested_liters }}</td>
+          <td mat-cell *matCellDef="let row">{{ row.requestedLiters }}</td>
         </ng-container>
 
         <!-- Status -->

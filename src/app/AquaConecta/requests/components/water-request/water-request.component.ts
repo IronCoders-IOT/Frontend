@@ -31,7 +31,7 @@ export class WaterRequestComponent implements AfterViewInit {
   //requests:  Array<WaterRequestEntity> = [];
   requests: MatTableDataSource<WaterRequestEntity> = new MatTableDataSource<WaterRequestEntity>();
 
-  displayedColumns: string[] = ['id', 'resident_name', 'requested_liters', 'emission_date', 'delivered_at', 'status'];
+  displayedColumns: string[] = ['id', 'firstName', 'requestedLiters', 'emission_date', 'delivered_at', 'status'];
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
@@ -46,25 +46,36 @@ export class WaterRequestComponent implements AfterViewInit {
     };
   }
 
-openScheduleModal(row: WaterRequestEntity): void {
+  openScheduleModal(row: WaterRequestEntity): void {
   const dialogRef = this.dialog.open(ScheduleDateComponent, {
     width: '550px',
     data: row, // Pasamos la información de la fila al modal
   });
 
-  dialogRef.afterClosed().subscribe((result) => {
-    if (result && result.selectedDate) {
-      console.log('Modal result:', result);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.selectedDate) {
+        console.log('Modal result:', result);
 
-      // Actualiza la fecha en la fila correspondiente
-      row.delivered_at = result.selectedDate;
-      row.status = result.status || row.status; // Por si se envía el status desde el modal
+        // Llama al método para actualizar en el backend
+        this.sensordataApiService.updateDeliveredAt(row.id, result.status, result.selectedDate).subscribe(
+          (updatedRequest) => {
+            console.log('Updated request:', updatedRequest);
 
-      // Refresca la tabla para reflejar el cambio en la UI
-      this.requests.data = [...this.requests.data];
-    }
-  });
-}
+            // Actualiza la fila en la tabla
+            row.delivered_at = updatedRequest.delivered_at;
+            row.status = updatedRequest.status;
+
+            // Refresca la tabla para reflejar el cambio en la UI
+            this.requests.data = [...this.requests.data];
+          },
+          (error) => {
+            console.error('Error updating request:', error);
+          }
+        );
+      }
+    });
+  }
+
   getAllRequests(): void {
     this.isLoadingResults = true;
 
@@ -73,9 +84,22 @@ openScheduleModal(row: WaterRequestEntity): void {
         //this.requests = response;
         this.requests.data= response;
 
+        // Itera sobre cada solicitud y obtiene el perfil del residente
+        this.requests.data.forEach((request) => {
+          this.sensordataApiService.getResidentProfileByResidentId(request.residentId).subscribe(
+            (residentProfile) => {
+              console.log(`Perfil del residente para solicitud ${request.id}:`, residentProfile);
+              request.resident = residentProfile; // Actualiza el residente en la solicitud
+            },
+            (error) => {
+              console.error(`Error al obtener el perfil del residente para solicitud ${request.id}:`, error);
+            }
+          );
+        });
+
         this.isLoadingResults = false;
         this.resultsLength = this.requests.data.length;
-        console.log(this.requests);
+        console.log(this.requests.data);
       }
 
     );
