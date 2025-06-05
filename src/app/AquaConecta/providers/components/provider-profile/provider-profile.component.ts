@@ -8,8 +8,6 @@ import { ProviderApiServiceService } from '../../services/provider-api.service.s
 import { Provider } from '../../model/provider.entity';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { catchError, finalize, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
 import {AuthService} from '../../../auth/application/services/auth.service';
 
 @Component({
@@ -71,33 +69,63 @@ export class ProviderProfileComponent implements OnInit {
     this.profileForm.reset();
 
     const token = localStorage.getItem('auth_token');
-    if (token) {
-      console.log('El token está almacenado:');
-      this.providerService.getProvidersProfile().subscribe({
-        next: (profileData) => {
-          this.provider = profileData;
-          this.provider.sensors_number = this.provider.sensors_number || 0; // Ensure sensors_number is initialized
-          console.log('Datos del perfil:', this.provider);
+    const storedUser = localStorage.getItem('auth_user');
 
-          // Llenar el formulario con los datos del proveedor
-          this.populateForm();
-        },
-        error: (error) => {
-          console.error('Error al obtener los datos del perfil:', error);
-          this.loadError = true;
-          this.snackBar.open('Failed to load profile data. Please try again.', 'Close', {
-            duration: 5000,
-            panelClass: 'error-snackbar'
-          });
-        },
-        complete: () => {
-          this.isLoading = false;
-        }
-      });
+    if (token && storedUser) {
+      console.log('El token está almacenado:');
+      const user = JSON.parse(storedUser || '{}');
+      console.log('Usuario almacenado:', user);
+
+      
+      // If we have a provider ID in the route, use it to get that specific provider's profile
+      if (user.id) {
+        console.log('Usando ID de la ruta:', user.id);
+        this.providerService.getProvidersProfile().subscribe({
+          next: (profileData) => {
+            this.provider = profileData;
+            this.provider.sensors_number = this.provider.sensors_number || 0;
+            console.log('Datos del perfil:', this.provider);
+            this.populateForm();
+          },
+          error: (error) => {
+            console.error('Error al obtener los datos del perfil:', error);
+            this.loadError = true;
+            this.snackBar.open('Failed to load profile data. Please try again.', 'Close', {
+              duration: 5000,
+              panelClass: 'error-snackbar'
+            });
+          },
+          complete: () => {
+            this.isLoading = false;
+          }
+        });
+      } else {
+        // If no provider ID, get the current user's profile
+        console.log('Usando perfil del usuario actual');
+        this.providerService.getProvidersProfile().subscribe({
+          next: (profileData) => {
+            this.provider = profileData;
+            this.provider.sensors_number = this.provider.sensors_number || 0;
+            console.log('Datos del perfil:', this.provider);
+            this.populateForm();
+          },
+          error: (error) => {
+            console.error('Error al obtener los datos del perfil:', error);
+            this.loadError = true;
+            this.snackBar.open('Failed to load profile data. Please try again.', 'Close', {
+              duration: 5000,
+              panelClass: 'error-snackbar'
+            });
+          },
+          complete: () => {
+            this.isLoading = false;
+          }
+        });
+      }
     } else {
-      console.log('No hay token almacenado en localStorage.');
+      console.log('No hay token o usuario almacenado en localStorage.');
       this.isLoading = false;
-      this.snackBar.open('No token found. Please log in.', 'Close', {
+      this.snackBar.open('No token or user found. Please log in.', 'Close', {
         duration: 5000,
         panelClass: 'warning-snackbar'
       });

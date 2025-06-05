@@ -1,23 +1,24 @@
 export class ProviderProfile {
-    id?: number;
+
+    taxName: string;
+    ruc: string;
     firstName: string;
     lastName: string;
     email: string;
-    direction?: string;
-    documentNumber?: number;
-    documentType?: string;
-    phone?: number;
-    userId?: number;
+    direction: string;
+    documentNumber: string;
+    documentType: string;
+    phone: string;
 
     constructor() {
-        this.id = 0;
+        this.taxName = '';
+        this.ruc = '';
         this.firstName = '';
         this.lastName = '';
         this.email = '';
-        this.direction ='';
-        this.documentNumber = 0;
+        this.direction = '';
+        this.documentNumber = '';
         this.documentType = '';
-        this.phone = 0;
-        this.userId = 0;
+        this.phone = '';
     }
 }
