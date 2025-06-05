@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, inject, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {HeaderContentComponent} from '../../../../public/components/header-content/header-content.component';
 import {WaterRequestEntity} from '../../model/water-request.entity';
 import {SensordataApiService} from '../../services/sensordata-api.service';
@@ -16,7 +16,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { ScheduleDateComponent } from '../schedule-date/schedule-date.component';
-
 
 @Component({
   selector: 'app-water-request',
@@ -42,15 +41,19 @@ export class WaterRequestComponent implements AfterViewInit {
     this.getAllRequests();
 
     this.requests.filterPredicate = (data: WaterRequestEntity, filter: string) => {
-      return data.id.toString().toLowerCase().includes(filter);
+      if (!filter.trim()) {
+        return true; // Si no hay filtro, muestra todos
+      }
+      // Convierte el ID a string y compara exactamente
+      return data.id.toString() === filter.trim();
     };
   }
 
   openScheduleModal(row: WaterRequestEntity): void {
-  const dialogRef = this.dialog.open(ScheduleDateComponent, {
-    width: '550px',
-    data: row, // Pasamos la información de la fila al modal
-  });
+    const dialogRef = this.dialog.open(ScheduleDateComponent, {
+      width: '550px',
+      data: row, // Pasamos la información de la fila al modal
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.selectedDate) {
@@ -105,9 +108,15 @@ export class WaterRequestComponent implements AfterViewInit {
     );
   }
 
+
   applyStatusFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.requests.filter = filterValue; // Aplica el filtro directamente
+    const filterValue = (event.target as HTMLInputElement).value.trim();
+    this.requests.filter = filterValue; // No convertir a lowercase
+
+    // Opcional: resetear la paginación cuando se aplica un filtro
+    if (this.requests.paginator) {
+      this.requests.paginator.firstPage();
+    }
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -149,6 +158,4 @@ export class WaterRequestComponent implements AfterViewInit {
     }
   }
 }
-
-
 
