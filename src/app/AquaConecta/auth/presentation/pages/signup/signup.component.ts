@@ -1,9 +1,10 @@
 // signup.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Provider } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../application/services/auth.service';
+import { ProviderApiServiceService } from '../../../../providers/services/provider-api.service.service';
 
 @Component({
   selector: 'app-signup',
@@ -23,6 +24,7 @@ export class SignupComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private profileService: ProviderApiServiceService, // Assuming you have a profile service for user data
     private router: Router
   ) { }
 
@@ -42,7 +44,7 @@ export class SignupComponent implements OnInit {
       
       // Step 3: Security & Address
       direction: [''], // Made optional
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(1)]],
       confirmPassword: ['', Validators.required]
     }, { validators: this.passwordMatchValidator });
   }
@@ -144,7 +146,7 @@ export class SignupComponent implements OnInit {
       firstName: name,
       lastName: lastName
     };
-
+  
     console.log('Datos enviados:', { username: name, password, roles, profileData });
 
     this.authService.signup(name, password, roles, profileData).subscribe({
@@ -160,6 +162,24 @@ export class SignupComponent implements OnInit {
       },
       complete: () => {
         this.isSubmitting = false;
+      }
+    });
+    this.profileService.CreateProvider(
+      email,
+      direction,
+      documentNumber,
+      documentType,
+      phone,
+      companyName,
+      ruc,
+      name,
+      lastName
+    ).subscribe({
+      next: () => {
+        console.log('Provider created successfully');
+      },
+      error: (error: Error) => {
+        console.error('Error creating provider:', error);
       }
     });
   }
