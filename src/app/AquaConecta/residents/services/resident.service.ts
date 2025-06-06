@@ -28,8 +28,8 @@ export class ResidentService extends BaseService<Resident> {
         switchMap(profile => {
           console.log('Perfil obtenido:', profile);
 
-          // Extraer el userId del perfil (ajusta según la estructura de tu respuesta)
-          const providerId = profile.userId || profile.id || profile.providerId;
+          // Extraer el userId del perfil
+          const providerId = profile.id;
 
           if (!providerId) {
             throw new Error('No se pudo obtener el providerId del perfil');
