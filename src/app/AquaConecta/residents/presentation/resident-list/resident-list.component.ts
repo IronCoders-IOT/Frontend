@@ -54,6 +54,13 @@ export class ResidentListComponent implements OnInit {
   ngOnInit(): void {
     this.loadResidents();
 
+    this.residents.filterPredicate = (data: Resident, filter: string) => {
+      if (!filter.trim()) {
+        return true; // Si no hay filtro, muestra todos
+      }
+      // Convierte el ID a string y compara exactamente
+      return data.id.toString() === filter.trim();
+    };
   }
 
   loadResidents(): void {
@@ -78,6 +85,16 @@ export class ResidentListComponent implements OnInit {
         }
       }
     });
+  }
+
+  applyStatusFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.trim();
+    this.residents.filter = filterValue; // No convertir a lowercase
+
+    // Opcional: resetear la paginación cuando se aplica un filtro
+    if (this.residents.paginator) {
+      this.residents.paginator.firstPage();
+    }
   }
 
 /*
