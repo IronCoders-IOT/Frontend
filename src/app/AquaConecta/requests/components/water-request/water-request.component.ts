@@ -52,10 +52,10 @@ openScheduleModal(row: WaterRequestEntity): void {
 
   dialogRef.afterClosed().subscribe((result) => {
       if (result && result.selectedDate) {
-        const userId = row.resident?.userId;
-        if (userId !== undefined) {
+        const requestId = row.id; // Usar la id de la solicitud
+        if (requestId !== undefined) {
           console.log('Modal result:', result);
-          this.sensordataApiService.updateDeliveredAt(userId, result.status, result.selectedDate).subscribe(
+          this.sensordataApiService.updateDeliveredAt(requestId, result.status, result.selectedDate).subscribe(
             (updatedRequest) => {
               console.log('Updated request:', updatedRequest);
               row.delivered_at = updatedRequest.delivered_at;
@@ -76,13 +76,13 @@ openScheduleModal(row: WaterRequestEntity): void {
   // MÉTODO CORREGIDO: Usando forkJoin para cargar todos los datos antes de mostrar
   getAllRequests(): void {
     this.isLoadingResults = true;
-    
+
     this.sensordataApiService.getAllRequests().subscribe(
       (response: WaterRequestEntity[]) => {
         console.log('Requests obtenidas:', response);
-        
+
         // Crear array de observables para obtener perfiles de residentes
-        const residentProfileRequests = response.map(request => 
+        const residentProfileRequests = response.map(request =>
           this.sensordataApiService.getResidentProfileByResidentId(request.residentId)
             .pipe(
               map(residentProfile => {
@@ -101,10 +101,11 @@ openScheduleModal(row: WaterRequestEntity): void {
         // Ejecutar todas las peticiones en paralelo
         forkJoin(residentProfileRequests).subscribe(
           (requestsWithResidents) => {
-            console.log('Requests con residentes:', requestsWithResidents);
             this.requests.data = requestsWithResidents;
             this.isLoadingResults = false;
             this.resultsLength = this.requests.data.length;
+            console.log('Requests con residentes:', this.requests.data);
+
           },
           (error) => {
             console.error('Error al obtener perfiles de residentes:', error);
@@ -125,7 +126,7 @@ openScheduleModal(row: WaterRequestEntity): void {
   applyStatusFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim();
     this.requests.filter = filterValue;
-    
+
     if (this.requests.paginator) {
       this.requests.paginator.firstPage();
     }
@@ -137,9 +138,9 @@ openScheduleModal(row: WaterRequestEntity): void {
   ngAfterViewInit() {
     this.requests.paginator = this.paginator;
     this.requests.sort = this.sort;
-    
+
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    
+
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
