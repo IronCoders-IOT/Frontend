@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map, tap, switchMap } from 'rxjs/operators';
 import { User } from '../../domain/models/user.model';
@@ -216,70 +216,35 @@ export class AuthService extends BaseService<User> {
 // En auth.service.ts - Método logout mejorado con debugging
   logout(): void {
     console.log('=== INICIO LOGOUT AUTH SERVICE ===');
-    console.log('Constantes utilizadas:');
-    console.log('- TOKEN_KEY:', this.TOKEN_KEY);
-    console.log('- USER_KEY:', this.USER_KEY);
-
-    // Verificar TODO el localStorage antes
-    console.log('TODO el localStorage ANTES:');
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      const value = localStorage.getItem(key!);
-      console.log(`- ${key}: ${value ? 'Tiene valor' : 'Sin valor'}`);
-    }
-
-    // Verificar estado ANTES de limpiar
-    const tokenBefore = localStorage.getItem(this.TOKEN_KEY);
-    const userBefore = localStorage.getItem(this.USER_KEY);
-    const currentUserSubject = this.currentUserSubject.value;
-
-    console.log('Estado específico ANTES del logout:');
-    console.log('- Token en localStorage:', tokenBefore ? 'Existe' : 'No existe');
-    console.log('- Usuario en localStorage:', userBefore ? 'Existe' : 'No existe');
-    console.log('- CurrentUserSubject:', currentUserSubject);
-
-    // Limpiar localStorage - MÉTODO AGRESIVO
-    console.log('Limpiando localStorage con múltiples métodos...');
-
-    // Método 1: removeItem
+    
+    // Clear all auth-related items from localStorage
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
-
-    // Método 2: setItem con null/undefined (por si acaso)
-    localStorage.setItem(this.TOKEN_KEY, '');
-    localStorage.setItem(this.USER_KEY, '');
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.USER_KEY);
-
-    // Método 3: También limpiar variantes comunes
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
 
-    // Verificar que se limpiaron
-    const tokenAfterRemove = localStorage.getItem(this.TOKEN_KEY);
-    const userAfterRemove = localStorage.getItem(this.USER_KEY);
-    console.log('Después de removeItem:');
-    console.log('- Token:', tokenAfterRemove ? 'AÚN EXISTE: ' + tokenAfterRemove : 'Eliminado correctamente');
-    console.log('- Usuario:', userAfterRemove ? 'AÚN EXISTE: ' + userAfterRemove : 'Eliminado correctamente');
-
-    // Verificar TODO el localStorage después
-    console.log('TODO el localStorage DESPUÉS:');
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      const value = localStorage.getItem(key!);
-      console.log(`- ${key}: ${value ? 'Tiene valor' : 'Sin valor'}`);
-    }
-
-    // Limpiar subject
-    console.log('Limpiando currentUserSubject...');
+    // Clear the current user subject
     this.currentUserSubject.next(null);
-    console.log('CurrentUserSubject después:', this.currentUserSubject.value);
 
-    // Navegar
-    console.log('Navegando a /login...');
-    this.router.navigate(['/login']);
+    // Clear any cached HTTP headers by making a request with empty headers
+    this.http.get(`${environment.serverBasePath}authentication/logout`, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }).subscribe({
+      error: () => {
+        // Even if the request fails, we still want to proceed with the logout
+        console.log('Logout request completed');
+      }
+    });
+
+    // Navigate to login page
+    this.router.navigate(['/login']).then(() => {
+      // Force a page reload to clear any cached state
+      window.location.reload();
+    });
 
     console.log('=== FIN LOGOUT AUTH SERVICE ===');
   }
