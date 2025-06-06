@@ -25,7 +25,7 @@ export class SensordataApiService extends BaseService<WaterRequestEntity> {
 
   updateDeliveredAt(id: number, status:String,deliveredAt: Date): Observable<WaterRequestEntity> {
     const url = `${this.resourcePath()}/${id}`;
-    const body = { status: status, delivered_at: deliveredAt };
+    const body = { status: status, deliveredAt: deliveredAt };
     return this.http.put<WaterRequestEntity>(url, body, this.httpOptions);
   }
 

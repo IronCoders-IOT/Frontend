@@ -7,8 +7,7 @@ export class WaterRequestEntity {
   requestedLiters: string;
   status: string;
   delivered_at: Date | null;
-
-  resident: ResidentEntity;
+  resident: ResidentEntity | null; // CAMBIO: De array a objeto individual
 
   constructor() {
     this.id = 0;
@@ -17,8 +16,6 @@ export class WaterRequestEntity {
     this.requestedLiters = "";
     this.status = "";
     this.delivered_at = null;
-
-    this.resident = new ResidentEntity();
-
+    this.resident = null; // CAMBIO: null en lugar de array vacío
   }
 }
