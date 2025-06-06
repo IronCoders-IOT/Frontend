@@ -92,16 +92,12 @@ export class HomeComponent implements OnInit {
   }
 
   private loadDashboardData(): void {
-    // Cargar datos de solicitudes de agua
     this.loadWaterRequests();
 
-    // Cargar datos de reportes
     this.loadReports();
 
-    // Cargar datos de residentes
     this.loadResidents();
 
-    // Cargar datos de sensores
     this.loadSensors();
   }
 
