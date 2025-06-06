@@ -1,18 +1,132 @@
-<div class="home-container">
-  <h1>Welcome to AquaConecta V1</h1>
-  <p>Your water management solution</p>
+<app-header-content></app-header-content>
 
+<div class="home-container">
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div class="welcome-content">
+      <h1>Welcome <span>{{username || 'Usuario'}}</span></h1>
+      <p>Your comprehensive water management dashboard</p>
+    </div>
+
+    <div class="user-profile-section">
+      <button class="profile-button" (click)="toggleProfileDropdown()">
+        <div class="profile-avatar">{{getUserInitials()}}</div>
+        <div class="profile-info">
+          <!--
+          <p class="profile-name">{{username || 'Usuario'}}</p>
+          -->
+          <p class="profile-role">{{userRole || 'Provider'}}</p>
+        </div>
+      </button>
+
+      <div class="profile-dropdown" [class.show]="showProfileDropdown">
+        <a class="dropdown-item" routerLink="/provider/1/profile">
+          👤 View Profile
+        </a>
+        <a class="dropdown-item logout" (click)="logout()">
+          🚪 Sign Out
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Cards -->
+  <div class="dashboard-container">
+    <div class="dashboard-grid">
+
+      <!-- Water Requests Card -->
+      <div class="dashboard-card" routerLink="/requests">
+        <div class="card-header">
+          <div class="card-icon water-requests">💧</div>
+          <h3 class="card-title">Water Requests</h3>
+        </div>
+        <div class="card-content">
+          <div class="card-info">
+            <p class="card-description">
+              Active water supply requests awaiting approval and processing
+            </p>
+            <div class="status-badge status-pending">{{waterRequestsPending || '0'}} Pending</div>
+            <a class="card-action">View all requests</a>
+          </div>
+          <div class="card-metric">
+            <span class="card-number">{{waterRequestsCount || '0'}}</span>
+            <span class="card-label">Total Requests</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- General Requests Card -->
+      <div class="dashboard-card" routerLink="/reports">
+        <div class="card-header">
+          <div class="card-icon general-requests">📋</div>
+          <h3 class="card-title">Service Reports</h3>
+        </div>
+        <div class="card-content">
+          <div class="card-info">
+            <p class="card-description">
+              Maintenance reports and service issues from residents
+            </p>
+            <div class="status-badge status-active">{{reportsActive || '0'}} Active</div>
+            <a class="card-action">View all reports</a>
+          </div>
+          <div class="card-metric">
+            <span class="card-number">{{reportsCount || '0'}}</span>
+            <span class="card-label">Total Reports</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Residents Card -->
+      <div class="dashboard-card" routerLink="/residents">
+        <div class="card-header">
+          <div class="card-icon residents">👥</div>
+          <h3 class="card-title">Residents</h3>
+        </div>
+        <div class="card-content">
+          <div class="card-info">
+            <p class="card-description">
+              Total number of residents registered in the system
+            </p>
+            <div class="status-badge status-active">Active Community</div>
+            <a class="card-action">View residents list</a>
+          </div>
+          <div class="card-metric">
+            <span class="card-number">{{residentsCount || '0'}}</span>
+            <span class="card-label">Registered</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sensor History Card -->
+      <div class="dashboard-card" routerLink="/history">
+        <div class="card-header">
+          <div class="card-icon sensors">📊</div>
+          <h3 class="card-title">Sensor Monitoring</h3>
+        </div>
+        <div class="card-content">
+          <div class="card-info">
+            <p class="card-description">
+              Real-time monitoring of water quality and flow sensors
+            </p>
+            <div class="status-badge status-active">{{lastSensorUpdate || 'Live'}} Data</div>
+            <a class="card-action">View sensor history</a>
+          </div>
+          <div class="card-metric">
+            <span class="card-number">{{sensorsActive || '0'}}</span>
+            <span class="card-label">Active Sensors</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
   <div class="buttons-container">
     <button routerLink="/admin/dashboard" class="btn-info">Admin Dashboard</button>
     <button routerLink="/login" class="btn-primary">Sign In</button>
     <button routerLink="/signup" class="btn-secondary">Sign Up</button>
-    <button routerLink="/requests" class="btn-info">Supply Requests</button>
-    <button routerLink="/reports" class="btn-info" >Report List</button>
-    <button routerLink="/providers" class="btn-info">Providers List</button>
+    <button routerLink="/providers" class="btn-info">Providers</button>
     <button routerLink="/provider/1/profile" class="btn-info">Provider Profile</button>
-    <button routerLink="/residents" class="btn-info">Residents</button>
-    <button routerLink="/history" class="btn-info">Sensor History</button>
-    <button routerLink="/residents" class="btn-info">Residents</button>
-    
   </div>
 </div>

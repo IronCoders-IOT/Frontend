@@ -19,7 +19,7 @@ export class ResidentService extends BaseService<Resident> {
   }
 
   getProvidersProfile(): Observable<any> {
-    return this.http.get<any>(`${this.basePath}profiles/me`, this.httpOptions);
+    return this.http.get<any>(`${this.basePath}providers/me`, this.httpOptions);
   }
 
   // Método que obtiene residentes por provider usando el perfil

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { SensordataApiService } from './sensordata-api.service';
 
-describe('SensordataApiService', () => {
+describe('HomeDataApiService', () => {
   let service: SensordataApiService;
 
   beforeEach(() => {
