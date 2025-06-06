@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../application/services/auth.service';
 import { ProviderApiServiceService } from '../../../../providers/services/provider-api.service.service';
+import { AuthCredentials } from '../../../domain/models/auth-credentials.model';
+import { User } from '../../../domain/models/user.model';
 
 @Component({
   selector: 'app-signup',
@@ -146,7 +148,6 @@ export class SignupComponent implements OnInit {
       firstName: name,
       lastName: lastName
     };
-  
     console.log('Datos enviados:', { username: name, password, roles, profileData });
 
     this.authService.signup(name, password, roles, profileData).subscribe({
@@ -154,7 +155,7 @@ export class SignupComponent implements OnInit {
         this.successMessage = 'Cuenta registrada con éxito.';
         this.errorMessage = '';
         this.signupForm.reset();
-        this.onLogin();
+        this.onLogin(); // Navigate to login after successful signup
       },
       error: (error: Error) => {
         this.errorMessage = error.message || 'Registration failed. Please try again.';
@@ -162,24 +163,6 @@ export class SignupComponent implements OnInit {
       },
       complete: () => {
         this.isSubmitting = false;
-      }
-    });
-    this.profileService.CreateProvider(
-      email,
-      direction,
-      documentNumber,
-      documentType,
-      phone,
-      companyName,
-      ruc,
-      name,
-      lastName
-    ).subscribe({
-      next: () => {
-        console.log('Provider created successfully');
-      },
-      error: (error: Error) => {
-        console.error('Error creating provider:', error);
       }
     });
   }
