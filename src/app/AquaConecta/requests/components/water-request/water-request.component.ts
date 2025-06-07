@@ -32,6 +32,7 @@ export class WaterRequestComponent implements AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
   resident = new Resident();
+
   constructor(private sensordataApiService: SensordataApiService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -44,15 +45,15 @@ export class WaterRequestComponent implements AfterViewInit {
     };
   }
 
-openScheduleModal(row: WaterRequestEntity): void {
-  const dialogRef = this.dialog.open(ScheduleDateComponent, {
-    width: '550px',
-    data: row,
-  });
+  openScheduleModal(row: WaterRequestEntity): void {
+    const dialogRef = this.dialog.open(ScheduleDateComponent, {
+      width: '550px',
+      data: row,
+    });
 
-  dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result && result.selectedDate) {
-        const requestId = row.id; // Usar la id de la solicitud
+        const requestId = row.id;
         if (requestId !== undefined) {
           console.log('Modal result:', result);
           this.sensordataApiService.updateDeliveredAt(requestId, result.status, result.selectedDate).subscribe(
@@ -71,57 +72,95 @@ openScheduleModal(row: WaterRequestEntity): void {
         }
       }
     });
-}
+  }
 
-  // MÉTODO CORREGIDO: Usando forkJoin para cargar todos los datos antes de mostrar
+  // MÉTODO CORREGIDO: Filtra por proveedor autenticado
   getAllRequests(): void {
     this.isLoadingResults = true;
 
-    this.sensordataApiService.getAllRequests().subscribe(
-      (response: WaterRequestEntity[]) => {
-        console.log('Requests obtenidas:', response);
+    // Primero obtener el perfil del proveedor autenticado
+    this.sensordataApiService.getProviderProfile().subscribe(
+      (providerProfile) => {
+        const authenticatedProviderId = providerProfile.id;
+        console.log('Proveedor autenticado:', providerProfile);
 
-        // Crear array de observables para obtener perfiles de residentes
-        const residentProfileRequests = response.map(request =>
-          this.sensordataApiService.getResidentProfileByResidentId(request.residentId)
-            .pipe(
-              map(residentProfile => {
-                request.resident = residentProfile;
-                console.log(`Perfil del residente para solicitud ${request.id}:`, residentProfile);
-                return request;
-              }),
-              catchError(error => {
-                console.error(`Error al obtener el perfil del residente para solicitud ${request.id}:`, error);
-                request.resident = null;
-                return observableOf(request);
-              })
-            )
-        );
-
-        // Ejecutar todas las peticiones en paralelo
-        forkJoin(residentProfileRequests).subscribe(
-          (requestsWithResidents) => {
-            this.requests.data = requestsWithResidents;
-            this.isLoadingResults = false;
-            this.resultsLength = this.requests.data.length;
-            console.log('Requests con residentes:', this.requests.data);
-
+        // Luego obtener todas las requests
+        this.sensordataApiService.getAllRequests().subscribe(
+          (response: WaterRequestEntity[]) => {
+            console.log('Requests obtenidas:', response);
+            this.processRequestsWithFilter(response, authenticatedProviderId);
           },
           (error) => {
-            console.error('Error al obtener perfiles de residentes:', error);
-            this.requests.data = response;
+            console.error('Error al obtener requests:', error);
             this.isLoadingResults = false;
-            this.resultsLength = this.requests.data.length;
           }
         );
       },
       (error) => {
-        console.error('Error al obtener requests:', error);
+        console.error('Error al obtener perfil del proveedor:', error);
         this.isLoadingResults = false;
       }
     );
   }
 
+  private processRequestsWithFilter(requests: WaterRequestEntity[], authenticatedProviderId: string | number): void {
+    // Crear array de observables para obtener perfiles de residentes
+    const residentProfileRequests = requests.map(request =>
+      this.sensordataApiService.getResidentProfileByResidentId(request.residentId)
+        .pipe(
+          map(residentProfile => {
+            // FIX: El servicio devuelve un array, tomamos el primer elemento
+            if (Array.isArray(residentProfile) && residentProfile.length > 0) {
+              request.resident = residentProfile[0];
+            } else if (!Array.isArray(residentProfile)) {
+              request.resident = residentProfile;
+            } else {
+              request.resident = null;
+            }
+
+            console.log(`Perfil del residente para solicitud ${request.id}:`, request.resident);
+            return request;
+          }),
+          catchError(error => {
+            console.error(`Error al obtener el perfil del residente para solicitud ${request.id}:`, error);
+            request.resident = null;
+            return observableOf(request);
+          })
+        )
+    );
+
+    // Ejecutar todas las peticiones en paralelo
+    forkJoin(residentProfileRequests).subscribe(
+      (requestsWithResidents) => {
+        console.log('Requests con residentes antes del filtro:', requestsWithResidents);
+
+        // FILTRAR SOLO LAS REQUESTS QUE PERTENECEN AL PROVEEDOR AUTENTICADO
+        const filteredRequests = requestsWithResidents.filter(request => {
+          // Verificación de null safety
+          if (!request.resident) {
+            console.log(`Request ${request.id}: No tiene resident`);
+            return false;
+          }
+
+          const matchesProvider = request.resident.providerId === authenticatedProviderId;
+          console.log(`Request ${request.id}: resident=${!!request.resident}, providerId=${request.resident.providerId}, matches=${matchesProvider}`);
+
+          return matchesProvider;
+        });
+
+        console.log('Requests filtradas por proveedor:', filteredRequests);
+        this.requests.data = filteredRequests;
+        this.isLoadingResults = false;
+        this.resultsLength = this.requests.data.length;
+      },
+      (error) => {
+        console.error('Error al obtener perfiles de residentes:', error);
+        this.requests.data = [];
+        this.isLoadingResults = false;
+        this.resultsLength = 0;
+      }
+    );
+  }
 
   applyStatusFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim();
@@ -141,23 +180,18 @@ openScheduleModal(row: WaterRequestEntity): void {
 
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
+    // TAMBIÉN NECESITAS ACTUALIZAR ESTE MÉTODO PARA QUE RESPETE EL FILTRO
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.sensordataApiService.getAllRequests().pipe(catchError(() => observableOf(null)));
-        }),
-        map(data => {
-          this.isLoadingResults = false;
-          if (data === null) {
-            return [];
-          }
-          this.resultsLength = data.length;
-          return data;
-        }),
+          // Llamar al método que filtra por proveedor
+          this.getAllRequests();
+          return observableOf([]);
+        })
       )
-      .subscribe(data => (this.requests.data = data));
+      .subscribe();
   }
 
   getStatusClass(status: string): string {
