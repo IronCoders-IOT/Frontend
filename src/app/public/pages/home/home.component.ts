@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import {SensordataApiService} from '../../../AquaConecta/requests/services/sensordata-api.service';
 import {ResidentService} from '../../../AquaConecta/residents/services/resident.service';
 import {AuthService} from '../../../AquaConecta/auth/application/services/auth.service';
+import {catchError} from 'rxjs/operators';
+import {forkJoin, of} from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -119,16 +121,59 @@ export class HomeComponent implements OnInit {
   }
 
   private loadWaterRequests(): void {
+    // Obtener perfil del proveedor autenticado
+    this.sensordataApiService.getProviderProfile().subscribe({
+      next: (providerProfile) => {
+        const authenticatedProviderId = providerProfile.id;
 
-    this.sensordataApiService.getAllRequests().subscribe({
-      next: (requests) => {
-        this.waterRequestsCount = requests.length;
-        this.waterRequestsPending = requests.filter(req => req.status === 'ESPERA').length;
+        // Obtener residentes del proveedor
+        this.sensordataApiService.getResidentsByProviderId(authenticatedProviderId).subscribe({
+          next: (residents) => {
+            this.loadWaterRequestsStats(residents);
+          },
+          error: (error) => {
+            console.error('Error loading residents:', error);
+            this.waterRequestsCount = 0;
+            this.waterRequestsPending = 0;
+          }
+        });
       },
       error: (error) => {
-        console.error('Error loading water requests:', error);
-        this.waterRequestsCount = 12;
-        this.waterRequestsPending = 8;
+        console.error('Error loading provider profile:', error);
+        this.waterRequestsCount = 0;
+        this.waterRequestsPending = 0;
+      }
+    });
+  }
+
+  private loadWaterRequestsStats(residents: any[]): void {
+    if (residents.length === 0) {
+      this.waterRequestsCount = 0;
+      this.waterRequestsPending = 0;
+      return;
+    }
+
+    // Obtener water requests de todos los residentes
+    const waterRequestObservables = residents.map(resident =>
+      this.sensordataApiService.getWaterRequestsByResidentId(resident.id).pipe(
+        catchError(error => {
+          console.error(`Error loading requests for resident ${resident.id}:`, error);
+          return of([]);
+        })
+      )
+    );
+
+    forkJoin(waterRequestObservables).subscribe({
+      next: (requestArrays) => {
+        const allRequests = requestArrays.flat();
+        this.waterRequestsCount = allRequests.length;
+        this.waterRequestsPending = allRequests.filter(req => req.status === 'RECEIVED').length;
+        console.log(`Total requests: ${this.waterRequestsCount}, Pending: ${this.waterRequestsPending}`);
+      },
+      error: (error) => {
+        console.error('Error loading water requests stats:', error);
+        this.waterRequestsCount = 0;
+        this.waterRequestsPending = 0;
       }
     });
   }
