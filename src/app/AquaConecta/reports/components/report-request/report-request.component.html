@@ -48,7 +48,9 @@
         <!-- Title Column -->
         <ng-container matColumnDef="resident_name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Resident</th>
-          <td mat-cell *matCellDef="let row">{{ row.resident_name }}</td>
+          <td mat-cell *matCellDef="let row">
+            {{ row.resident[0]?.firstName }} {{ row.resident[0]?.lastName }}
+          </td>
         </ng-container>
 
         <!-- State Column -->

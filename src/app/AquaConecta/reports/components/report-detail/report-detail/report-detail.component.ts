@@ -33,11 +33,18 @@ export class ReportDetailComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+
+    console.log(id);
+    /*
     if (id) {
       this.reportService.getReportById(id).subscribe((data) => {
         this.report = data;
         console.log('Report data loaded:', this.report); // Debug to see what's coming back
       });
     }
+
+     */
+
+
   }
 }
