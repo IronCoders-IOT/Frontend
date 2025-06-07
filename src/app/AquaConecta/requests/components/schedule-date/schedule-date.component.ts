@@ -33,7 +33,7 @@ export class ScheduleDateComponent implements OnInit {
       this.selectedDate = date;
     }
 
-    this.status = this.data?.status || 'Pending';
+    this.status = this.data?.status || 'PENDING'; // Estado por defecto
   }
 
   /**
@@ -48,8 +48,8 @@ export class ScheduleDateComponent implements OnInit {
       this.selectedDate = new Date(year, month - 1, day);
 
       // Cambiar estado automáticamente si es válido
-      if (this.status != 'Pending') {
-        this.status = 'In Progress';
+      if (this.status != 'PENDING') {
+        this.status = 'IN_PROGRESS';
       }
     } else {
       this.selectedDate = null;
