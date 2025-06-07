@@ -1,4 +1,3 @@
-// signup.component.ts
 import { Component, OnInit, Provider } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -37,13 +36,13 @@ export class SignupComponent implements OnInit {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
-      
+
       // Step 2: Company Info
       companyName: ['', Validators.required],
       ruc: ['', Validators.required],
       documentType: ['', Validators.required],
       documentNumber: ['', Validators.required],
-      
+
       // Step 3: Security & Address
       direction: [''], // Made optional
       password: ['', [Validators.required, Validators.minLength(1)]],

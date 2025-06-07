@@ -5,6 +5,7 @@ import { HeaderContentComponent } from '../../components/header-content/header-c
 import { HttpClient } from '@angular/common/http';
 import {SensordataApiService} from '../../../AquaConecta/requests/services/sensordata-api.service';
 import {ResidentService} from '../../../AquaConecta/residents/services/resident.service';
+import {AuthService} from '../../../AquaConecta/auth/application/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -42,6 +43,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private sensordataApiService: SensordataApiService,
     private residentService: ResidentService,
+    private authService: AuthService,
     private http: HttpClient ) {
   }
 
@@ -80,15 +82,30 @@ export class HomeComponent implements OnInit {
   }
 
   logout(): void {
-    // Limpiar localStorage
-    localStorage.removeItem('auth_user');
-    localStorage.removeItem('auth_token');
 
     // Cerrar dropdown
     this.showProfileDropdown = false;
+    console.log('=== INICIO LOGOUT COMPONENT ===');
 
-    // Redirigir al login
-    window.location.href = '/';
+    // Verificar token ANTES del logout del servicio
+    const tokenBefore = localStorage.getItem('auth_token');
+    console.log('Token ANTES de llamar authService.logout():', tokenBefore ? 'Existe' : 'No existe');
+
+    // Limpiar estado local PRIMERO
+    console.log('Limpiando estado local del componente...');
+
+    console.log('Estado local limpiado');
+
+    // LLAMAR AL LOGOUT DEL SERVICIO
+    console.log('Llamando a authService.logout()...');
+    this.authService.logout();
+
+    // Verificar token DESPUÉS del logout del servicio
+    setTimeout(() => {
+      const tokenAfter = localStorage.getItem('auth_token');
+      console.log('Token DESPUÉS de authService.logout():', tokenAfter ? 'AÚN EXISTE!' : 'Eliminado');
+      console.log('=== FIN LOGOUT COMPONENT ===');
+    }, 100);    // Redirigir al login
   }
 
   private loadDashboardData(): void {

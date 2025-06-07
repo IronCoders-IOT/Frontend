@@ -39,18 +39,38 @@ export class CreateResidentComponent implements OnInit {
       confirmPassword: ['', [Validators.required]]
     }, { validator: this.passwordMatchValidator });
 
-    // Verificar y debuggear el token
+    // Verificación más robusta de autenticación
     const token = localStorage.getItem('auth_token');
-    console.log('Token encontrado:', token ? 'SÍ' : 'NO');
-    console.log('Token value:');
+    const user = localStorage.getItem('auth_user');
 
-    if (!token) {
-      console.error('No se encontró token de autenticación');
+    console.log('=== VERIFICACIÓN DE AUTENTICACIÓN ===');
+    console.log('Token encontrado:', token ? 'SÍ' : 'NO');
+    console.log('Usuario encontrado:', user ? 'SÍ' : 'NO');
+    console.log('Token length:', token ? token.length : 0);
+
+    if (!token || !user) {
+      console.error('Usuario no autenticado - redirigiendo al login');
+      this.snackBar.open('Please log in to create residents', 'Close', {
+        duration: 3000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center'
+      });
       this.router.navigate(['/login']);
       return;
     }
 
+    try {
+      const userData = JSON.parse(user);
+      console.log('Datos del usuario:', userData);
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    console.log('=== USUARIO AUTENTICADO CORRECTAMENTE ===');
   }
+
   passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
