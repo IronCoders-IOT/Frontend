@@ -5,6 +5,9 @@ import { HeaderContentComponent } from '../../components/header-content/header-c
 import { HttpClient } from '@angular/common/http';
 import {SensordataApiService} from '../../../AquaConecta/requests/services/sensordata-api.service';
 import {ResidentService} from '../../../AquaConecta/residents/services/resident.service';
+import {AuthService} from '../../../AquaConecta/auth/application/services/auth.service';
+import {catchError} from 'rxjs/operators';
+import {forkJoin, of} from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -42,6 +45,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private sensordataApiService: SensordataApiService,
     private residentService: ResidentService,
+    private authService: AuthService,
     private http: HttpClient ) {
   }
 
@@ -80,15 +84,30 @@ export class HomeComponent implements OnInit {
   }
 
   logout(): void {
-    // Limpiar localStorage
-    localStorage.removeItem('auth_user');
-    localStorage.removeItem('auth_token');
 
     // Cerrar dropdown
     this.showProfileDropdown = false;
+    console.log('=== INICIO LOGOUT COMPONENT ===');
 
-    // Redirigir al login
-    window.location.href = '/';
+    // Verificar token ANTES del logout del servicio
+    const tokenBefore = localStorage.getItem('auth_token');
+    console.log('Token ANTES de llamar authService.logout():', tokenBefore ? 'Existe' : 'No existe');
+
+    // Limpiar estado local PRIMERO
+    console.log('Limpiando estado local del componente...');
+
+    console.log('Estado local limpiado');
+
+    // LLAMAR AL LOGOUT DEL SERVICIO
+    console.log('Llamando a authService.logout()...');
+    this.authService.logout();
+
+    // Verificar token DESPUÉS del logout del servicio
+    setTimeout(() => {
+      const tokenAfter = localStorage.getItem('auth_token');
+      console.log('Token DESPUÉS de authService.logout():', tokenAfter ? 'AÚN EXISTE!' : 'Eliminado');
+      console.log('=== FIN LOGOUT COMPONENT ===');
+    }, 100);    // Redirigir al login
   }
 
   private loadDashboardData(): void {
@@ -102,16 +121,59 @@ export class HomeComponent implements OnInit {
   }
 
   private loadWaterRequests(): void {
+    // Obtener perfil del proveedor autenticado
+    this.sensordataApiService.getProviderProfile().subscribe({
+      next: (providerProfile) => {
+        const authenticatedProviderId = providerProfile.id;
 
-    this.sensordataApiService.getAllRequests().subscribe({
-      next: (requests) => {
-        this.waterRequestsCount = requests.length;
-        this.waterRequestsPending = requests.filter(req => req.status === 'ESPERA').length;
+        // Obtener residentes del proveedor
+        this.sensordataApiService.getResidentsByProviderId(authenticatedProviderId).subscribe({
+          next: (residents) => {
+            this.loadWaterRequestsStats(residents);
+          },
+          error: (error) => {
+            console.error('Error loading residents:', error);
+            this.waterRequestsCount = 0;
+            this.waterRequestsPending = 0;
+          }
+        });
       },
       error: (error) => {
-        console.error('Error loading water requests:', error);
-        this.waterRequestsCount = 12;
-        this.waterRequestsPending = 8;
+        console.error('Error loading provider profile:', error);
+        this.waterRequestsCount = 0;
+        this.waterRequestsPending = 0;
+      }
+    });
+  }
+
+  private loadWaterRequestsStats(residents: any[]): void {
+    if (residents.length === 0) {
+      this.waterRequestsCount = 0;
+      this.waterRequestsPending = 0;
+      return;
+    }
+
+    // Obtener water requests de todos los residentes
+    const waterRequestObservables = residents.map(resident =>
+      this.sensordataApiService.getWaterRequestsByResidentId(resident.id).pipe(
+        catchError(error => {
+          console.error(`Error loading requests for resident ${resident.id}:`, error);
+          return of([]);
+        })
+      )
+    );
+
+    forkJoin(waterRequestObservables).subscribe({
+      next: (requestArrays) => {
+        const allRequests = requestArrays.flat();
+        this.waterRequestsCount = allRequests.length;
+        this.waterRequestsPending = allRequests.filter(req => req.status === 'RECEIVED').length;
+        console.log(`Total requests: ${this.waterRequestsCount}, Pending: ${this.waterRequestsPending}`);
+      },
+      error: (error) => {
+        console.error('Error loading water requests stats:', error);
+        this.waterRequestsCount = 0;
+        this.waterRequestsPending = 0;
       }
     });
   }

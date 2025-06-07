@@ -32,6 +32,7 @@ export class WaterRequestComponent implements AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
   resident = new Resident();
+
   constructor(private sensordataApiService: SensordataApiService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -44,15 +45,15 @@ export class WaterRequestComponent implements AfterViewInit {
     };
   }
 
-openScheduleModal(row: WaterRequestEntity): void {
-  const dialogRef = this.dialog.open(ScheduleDateComponent, {
-    width: '550px',
-    data: row,
-  });
+  openScheduleModal(row: WaterRequestEntity): void {
+    const dialogRef = this.dialog.open(ScheduleDateComponent, {
+      width: '550px',
+      data: row,
+    });
 
-  dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result && result.selectedDate) {
-        const requestId = row.id; // Usar la id de la solicitud
+        const requestId = row.id;
         if (requestId !== undefined) {
           console.log('Modal result:', result);
           this.sensordataApiService.updateDeliveredAt(requestId, result.status, result.selectedDate).subscribe(
@@ -71,53 +72,78 @@ openScheduleModal(row: WaterRequestEntity): void {
         }
       }
     });
-}
+  }
 
-  // MÉTODO CORREGIDO: Usando forkJoin para cargar todos los datos antes de mostrar
+  // MÉTODO CORREGIDO: Filtra por proveedor autenticado
   getAllRequests(): void {
     this.isLoadingResults = true;
 
-    this.sensordataApiService.getAllRequests().subscribe(
-      (response: WaterRequestEntity[]) => {
-        console.log('Requests obtenidas:', response);
+    // Obtener perfil del proveedor autenticado
+    this.sensordataApiService.getProviderProfile().subscribe(
+      (providerProfile) => {
+        const authenticatedProviderId = providerProfile.id;
+        console.log('Proveedor autenticado:', providerProfile);
 
-        // Crear array de observables para obtener perfiles de residentes
-        const residentProfileRequests = response.map(request =>
-          this.sensordataApiService.getResidentProfileByResidentId(request.residentId)
-            .pipe(
-              map(residentProfile => {
-                request.resident = residentProfile;
-                console.log(`Perfil del residente para solicitud ${request.id}:`, residentProfile);
-                return request;
-              }),
-              catchError(error => {
-                console.error(`Error al obtener el perfil del residente para solicitud ${request.id}:`, error);
-                request.resident = null;
-                return observableOf(request);
-              })
-            )
-        );
-
-        // Ejecutar todas las peticiones en paralelo
-        forkJoin(residentProfileRequests).subscribe(
-          (requestsWithResidents) => {
-            this.requests.data = requestsWithResidents;
-            this.isLoadingResults = false;
-            this.resultsLength = this.requests.data.length;
-            console.log('Requests con residentes:', this.requests.data);
-
+        // Obtener residentes del proveedor
+        this.sensordataApiService.getResidentsByProviderId(authenticatedProviderId).subscribe(
+          (residents) => {
+            console.log('Residentes del proveedor:', residents);
+            this.loadWaterRequestsForResidents(residents);
           },
           (error) => {
-            console.error('Error al obtener perfiles de residentes:', error);
-            this.requests.data = response;
+            console.error('Error al obtener residentes del proveedor:', error);
             this.isLoadingResults = false;
-            this.resultsLength = this.requests.data.length;
           }
         );
       },
       (error) => {
-        console.error('Error al obtener requests:', error);
+        console.error('Error al obtener perfil del proveedor:', error);
         this.isLoadingResults = false;
+      }
+    );
+  }
+
+  private loadWaterRequestsForResidents(residents: any[]): void {
+    if (residents.length === 0) {
+      this.requests.data = [];
+      this.isLoadingResults = false;
+      this.resultsLength = 0;
+      return;
+    }
+
+    // Crear observables para obtener water requests de cada residente
+    const waterRequestObservables = residents.map(resident =>
+      this.sensordataApiService.getWaterRequestsByResidentId(resident.id).pipe(
+        map(requests => {
+          // Asignar el residente a cada request
+          return requests.map(request => {
+            request.resident = resident;
+            return request;
+          });
+        }),
+        catchError(error => {
+          console.error(`Error al obtener requests del residente ${resident.id}:`, error);
+          return observableOf([]);
+        })
+      )
+    );
+
+    // Ejecutar todas las peticiones en paralelo
+    forkJoin(waterRequestObservables).subscribe(
+      (requestArrays) => {
+        // Aplanar el array de arrays
+        const allRequests = requestArrays.flat();
+
+        console.log('Todas las water requests del proveedor:', allRequests);
+        this.requests.data = allRequests;
+        this.isLoadingResults = false;
+        this.resultsLength = this.requests.data.length;
+      },
+      (error) => {
+        console.error('Error al obtener water requests:', error);
+        this.requests.data = [];
+        this.isLoadingResults = false;
+        this.resultsLength = 0;
       }
     );
   }
@@ -141,23 +167,18 @@ openScheduleModal(row: WaterRequestEntity): void {
 
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
+    // TAMBIÉN NECESITAS ACTUALIZAR ESTE MÉTODO PARA QUE RESPETE EL FILTRO
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.sensordataApiService.getAllRequests().pipe(catchError(() => observableOf(null)));
-        }),
-        map(data => {
-          this.isLoadingResults = false;
-          if (data === null) {
-            return [];
-          }
-          this.resultsLength = data.length;
-          return data;
-        }),
+          // Llamar al método que filtra por proveedor
+          this.getAllRequests();
+          return observableOf([]);
+        })
       )
-      .subscribe(data => (this.requests.data = data));
+      .subscribe();
   }
 
   getStatusClass(status: string): string {

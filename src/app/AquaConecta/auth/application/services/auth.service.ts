@@ -11,36 +11,36 @@ import {environment} from '../../../../../environments/environment';
 import { of } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class AuthService extends BaseService<User> {
 
-    private readonly TOKEN_KEY = 'auth_token';
-    private readonly USER_KEY = 'auth_user';
-    private currentUserSubject = new BehaviorSubject<User | null>(null);
+  private readonly TOKEN_KEY = 'auth_token';
+  private readonly USER_KEY = 'auth_user';
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
 
-    public currentUser$ = this.currentUserSubject.asObservable();
-    public isLoggedIn$ = this.currentUser$.pipe(map(user => !!user));
+  public currentUser$ = this.currentUserSubject.asObservable();
+  public isLoggedIn$ = this.currentUser$.pipe(map(user => !!user));
 
-    constructor(
-        http: HttpClient,
-        private router: Router
-    ) {
-      super(http);
-      this.resourceEndpoint = 'authentication/sign-up';
+  constructor(
+    http: HttpClient,
+    private router: Router
+  ) {
+    super(http);
+    this.resourceEndpoint = 'authentication/sign-up';
 
-      this.loadStoredUser();
+    this.loadStoredUser();
+  }
+
+  // Add the missing loadStoredUser method
+  private loadStoredUser(): void {
+    const storedUser = localStorage.getItem(this.USER_KEY);
+    if (storedUser) {
+      this.currentUserSubject.next(JSON.parse(storedUser));
     }
+  }
 
-    // Add the missing loadStoredUser method
-    private loadStoredUser(): void {
-        const storedUser = localStorage.getItem(this.USER_KEY);
-        if (storedUser) {
-            this.currentUserSubject.next(JSON.parse(storedUser));
-        }
-    }
-
-    // Add the missing login method
+  // Add the missing login method
   login(credentials: AuthCredentials): Observable<User> {
     console.log('=== INICIO LOGIN ===');
     this.resourceEndpoint = 'authentication/sign-in';
@@ -103,7 +103,7 @@ export class AuthService extends BaseService<User> {
 
     console.log('Datos del perfil validados:', profileData);
 
-      console.log('Iniciando proceso de signup para:', username);
+    console.log('Iniciando proceso de signup para:', username);
     const payload = { username, password, roles };
 
     return this.http.post<{ id: number; username: string }>(
@@ -216,7 +216,7 @@ export class AuthService extends BaseService<User> {
 // En auth.service.ts - Método logout mejorado con debugging
   logout(): void {
     console.log('=== INICIO LOGOUT AUTH SERVICE ===');
-    
+
     // Clear all auth-related items from localStorage
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
@@ -250,10 +250,10 @@ export class AuthService extends BaseService<User> {
   }
 
 
-    private isValidEmail(email: string): boolean {
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return emailRegex.test(email);
-    }
+  private isValidEmail(email: string): boolean {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  }
 
 
 }
