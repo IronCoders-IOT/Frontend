@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, inject, ViewChild} from '@angular/core';
 import {HeaderContentComponent} from '../../../../public/components/header-content/header-content.component';
 import {ReportRequestEntity} from '../../model/report-request.entity';
-import {ReportdataApiService} from '../../services/reportdata-api.service';
 
 import {HttpClient} from '@angular/common/http';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
@@ -16,6 +15,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import {ReportdataApiService} from '../../services/reportdata-api.service';
 
 
 @Component({
@@ -45,6 +45,10 @@ export class ReportRequestComponent implements AfterViewInit {
                 private reportdataApiService: ReportdataApiService,
                 private dialog: MatDialog) {}
 
+  ngAfterViewInit(): void {
+        throw new Error('Method not implemented.');
+    }
+
   ngOnInit(): void {
     this.getAllRequests();
 
@@ -57,14 +61,39 @@ export class ReportRequestComponent implements AfterViewInit {
   getAllRequests(): void {
     this.isLoadingResults = true;
 
-    this.reportdataApiService.getAllRequests().subscribe(
-      (response: ReportRequestEntity[]) => {
-        // Set the data directly to the MatTableDataSource
-        this.requests.data = response;
+    this.reportdataApiService.getProviderProfile().subscribe(
+      (providerProfile) => {
+        const authenticatedProviderId = providerProfile.id;
+        console.log('ProveedorID autenticado:', providerProfile.id);
 
-        this.isLoadingResults = false;
-        this.resultsLength = this.requests.data.length;
-        console.log('Reports loaded:', this.requests.data);
+        this.reportdataApiService.getReportsByProviderId(authenticatedProviderId).subscribe(
+          (response: ReportRequestEntity[]) => {
+            console.log('Reports for provider:', response);
+            /*
+            this.requests.data = response; // Set the data directly to the MatTableDataSource
+            this.isLoadingResults = false;
+            this.resultsLength = this.requests.data.length;
+            */
+            response.forEach((report) => {
+              this.reportdataApiService.getResidentById(report.residentId).subscribe(
+                (residentProfile) => {
+                  report.resident = residentProfile;
+                },
+                error => {
+                  console.error(`Error loading resident profile for report ID ${report.id}:`, error);
+                }
+              );
+            });
+            this.requests.data = response; // Set the data directly to the MatTableDataSource
+            this.isLoadingResults = false;
+            this.resultsLength = this.requests.data.length;
+            console.log('Reports loaded:', this.requests.data);
+          },
+          error => {
+            console.error('Error loading reports for provider:', error);
+            this.isLoadingResults = false;
+          }
+        )
       },
       error => {
         console.error('Error loading reports:', error);
@@ -81,6 +110,7 @@ export class ReportRequestComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  /*
   ngAfterViewInit() {
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
@@ -103,6 +133,7 @@ export class ReportRequestComponent implements AfterViewInit {
       )
       .subscribe(data => (this.requests.data = data));
   }
+   */
 
   getStatusClass(status: string): string {
     switch (status) {
