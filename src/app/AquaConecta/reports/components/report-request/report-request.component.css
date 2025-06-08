@@ -1,33 +1,39 @@
-.request-container{
+/*==============================
+=            Layout            =
+==============================*/
+.request-container {
   margin: 0 auto;
   width: 119rem;
-
 }
-.request-title-search{
-  margin: 0 auto;
-  margin-top: 3%;
+
+.request-title-search {
+  margin: 3% auto 0 auto;
   width: 92.5%;
   display: flex;
   align-items: center;
 }
+
 .title-request {
   font-size: 40px;
   color: #333333;
   font-family: "Inter-Regular", sans-serif;
 }
+
+/* Responsive Container Width */
 @media (max-width: 1822px) {
   .request-container {
     width: 100%;
   }
 }
 
-/*---------------buscador ----------------------*/
-.search-container{
+/*===============================
+=         Buscador Input        =
+===============================*/
+.search-container {
   align-items: center;
   display: flex;
   margin-left: auto;
   gap: 20px;
-
   height: 40px;
 }
 
@@ -42,17 +48,17 @@
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  user-select: none;
 }
 
 .input-wrapper input {
   border: 1px solid #00a0ff;
   border-radius: 20px;
-  padding: 8px 15px 8px 38px; /* espacio para el icono */
+  padding: 8px 15px 8px 38px;
   font-size: 15px;
   outline: none;
   width: 200px;
   transition: border-color 0.3s ease;
+  font-family: "Inter-Medium", sans-serif;
 }
 
 .input-wrapper input:focus {
@@ -60,45 +66,29 @@
   box-shadow: 0 0 5px #007acc;
 }
 
-input {
-  border: 1px solid #00a0ff;   /* azul borde */
-  border-radius: 20px;          /* bordes redondeados */
-  padding: 8px 15px;            /* espacio dentro */
-  font-size: 14px;
-  outline: none;
-  width: 170px;                 /* ancho fijo o ajusta a tu gusto */
-  transition: border-color 0.3s ease;
-  font-family: Inter-Medium, sans-serif
-}
-
-input:focus {
-  border-color: #007acc;        /* cambio de color al enfocar */
-  box-shadow: 0 0 5px #007acc;
-}
-
-.search-button{
+.search-button {
   border-radius: 20px;
-  padding: 8px 25px 8px;
+  padding: 8px 25px;
   font-size: 15px;
   background-color: #2197DF;
   color: white;
   border: none;
-  font-family: Inter-Medium, sans-serif;
+  font-family: "Inter-Medium", sans-serif;
+  transition: background-color 0.3s ease;
 }
-.search-button:hover{
+
+.search-button:hover {
   background-color: #007acc;
   cursor: pointer;
 }
 
-/*----------------------------------------------*/
-
-/* Structure */
+/*===============================
+=            Tabla              =
+===============================*/
 .example-container {
   position: relative;
   width: 92.5%;
-  margin: 0 auto;
-  margin-top: 1%;
-
+  margin: 1% auto 0 auto;
 }
 
 .example-table-container {
@@ -108,33 +98,39 @@ input:focus {
 }
 
 table {
-  width: 100%; /* Cambia el ancho de la tabla al 80% del contenedor */
-  background-color: white; /* Color de fondo de la tabla */
+  width: 100%;
+  background-color: white;
   font-size: 15px;
-  overflow: hidden;
   margin-bottom: 5%;
-
 }
 
-
-/* Cambiar el color de las celdas de datos */
-th{
-  font-weight: bold; /* Negrita para el texto */
-
+th {
+  font-weight: bold;
 }
+
 td, th {
   color: #555555;
   font-size: 15px;
-
   font-family: "Inter-Regular", sans-serif;
-
 }
 
-/* Cambiar el color de las filas al pasar el mouse */
 tr:hover {
   background-color: whitesmoke;
 }
 
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  width: 64px;
+}
+
+.mat-column-created {
+  width: 124px;
+}
+
+/*===============================
+=           Loading             =
+===============================*/
 .example-loading-shade {
   position: absolute;
   top: 0;
@@ -151,52 +147,47 @@ tr:hover {
 .example-rate-limit-reached {
   max-width: 360px;
   text-align: center;
-
 }
 
-/* Column Widths */
-.mat-column-number,
-.mat-column-state {
-  width: 64px;
-}
-
-.mat-column-created {
-  width: 124px;
-}
-
-
-/*-----Status----------------------*/
-.custom-cell-status{
+/*===============================
+=         Estado/Status         =
+===============================*/
+.custom-cell-status {
   text-align: center;
-  width: 15%;
+  padding: 6px 0;
 }
 
 .status-received,
 .status-in-progress,
 .status-closed {
-  display: inline-block; /* Asegura que el tamaño sea consistente */
-  width: 90%; /* Define un ancho fijo */
+  display: inline-block;
+  min-width: 90px; /* ancho mínimo */
+  max-width: 100%;
   border-radius: 15px;
-  padding: 6px;
+  padding: 6px 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
 }
 
 .status-received {
   background-color: #E5F0FF;
   color: #2197DF;
-
 }
 
 .status-in-progress {
   background-color: #FFED92;
   color: #A68F12;
-
 }
 
 .status-closed {
-  background-color: #8de6c5ac;  /* Color más claro */
+  background-color: #8de6c5ac;
   color: #007606;
-
 }
+
+/*===============================
+=           Responsive          =
+===============================*/
 @media (max-width: 1200px) {
   .request-container {
     width: 90%;
@@ -206,7 +197,6 @@ tr:hover {
 
   .request-title-search {
     width: 100%;
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -221,10 +211,8 @@ tr:hover {
   }
 
   .search-container {
-    display: flex;
-    flex-direction: row;  /* input y botón uno al lado del otro */
-    align-items: center;
-    justify-content: center;  /* CENTRA ambos */
+    flex-direction: row;
+    justify-content: center;
     gap: 10px;
     width: 100%;
   }
@@ -232,19 +220,19 @@ tr:hover {
   .input-wrapper {
     display: flex;
     justify-content: center;
-    width: auto; /* auto o lo necesario */
+    width: auto;
   }
 
   .input-wrapper input {
     width: 160px;
-    margin: 0;          /* elimina márgenes que desalineen */
-    padding-left: 38px; /* espacio para el ícono si tienes uno */
+    margin: 0;
+    padding-left: 38px;
   }
 
   .search-button {
     padding: 8px 15px;
     font-size: 13px;
-    margin: 0; /* elimina margin-left: auto si estaba antes */
+    margin: 0;
   }
 
   .example-container,
@@ -254,7 +242,10 @@ tr:hover {
   }
 }
 
+/*===============================
+=         Enlace simple         =
+===============================*/
 .schedule-link {
   color: blue;
-  text-decoration: underline; /* Opcional, para que parezca un enlace */
+  text-decoration: underline;
 }
