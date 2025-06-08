@@ -126,7 +126,7 @@ export class HomeComponent implements OnInit {
     // Obtener perfil del proveedor autenticado
     this.sensordataApiService.getProviderProfile().subscribe({
       next: (providerProfile) => {
-        const authenticatedProviderId = providerProfile.id;
+        const authenticatedProviderId = providerProfile.userId;
 
         // Obtener residentes del proveedor
         this.sensordataApiService.getResidentsByProviderId(authenticatedProviderId).subscribe({
@@ -183,7 +183,7 @@ export class HomeComponent implements OnInit {
   private loadReports(): void {
   this.reportdataapiservice.getProviderProfile().subscribe({
     next: (providerProfile) => {
-      const authenticatedProviderId = providerProfile.id;
+      const authenticatedProviderId = providerProfile.userId;
       console.log('🏠 Home - Proveedor autenticado:', authenticatedProviderId);
 
       // Llamar al endpoint para obtener los reportes del proveedor

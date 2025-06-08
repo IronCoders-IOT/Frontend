@@ -63,8 +63,8 @@ export class ReportRequestComponent implements AfterViewInit {
 
     this.reportdataApiService.getProviderProfile().subscribe(
       (providerProfile) => {
-        const authenticatedProviderId = providerProfile.id;
-        console.log('ProveedorID autenticado:', providerProfile.id);
+        const authenticatedProviderId = providerProfile.userId;
+        console.log('ProveedorID autenticado:', providerProfile.userId);
 
         this.reportdataApiService.getReportsByProviderId(authenticatedProviderId).subscribe(
           (response: ReportRequestEntity[]) => {
