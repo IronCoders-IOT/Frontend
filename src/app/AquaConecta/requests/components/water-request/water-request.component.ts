@@ -81,7 +81,7 @@ export class WaterRequestComponent implements AfterViewInit {
     // Obtener perfil del proveedor autenticado
     this.sensordataApiService.getProviderProfile().subscribe(
       (providerProfile) => {
-        const authenticatedProviderId = providerProfile.id;
+        const authenticatedProviderId = providerProfile.userId;
         console.log('Proveedor autenticado:', providerProfile);
 
         // Obtener residentes del proveedor
