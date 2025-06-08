@@ -136,6 +136,18 @@ tr:hover {
   padding-left: 10px;
 }
 
+.status-active,
+.status-inactive,
+.status-unknown {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 9999px; /* completamente redondo */
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  min-width: 80px; /* ancho mínimo para consistencia */
+}
+
 .status-active {
   background-color: #d2f5d7;
   color: #3e8842;
@@ -150,6 +162,7 @@ tr:hover {
   background-color: #eeeeee;
   color: #424242;
 }
+
 
 .status-normal,
 .status-alert,

@@ -2,7 +2,7 @@ import {ResidentEntity} from '../../requests/model/resident.entity';
 
 export class ReportRequestEntity {
   id: number;
-  emission_date: string;
+  emissionDate: string;
   residentId : number;
   title: string;
   status: string;
@@ -11,7 +11,7 @@ export class ReportRequestEntity {
 
   constructor() {
     this.id = 0;
-    this.emission_date = "";
+    this.emissionDate = "";
     this.residentId = 0; // CAMBIO: Agregado para relacionar con el residente
     this.title = "";
     this.status = "";
