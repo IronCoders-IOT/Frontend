@@ -29,7 +29,7 @@ export class ResidentService extends BaseService<Resident> {
         console.log('Perfil obtenido:', profile);
 
         // Extraer el userId del perfil
-        const providerId = profile.id;
+        const providerId = profile.userId;
 
         if (!providerId) {
           throw new Error('No se pudo obtener el ID del proveedor del perfil');
