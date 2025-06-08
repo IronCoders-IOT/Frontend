@@ -27,7 +27,7 @@ import { Resident } from '../../../residents/models/resident.model';
 export class WaterRequestComponent implements AfterViewInit {
   tittle = 'Solicitud de Agua Potable';
   requests: MatTableDataSource<WaterRequestEntity> = new MatTableDataSource<WaterRequestEntity>();
-  displayedColumns: string[] = ['id', 'firstName', 'requestedLiters', 'emission_date', 'delivered_at', 'status'];
+  displayedColumns: string[] = ['id', 'firstName', 'requestedLiters', 'emissionDate', 'delivered_at', 'status'];
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;

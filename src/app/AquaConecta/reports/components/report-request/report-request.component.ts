@@ -36,7 +36,7 @@ export class ReportRequestComponent implements AfterViewInit {
   requests: MatTableDataSource<ReportRequestEntity> = new MatTableDataSource<ReportRequestEntity>();
 
   // Update displayedColumns to include 'title' instead of 'requested_liters'
-  displayedColumns: string[] = ['id', 'resident_name', 'title', 'emission_date', 'status'];
+  displayedColumns: string[] = ['id', 'resident_name', 'title', 'emissionDate', 'status'];
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;

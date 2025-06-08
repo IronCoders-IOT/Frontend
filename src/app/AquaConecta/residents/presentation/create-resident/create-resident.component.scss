@@ -6,7 +6,11 @@
   border-radius: 4px !important;
   font-family: 'Inter-Regular', sans-serif !important;
 }
-
+.error-msg {
+  color: #e53935;
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
 .resident-page-container {
   display: flex;
   flex-direction: column;

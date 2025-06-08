@@ -8,6 +8,7 @@ import {ResidentService} from '../../../AquaConecta/residents/services/resident.
 import {AuthService} from '../../../AquaConecta/auth/application/services/auth.service';
 import {catchError} from 'rxjs/operators';
 import {forkJoin, of} from 'rxjs';
+import {ReportdataApiService} from '../../../AquaConecta/reports/services/reportdata-api.service';
 
 @Component({
   selector: 'app-home',
@@ -46,6 +47,7 @@ export class HomeComponent implements OnInit {
     private sensordataApiService: SensordataApiService,
     private residentService: ResidentService,
     private authService: AuthService,
+    private reportdataapiservice: ReportdataApiService,
     private http: HttpClient ) {
   }
 
@@ -179,18 +181,44 @@ export class HomeComponent implements OnInit {
   }
 
   private loadReports(): void {
-    this.http.get<any[]>(`${this.apiUrl}/reports`).subscribe({
-      next: (reports) => {
-        this.reportsCount = reports.length;
-        this.reportsActive = reports.filter(report => report.status === 'active' || report.status === 'open').length;
-      },
-      error: (error) => {
-        console.error('Error loading reports:', error);
-        // Datos de ejemplo en caso de error
-        this.reportsCount = 25;
-        this.reportsActive = 7;
-      }
-    });
+  this.reportdataapiservice.getProviderProfile().subscribe({
+    next: (providerProfile) => {
+      const authenticatedProviderId = providerProfile.id;
+      console.log('🏠 Home - Proveedor autenticado:', authenticatedProviderId);
+
+      // Llamar al endpoint para obtener los reportes del proveedor
+      this.reportdataapiservice.getReportsByProviderId(authenticatedProviderId).subscribe({
+        next: (reports) => {
+          console.log('📊 Home - Reports cargados:', reports);
+
+          // Calcular estadísticas
+          this.reportsCount = reports.length;
+
+          // Filtrar reportes activos (ajusta los estados según tu backend)
+          this.reportsActive = reports.filter(report =>
+            report.status === 'ACTIVE' ||
+            report.status === 'OPEN' ||
+            report.status === 'RECEIVED' ||
+            report.status === 'IN_PROGRESS'
+          ).length;
+
+          console.log(`📈 Estadísticas - Total: ${this.reportsCount}, Activos: ${this.reportsActive}`);
+        },
+        error: (error) => {
+          console.error('❌ Error loading reports for provider:', error);
+          // Datos de ejemplo en caso de error
+          this.reportsCount = 0;
+          this.reportsActive = 0;
+        }
+      });
+    },
+    error: (error) => {
+      console.error('❌ Error loading provider profile:', error);
+      // Datos de ejemplo en caso de error
+      this.reportsCount = 0;
+      this.reportsActive = 0;
+    }
+  });
   }
 
   private loadResidents(): void {

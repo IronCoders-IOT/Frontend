@@ -95,11 +95,7 @@ export class AdminDashboardComponent implements OnInit {
             this.recentRequests = requests.slice(0, 5);
         });
 
-        // Load reports data
-        this.reportService.getAllRequests().subscribe(reports => {
-            this.totalReports = reports.length;
-            this.recentReports = reports.slice(0, 5);
-        });
+
     }
 
     fetchAllResidents(): void {

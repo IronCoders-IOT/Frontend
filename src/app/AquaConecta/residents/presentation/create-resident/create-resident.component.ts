@@ -79,47 +79,43 @@ export class CreateResidentComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.residentForm.invalid) {
-      this.residentForm.markAllAsTouched();
-      return;
-    }
-
-    this.isSubmitting = true;
-
-    // Crear instancia del modelo Resident
-    const resident = new Resident(this.residentForm.value);
-
-    const residentData = resident.toCreateRequest();
-
-    console.log('Datos del residente:', residentData);
-
-    this.residentService.createResident(residentData).subscribe({
-      next: (resident) => {
-        console.log('Respuesta del servidor:', resident);
-        this.isSubmitting = false;
-        this.snackBar.open('Resident created successfully', 'Close', {
-          duration: 3000,
-          verticalPosition: 'bottom',
-          horizontalPosition: 'center',
-          panelClass: ['custom-snackbar']
-        });
-        /*
-        setTimeout(() => {
-          this.router.navigate(['/residents']);
-        }, 1000);
-         */
-      },
-      error: (err) => {
-        console.error('Error al crear el residente:', err);
-        this.isSubmitting = false;
-
-        this.snackBar.open('Error creating resident', 'Close', {
-          duration: 3000,
-          verticalPosition: 'bottom',
-          horizontalPosition: 'center',
-          panelClass: ['custom-snackbar']
-        });
-      }
-    });
+  if (this.residentForm.invalid) {
+    this.residentForm.markAllAsTouched();
+    return;
   }
+
+  this.isSubmitting = true;
+
+  const resident = new Resident(this.residentForm.value);
+  const residentData = resident.toCreateRequest();
+
+  this.residentService.createResident(residentData).subscribe({
+    next: () => {
+      this.isSubmitting = false;
+
+      this.snackBar.open('Resident created successfully', 'Close', {
+        duration: 2000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['custom-snackbar']
+      });
+
+      // 🔁 Redirige a /residents después del mensaje
+      setTimeout(() => {
+        this.router.navigate(['/residents']);
+      }, 500); // puedes quitar el delay si no lo necesitas
+    },
+    error: (err) => {
+      console.error('Error al crear el residente:', err);
+      this.isSubmitting = false;
+
+      this.snackBar.open('Error creating resident', 'Close', {
+        duration: 3000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['custom-snackbar']
+      });
+    }
+  });
+}
 }
