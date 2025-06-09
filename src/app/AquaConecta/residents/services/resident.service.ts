@@ -19,7 +19,7 @@ export class ResidentService extends BaseService<Resident> {
   }
 
   getProvidersProfile(): Observable<any> {
-    return this.http.get<any>(`${this.basePath}profiles/me`, this.httpOptions);
+    return this.http.get<any>(`${this.basePath}providers/me`, this.httpOptions);
   }
 
   // Método que obtiene residentes por provider usando el perfil
@@ -28,11 +28,11 @@ export class ResidentService extends BaseService<Resident> {
       switchMap(profile => {
         console.log('Perfil obtenido:', profile);
 
-        // Extraer el userId del perfil (ajusta según la estructura de tu respuesta)
-        const providerId = profile.userId || profile.id || profile.providerId;
+        // Extraer el userId del perfil
+        const providerId = profile.id;
 
         if (!providerId) {
-          throw new Error('No se pudo obtener el providerId del perfil');
+          throw new Error('No se pudo obtener el ID del proveedor del perfil');
         }
 
         const url = `${this.resourcePath()}/by-provider/${providerId}`;

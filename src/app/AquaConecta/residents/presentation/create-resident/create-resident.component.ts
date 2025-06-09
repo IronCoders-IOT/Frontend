@@ -39,18 +39,38 @@ export class CreateResidentComponent implements OnInit {
       confirmPassword: ['', [Validators.required]]
     }, { validator: this.passwordMatchValidator });
 
-    // Verificar y debuggear el token
+    // Verificación más robusta de autenticación
     const token = localStorage.getItem('auth_token');
-    console.log('Token encontrado:', token ? 'SÍ' : 'NO');
-    console.log('Token value:');
+    const user = localStorage.getItem('auth_user');
 
-    if (!token) {
-      console.error('No se encontró token de autenticación');
+    console.log('=== VERIFICACIÓN DE AUTENTICACIÓN ===');
+    console.log('Token encontrado:', token ? 'SÍ' : 'NO');
+    console.log('Usuario encontrado:', user ? 'SÍ' : 'NO');
+    console.log('Token length:', token ? token.length : 0);
+
+    if (!token || !user) {
+      console.error('Usuario no autenticado - redirigiendo al login');
+      this.snackBar.open('Please log in to create residents', 'Close', {
+        duration: 3000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center'
+      });
       this.router.navigate(['/login']);
       return;
     }
 
+    try {
+      const userData = JSON.parse(user);
+      console.log('Datos del usuario:', userData);
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    console.log('=== USUARIO AUTENTICADO CORRECTAMENTE ===');
   }
+
   passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
@@ -59,47 +79,43 @@ export class CreateResidentComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.residentForm.invalid) {
-      this.residentForm.markAllAsTouched();
-      return;
-    }
-
-    this.isSubmitting = true;
-
-    // Crear instancia del modelo Resident
-    const resident = new Resident(this.residentForm.value);
-
-    const residentData = resident.toCreateRequest();
-
-    console.log('Datos del residente:', residentData);
-
-    this.residentService.createResident(residentData).subscribe({
-      next: (resident) => {
-        console.log('Respuesta del servidor:', resident);
-        this.isSubmitting = false;
-        this.snackBar.open('Resident created successfully', 'Close', {
-          duration: 3000,
-          verticalPosition: 'bottom',
-          horizontalPosition: 'center',
-          panelClass: ['custom-snackbar']
-        });
-        /*
-        setTimeout(() => {
-          this.router.navigate(['/residents']);
-        }, 1000);
-         */
-      },
-      error: (err) => {
-        console.error('Error al crear el residente:', err);
-        this.isSubmitting = false;
-
-        this.snackBar.open('Error creating resident', 'Close', {
-          duration: 3000,
-          verticalPosition: 'bottom',
-          horizontalPosition: 'center',
-          panelClass: ['custom-snackbar']
-        });
-      }
-    });
+  if (this.residentForm.invalid) {
+    this.residentForm.markAllAsTouched();
+    return;
   }
+
+  this.isSubmitting = true;
+
+  const resident = new Resident(this.residentForm.value);
+  const residentData = resident.toCreateRequest();
+
+  this.residentService.createResident(residentData).subscribe({
+    next: () => {
+      this.isSubmitting = false;
+
+      this.snackBar.open('Resident created successfully', 'Close', {
+        duration: 2000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['custom-snackbar']
+      });
+
+      // 🔁 Redirige a /residents después del mensaje
+      setTimeout(() => {
+        this.router.navigate(['/residents']);
+      }, 500); // puedes quitar el delay si no lo necesitas
+    },
+    error: (err) => {
+      console.error('Error al crear el residente:', err);
+      this.isSubmitting = false;
+
+      this.snackBar.open('Error creating resident', 'Close', {
+        duration: 3000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['custom-snackbar']
+      });
+    }
+  });
+}
 }

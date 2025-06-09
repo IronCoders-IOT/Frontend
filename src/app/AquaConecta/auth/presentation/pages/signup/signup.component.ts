@@ -1,10 +1,11 @@
-// signup.component.ts
 import { Component, OnInit, Provider } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../application/services/auth.service';
 import { ProviderApiServiceService } from '../../../../providers/services/provider-api.service.service';
+import { AuthCredentials } from '../../../domain/models/auth-credentials.model';
+import { User } from '../../../domain/models/user.model';
 
 @Component({
   selector: 'app-signup',
@@ -35,13 +36,13 @@ export class SignupComponent implements OnInit {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
-      
+
       // Step 2: Company Info
       companyName: ['', Validators.required],
       ruc: ['', Validators.required],
       documentType: ['', Validators.required],
       documentNumber: ['', Validators.required],
-      
+
       // Step 3: Security & Address
       direction: [''], // Made optional
       password: ['', [Validators.required, Validators.minLength(1)]],
@@ -146,7 +147,6 @@ export class SignupComponent implements OnInit {
       firstName: name,
       lastName: lastName
     };
-  
     console.log('Datos enviados:', { username: name, password, roles, profileData });
 
     this.authService.signup(name, password, roles, profileData).subscribe({
@@ -154,7 +154,7 @@ export class SignupComponent implements OnInit {
         this.successMessage = 'Cuenta registrada con éxito.';
         this.errorMessage = '';
         this.signupForm.reset();
-        this.onLogin();
+        this.onLogin(); // Navigate to login after successful signup
       },
       error: (error: Error) => {
         this.errorMessage = error.message || 'Registration failed. Please try again.';
@@ -162,24 +162,6 @@ export class SignupComponent implements OnInit {
       },
       complete: () => {
         this.isSubmitting = false;
-      }
-    });
-    this.profileService.CreateProvider(
-      email,
-      direction,
-      documentNumber,
-      documentType,
-      phone,
-      companyName,
-      ruc,
-      name,
-      lastName
-    ).subscribe({
-      next: () => {
-        console.log('Provider created successfully');
-      },
-      error: (error: Error) => {
-        console.error('Error creating provider:', error);
       }
     });
   }

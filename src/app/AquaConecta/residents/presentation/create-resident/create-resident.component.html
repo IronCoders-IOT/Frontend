@@ -1,7 +1,7 @@
 <app-header-content></app-header-content>
 
 <div class="form-section">
-  <h2 class="form-title">New resident</h2>
+  <h2 class="form-title">New Resident</h2>
 
   <form [formGroup]="residentForm" (ngSubmit)="onSubmit()">
     <div class="form-layout">
@@ -9,40 +9,53 @@
       <div class="form-column left-column">
         <div class="form-group">
           <label for="firstName">First Name</label>
-          <input type="text" id="firstName" formControlName="firstName" placeholder="ej. Italo"
-                 class="form-control">
+          <input type="text" id="firstName" formControlName="firstName" placeholder="ej. Italo" class="form-control">
+          <div *ngIf="residentForm.get('firstName')?.hasError('required') && residentForm.get('firstName')?.touched" class="error-msg">
+            First Name is required.
+          </div>
         </div>
 
         <div class="form-group">
-          <label for="documentType">Document type</label>
+          <label for="documentType">Document Type</label>
           <select id="documentType" formControlName="documentType" class="form-control">
-            <option value="" disabled selected>Select a document type</option>
+            <option value="" disabled>Select a document type</option>
             <option value="DNI">DNI</option>
             <option value="Passport">Passport</option>
             <option value="RUC">RUC</option>
           </select>
+          <div *ngIf="residentForm.get('documentType')?.hasError('required') && residentForm.get('documentType')?.touched" class="error-msg">
+            Document Type is required.
+          </div>
         </div>
-
       </div>
 
       <!-- Segunda columna -->
       <div class="form-column middle-column">
         <div class="form-group">
           <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" formControlName="lastName" placeholder="ej. Kunimoto"
-                 class="form-control">
+          <input type="text" id="lastName" formControlName="lastName" placeholder="ej. Kunimoto" class="form-control">
+          <div *ngIf="residentForm.get('lastName')?.hasError('required') && residentForm.get('lastName')?.touched" class="error-msg">
+            Last Name is required.
+          </div>
         </div>
 
         <div class="form-group">
           <label for="documentNumber">Document Number</label>
-          <input type="text" id="documentNumber" formControlName="documentNumber"
-                 placeholder="ej. 71323245" class="form-control">
+          <input type="text" id="documentNumber" formControlName="documentNumber" placeholder="ej. 71323245" class="form-control">
+          <div *ngIf="residentForm.get('documentNumber')?.hasError('required') && residentForm.get('documentNumber')?.touched" class="error-msg">
+            Document Number is required.
+          </div>
         </div>
 
         <div class="form-group">
-          <label for="direction">Document Number</label>
-          <input type="text" id="direction" formControlName="direction"
-                 placeholder="ej. av los las les" class="form-control">
+          <label for="direction">Direction</label>
+          <input type="text" id="direction" formControlName="direction" placeholder="ej. Av. Los Pinos 123" class="form-control">
+          <div *ngIf="residentForm.get('direction')?.hasError('required') && residentForm.get('direction')?.touched" class="error-msg">
+            Direction is required.
+          </div>
+          <div *ngIf="residentForm.get('direction')?.hasError('minlength') && residentForm.get('direction')?.touched" class="error-msg">
+            Direction must be at least 5 characters.
+          </div>
         </div>
       </div>
 
@@ -51,23 +64,47 @@
         <div class="form-group">
           <label for="email">Email</label>
           <input type="email" id="email" formControlName="email" placeholder="ej. tato@gmail.com" class="form-control">
+          <div *ngIf="residentForm.get('email')?.hasError('required') && residentForm.get('email')?.touched" class="error-msg">
+            Email is required.
+          </div>
+          <div *ngIf="residentForm.get('email')?.hasError('email') && residentForm.get('email')?.touched" class="error-msg">
+            Enter a valid email.
+          </div>
         </div>
 
         <div class="form-group">
           <label for="phone">Phone</label>
-          <input type="phone" id="phone" formControlName="phone" placeholder="ej. 979561238" class="form-control">
+          <input type="tel" id="phone" formControlName="phone" placeholder="ej. 979561238" class="form-control">
+          <div *ngIf="residentForm.get('phone')?.hasError('required') && residentForm.get('phone')?.touched" class="error-msg">
+            Phone is required.
+          </div>
+          <div *ngIf="residentForm.get('phone')?.hasError('pattern') && residentForm.get('phone')?.touched" class="error-msg">
+            Phone must have exactly 9 digits.
+          </div>
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" formControlName="password" placeholder="Password"
-                 class="form-control">
+          <input type="password" id="password" formControlName="password" placeholder="Password" class="form-control">
+          <div *ngIf="residentForm.get('password')?.hasError('required') && residentForm.get('password')?.touched" class="error-msg">
+            Password is required.
+          </div>
+          <div *ngIf="residentForm.get('password')?.hasError('minlength') && residentForm.get('password')?.touched" class="error-msg">
+            Password must be at least 6 characters.
+          </div>
         </div>
 
         <div class="form-group">
-          <label for="confirmPassword">Confirm your password</label>
-          <input type="password" id="confirmPassword" formControlName="confirmPassword"
-                 placeholder="Confirm your password" class="form-control">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirm Password" class="form-control">
+          <div *ngIf="residentForm.get('confirmPassword')?.hasError('required') && residentForm.get('confirmPassword')?.touched" class="error-msg">
+            Confirming your password is required.
+          </div>
+        </div>
+
+        <!-- Validación cruzada para coincidencia de contraseñas -->
+        <div *ngIf="residentForm.errors?.['passwordMismatch'] && residentForm.touched" class="error-msg">
+          Passwords do not match.
         </div>
       </div>
     </div>
