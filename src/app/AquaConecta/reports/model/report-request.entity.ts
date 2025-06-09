@@ -6,7 +6,13 @@ export class ReportRequestEntity {
   residentId : number;
   title: string;
   status: string;
+  description: string;
 
+  firtsName: string;
+  lastName: string;
+
+  residentAddress: string;
+  residentPhone: number;
   resident: ResidentEntity | null;
 
   constructor() {
@@ -16,5 +22,11 @@ export class ReportRequestEntity {
     this.title = "";
     this.status = "";
     this.resident = null; // CAMBIO: null en lugar de array vacío
+    this.description = "";
+
+    this.firtsName = "";
+    this.lastName = "";
+    this.residentAddress = "";
+    this.residentPhone = 0; // CAMBIO: Agregado para almacenar el teléfono del residente
   }
 }
