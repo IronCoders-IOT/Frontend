@@ -16,25 +16,16 @@
   <div class="report-info">
     <div class="resident-info">
       <h3>Resident</h3>
-      <p>{{ report.resident_name }}</p>
-      <p>{{ report.resident_address }}</p>
-      <p>{{ report.resident_phone }}</p>
+      <p>{{ report.firtsName }} {{report.lastName}} </p>
+      <p>{{ report.residentAddress }}</p>
+      <p>{{ report.residentPhone }}</p>
     </div>
 
-    <!-- Descomentar si deseas mostrar técnico
-    <div class="technician-info">
-      <h3>Technician</h3>
-      <p>{{ report.technician_name }}</p>
-      <p>{{ report.visit_date }}</p>
-      <p>{{ report.technician_company }}</p>
-      <p>{{ report.technician_phone }}</p>
-    </div>
-    -->
   </div>
 
   <div class="description-section">
-    <label for="description"><strong>Description</strong></label>
-    <textarea id="description" [(ngModel)]="report.description"></textarea>
+    <label><strong>Description</strong></label>
+    <div class="description-display">{{ report.description }}</div>
   </div>
 
   <button class="back-button" routerLink="/reports">BACK</button>
