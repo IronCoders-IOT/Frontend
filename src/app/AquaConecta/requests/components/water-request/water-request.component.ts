@@ -62,6 +62,8 @@ export class WaterRequestComponent implements AfterViewInit {
               row.delivered_at = updatedRequest.delivered_at;
               row.status = updatedRequest.status;
               this.requests.data = [...this.requests.data];
+              //RECARGA LOS DATOS DESPUÉS DE ACTUALIZAR
+              this.getAllRequests();
             },
             (error) => {
               console.error('Error updating request:', error);
@@ -81,7 +83,7 @@ export class WaterRequestComponent implements AfterViewInit {
     // Obtener perfil del proveedor autenticado
     this.sensordataApiService.getProviderProfile().subscribe(
       (providerProfile) => {
-        const authenticatedProviderId = providerProfile.userId;
+        const authenticatedProviderId = providerProfile.id;
         console.log('Proveedor autenticado:', providerProfile);
 
         // Obtener residentes del proveedor
@@ -118,6 +120,13 @@ export class WaterRequestComponent implements AfterViewInit {
           // Asignar el residente a cada request
           return requests.map(request => {
             request.resident = resident;
+            if (request.status === 'IN_PROGRESS') {
+              request.status = 'In Progress';
+            } else if (request.status === 'CLOSED') {
+              request.status = 'Closed';
+            } else if (request.status === 'RECEIVED') {
+              request.status = 'Received';
+            }
             return request;
           });
         }),

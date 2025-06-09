@@ -5,13 +5,15 @@
       <!-- Información del residente -->
       <div class="card-header">
         <div class="card-title">Resident</div>
-        <div class="card-content">{{ data?.resident_name }}</div>
+        <div class="card-content">
+          {{ data?.resident?.firstName }} {{ data?.resident?.lastName }}
+        </div>
       </div>
 
       <!-- Cantidad de agua solicitada -->
       <div class="card-header">
         <div class="card-title">Water Quantity Request (Liters)</div>
-        <div class="card-content">{{ data?.requested_liters }}</div>
+        <div class="card-content">{{ data?.requestedLiters }}</div>
       </div>
 
       <!-- Fechas -->
@@ -19,7 +21,7 @@
         <!-- Fecha de emisión -->
         <div class="header-date">
           <label class="card-title">Emission Date:</label>
-          <div class="card-content">{{ data?.delivered_at }}</div>
+          <div class="card-content">{{  data?.emissionDate | date:'medium'  }}</div>
         </div>
 
         <div class="field-group">
