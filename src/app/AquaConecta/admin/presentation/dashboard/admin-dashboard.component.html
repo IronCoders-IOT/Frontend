@@ -196,13 +196,15 @@
             <!-- Resident Column -->
             <ng-container matColumnDef="resident">
               <th mat-header-cell *matHeaderCellDef>Resident</th>
-              <td mat-cell *matCellDef="let request">{{ request.resident_name }}</td>
+              <td mat-cell *matCellDef="let request">
+                {{getResidentName(request.residentId)}}
+              </td>
             </ng-container>
 
             <!-- Date Column -->
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef>Date</th>
-              <td mat-cell *matCellDef="let request">{{ request.emission_date | date }}</td>
+              <td mat-cell *matCellDef="let request">{{ request.emissionDate | date }}</td>
             </ng-container>
 
             <!-- Status Column -->
@@ -247,7 +249,7 @@
             <!-- Date Column -->
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef>Date</th>
-              <td mat-cell *matCellDef="let report">{{ report.emission_date | date }}</td>
+              <td mat-cell *matCellDef="let report">{{ report.emissionDate | date }}</td>
             </ng-container>
 
             <!-- Status Column -->

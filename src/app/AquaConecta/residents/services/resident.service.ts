@@ -50,16 +50,26 @@ export class ResidentService extends BaseService<Resident> {
     return this.getResidentsByProvider();
   }
 
+  getAllResidents(): Observable<Resident[]> {
+    return this.http.get<Resident[]>(`${this.basePath}residents`, this.httpOptions);
+  }
+
   createResident(resident: any): Observable<Resident> {
     return this.create(resident);
   }
 
-  // Método para obtener un residente por ID
+  // Método para obtener un residente por ID, si da error em eñ view-history.component cambiar para que devuelva un array
   getResidentById(id: number): Observable<Resident> {
-    const url = `${this.resourcePath()}/{id}?userId=${id}`;
+    const url = `${this.resourcePath()}/{id}?userId=${id}`;  // URL actual
     console.log('URL para GET resident by ID:', url);
 
-    return this.http.get<Resident>(url, this.httpOptions).pipe(
+    return this.http.get<Resident[]>(url, this.httpOptions).pipe(
+      map(residents => {
+        if (residents && residents.length > 0) {
+          return residents[0];
+        }
+        throw new Error(`Resident with ID ${id} not found`);
+      }),
       retry(2),
       catchError(this.handleError)
     );
