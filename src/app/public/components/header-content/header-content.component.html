@@ -1,19 +1,19 @@
 <!-- header-content.component.html -->
 <header class="app-header">
   <div class="header-container">
-    <div class="logo" routerLink="/home">
+    <div class="logo" (click)="navigateToDashboard()">
       <h1 class="logo-text">Aqua<span class="conecta">Conecta</span></h1>
     </div>
 
     <div class="navigation">
-      <a routerLink="/residents" class="nav-item" routerLinkActive="active">Residents</a>
-      <a routerLink="/reports" class="nav-item" routerLinkActive="active">Reports</a>
-      <a routerLink="/requests" class="nav-item" routerLinkActive="active">Requests</a>
-      <a routerLink="/providers" class="nav-item" routerLinkActive="active">Providers</a>
-      <a routerLink="/login" class="nav-item" routerLinkActive="active">Logout</a>
-      <a routerLink="/signup" class="nav-item" routerLinkActive="active">Sign Up</a>
-      <a routerLink="/admin/dashboard" class="nav-item" routerLinkActive="active">Admin Dashboard</a>
-      <a routerLink="/history" class="nav-item" routerLinkActive="active">Sensor History</a>
+      <a *ngIf="username === 'provider'" routerLink="/residents" class="nav-item" routerLinkActive="active">Residents</a>
+      <a *ngIf="username === 'provider'" routerLink="/reports" class="nav-item" routerLinkActive="active">Reports</a>
+      <a *ngIf="username === 'provider'" routerLink="/requests" class="nav-item" routerLinkActive="active">Requests</a>
+
+
+      <a *ngIf="username === 'admin'" routerLink="/providers" class="nav-item" routerLinkActive="active">Providers</a>
+      <a *ngIf="username === 'admin'" routerLink="/admin/dashboard" class="nav-item" routerLinkActive="active">Admin Dashboard</a>
+
       <a routerLink="/home" class="nav-item" routerLinkActive="active">Home</a>
     </div>
   </div>

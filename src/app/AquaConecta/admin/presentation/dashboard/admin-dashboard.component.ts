@@ -22,6 +22,8 @@ import { Provider } from '../../../providers/model/provider.entity';
 import { Resident } from '../../../residents/models/resident.model';
 import { WaterRequestEntity } from '../../../requests/model/water-request.entity';
 import { ReportRequestEntity } from '../../../reports/model/report-request.entity';
+import {AuthService} from '../../../auth/application/services/auth.service';
+
 
 
 @Component({
@@ -42,7 +44,11 @@ import { ReportRequestEntity } from '../../../reports/model/report-request.entit
     ]
 })
 export class AdminDashboardComponent implements OnInit {
-    // Summary cards data
+    username: string | null = null;
+    userRole: string | null = null;
+    showProfileDropdown: boolean = false;
+
+  // Summary cards data
     totalProviders: number = 0;
     totalResidents: number = 0;
     totalSensors: number = 0;
@@ -63,6 +69,7 @@ export class AdminDashboardComponent implements OnInit {
     recentRequests: WaterRequestEntity[] = [];
     recentReports: ReportRequestEntity[] = [];
 
+
     // Table columns configuration
     providerColumns: string[] = ['id', 'name', 'date', 'status'];
     requestColumns: string[] = ['id', 'resident', 'date', 'status'];
@@ -74,11 +81,75 @@ export class AdminDashboardComponent implements OnInit {
         private providerService: ProviderApiServiceService,
         private residentService: ResidentService,
         private requestService: SensordataApiService, //water requests service no sensordata
-        private reportService: ReportdataApiService
-    ) { }
+        private reportService: ReportdataApiService,
+        private authService: AuthService
+
+) { }
 
     ngOnInit(): void {
-        this.loadDashboardData();
+      this.loadUsername();
+      this.loadDashboardData();
+    }
+  private loadUsername(): void {
+    const storedUser = localStorage.getItem('auth_user');
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        this.username = user?.username || null;
+        if(user?.username === "admin") {
+          this.userRole = user?.role || 'Administrator';
+        }else {
+          this.userRole = user?.role || 'Provider';
+        }
+        console.log(this.userRole);
+      } catch (error) {
+        console.error('Error parsing user from localStorage:', error);
+        this.username = null;
+        this.userRole = 'Provider';
+      }
+    }
+  }
+
+
+  // Profile dropdown methods
+    toggleProfileDropdown(): void {
+      this.showProfileDropdown = !this.showProfileDropdown;
+    }
+
+    getUserInitials(): string {
+      if (!this.username) return 'U';
+      return this.username
+        .split(' ')
+        .map(name => name.charAt(0).toUpperCase())
+        .slice(0, 2)
+        .join('');
+    }
+
+    logout(): void {
+
+      // Cerrar dropdown
+      this.showProfileDropdown = false;
+      console.log('=== INICIO LOGOUT COMPONENT ===');
+
+      // Verificar token ANTES del logout del servicio
+      const tokenBefore = localStorage.getItem('auth_token');
+      console.log('Token ANTES de llamar authService.logout():', tokenBefore ? 'Existe' : 'No existe');
+
+      // Limpiar estado local PRIMERO
+      console.log('Limpiando estado local del componente...');
+
+      console.log('Estado local limpiado');
+
+      // LLAMAR AL LOGOUT DEL SERVICIO
+      console.log('Llamando a authService.logout()...');
+      this.authService.logout();
+
+      // Verificar token DESPUÉS del logout del servicio
+      setTimeout(() => {
+        const tokenAfter = localStorage.getItem('auth_token');
+        console.log('Token DESPUÉS de authService.logout():', tokenAfter ? 'AÚN EXISTE!' : 'Eliminado');
+        console.log('=== FIN LOGOUT COMPONENT ===');
+      }, 100);    // Redirigir al login
     }
 
     loadDashboardData(): void {

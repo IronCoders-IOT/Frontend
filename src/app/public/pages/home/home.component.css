@@ -8,7 +8,7 @@
   justify-content: flex-start;
   text-align: center;
   font-family: 'Inter-Regular', sans-serif;
-  min-height: 100vh;
+  /*min-height: 100vh;*/
 }
 
 .welcome-section {
@@ -161,19 +161,23 @@
 
 /* Dashboard Cards Container */
 .dashboard-container {
-  width: 90%;
+  width: 87%;
+  height: 600px;
   margin-bottom: 3rem;
+  /*background-color: #667eea;*/
 }
 
 .dashboard-grid {
+  margin-top: 2rem;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 4rem;
+  margin-bottom: 1rem;
 }
 
 /* Card Styles */
 .dashboard-card {
+  height: 100%;
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
@@ -239,7 +243,7 @@
 }
 
 .card-title {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: #1e293b;
   margin: 0;
@@ -286,7 +290,7 @@
 }
 
 .card-description {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #94a3b8;
   margin-bottom: 1rem;
   line-height: 1.4;
@@ -295,7 +299,7 @@
 .card-action {
   display: inline-flex;
   align-items: center;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #2196f3;
   font-weight: 500;
   text-decoration: none;
@@ -445,7 +449,7 @@ button:hover {
 @media (max-width: 900px) {
   .dashboard-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 5rem;
   }
 }
 
