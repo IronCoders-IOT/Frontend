@@ -62,11 +62,12 @@ export class HomeComponent implements OnInit {
       try {
         const user = JSON.parse(storedUser);
         this.username = user?.username || null;
-        if(this.username === "admin") {
+        if(user?.username === "admin") {
           this.userRole = user?.role || 'Administrator';
         }else {
           this.userRole = user?.role || 'Provider';
         }
+        console.log(this.userRole);
       } catch (error) {
         console.error('Error parsing user from localStorage:', error);
         this.username = null;

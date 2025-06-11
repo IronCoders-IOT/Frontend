@@ -48,9 +48,12 @@ export class LoginComponent implements OnInit {
         this.authService.login(credentials).subscribe({
             next: (user: User) => {
               console.log('Usuario autenticado:');
-
+                if(credentials.email === "admin"){
+                  this.router.navigate(['/admin/dashboard']);
+                }else{
               // Navigate to the home page or dashboard after successful login
                 this.router.navigate(['/home']);
+                }
             },
             // Fix: Add explicit type for the error parameter
             error: (error: Error) => {

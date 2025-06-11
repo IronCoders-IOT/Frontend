@@ -3,8 +3,36 @@
 
 <div class="dashboard-container">
   <div class="dashboard-header">
-    <h1 class="dashboard-title">Admin Dashboard</h1>
-    <p class="dashboard-subtitle">Welcome to AquaConecta admin control panel</p>
+
+    <div class="welcome-section">
+      <div class="welcome-content">
+        <h1 class="dashboard-title">Admin Dashboard</h1>
+        <p class="dashboard-subtitle">Welcome to AquaConecta admin control panel</p>
+      </div>
+
+      <div class="user-profile-section">
+        <button class="profile-button" (click)="toggleProfileDropdown()">
+          <div class="profile-avatar">{{getUserInitials()}}</div>
+          <div class="profile-info">
+            <!--
+            <p class="profile-name">{{username || 'Usuario'}}</p>
+            -->
+            <p class="profile-role">{{userRole || 'Provider'}}</p>
+          </div>
+        </button>
+
+        <div class="profile-dropdown" [class.show]="showProfileDropdown">
+          <!--
+          <a class="dropdown-item" routerLink="/provider/1/profile">
+            👤 View Profile
+          </a>
+          -->
+          <a class="dropdown-item logout" (click)="logout()">
+            🚪 Sign Out
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Summary Cards Section -->
