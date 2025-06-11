@@ -27,6 +27,8 @@ import {ReportdataApiService} from '../../services/reportdata-api.service';
   styleUrl: './report-request.component.css'
 })
 export class ReportRequestComponent implements AfterViewInit {
+  username: string | null = null;
+  userRole: string | null = null;
 
   goToDetail(id: number): void {
     this.router.navigate(['/reports', id]);
@@ -51,55 +53,97 @@ export class ReportRequestComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.getAllRequests();
-
     this.requests.filterPredicate = (data: ReportRequestEntity, filter: string) => {
       return data.id.toString().toLowerCase().includes(filter);
     };
   }
+  private loadUsername(): void {
+    const storedUser = localStorage.getItem('auth_user');
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        this.username = user?.username || null;
+        console.log(this.username);
 
+      } catch (error) {
+        console.error('Error parsing user from localStorage:', error);
+        this.username = null;
+        this.userRole = 'Provider';
+      }
+    }
+  }
 
   getAllRequests(): void {
     this.isLoadingResults = true;
+    this.loadUsername();
 
-    this.reportdataApiService.getProviderProfile().subscribe(
-      (providerProfile) => {
-        const authenticatedProviderId = providerProfile.id;
-        console.log('ProveedorID autenticado:', providerProfile.id);
+    if(this.username === "admin"){
 
-        this.reportdataApiService.getReportsByProviderId(authenticatedProviderId).subscribe(
-          (response: ReportRequestEntity[]) => {
-            console.log('Reports for provider:', response);
-            /*
-            this.requests.data = response; // Set the data directly to the MatTableDataSource
-            this.isLoadingResults = false;
-            this.resultsLength = this.requests.data.length;
-            */
-            response.forEach((report) => {
-              this.reportdataApiService.getResidentById(report.residentId).subscribe(
-                (residentProfile) => {
-                  report.resident = residentProfile;
-                },
-                error => {
-                  console.error(`Error loading resident profile for report ID ${report.id}:`, error);
-                }
-              );
-            });
-            this.requests.data = response; // Set the data directly to the MatTableDataSource
-            this.isLoadingResults = false;
-            this.resultsLength = this.requests.data.length;
-            console.log('Reports loaded:', this.requests.data);
-          },
-          error => {
-            console.error('Error loading reports for provider:', error);
-            this.isLoadingResults = false;
-          }
-        )
-      },
-      error => {
-        console.error('Error loading reports:', error);
-        this.isLoadingResults = false;
-      }
-    );
+      this.reportdataApiService.getAllReports().subscribe(
+        (response) => {
+          console.log('All reports:', response);
+          response.forEach((report) => {
+            this.reportdataApiService.getResidentById(report.residentId).subscribe(
+              (residentProfile) => {
+                report.resident = residentProfile;
+              },
+              error => {
+                console.error(`Error loading resident profile for report ID ${report.id}:`, error);
+              }
+            );
+          });
+          this.requests.data = response; // Set the data directly to the MatTableDataSource
+          this.isLoadingResults = false;
+          this.resultsLength = this.requests.data.length;
+          console.log('Reports loaded:', this.requests.data);
+        },
+        error => {
+          console.error('Error loading reports:', error);
+          this.isLoadingResults = false;
+        }
+      )
+
+    }else{
+      this.reportdataApiService.getProviderProfile().subscribe(
+        (providerProfile) => {
+          const authenticatedProviderId = providerProfile.id;
+          console.log('ProveedorID autenticado:', providerProfile.id);
+
+          this.reportdataApiService.getReportsByProviderId(authenticatedProviderId).subscribe(
+            (response: ReportRequestEntity[]) => {
+              console.log('Reports for provider:', response);
+              /*
+              this.requests.data = response; // Set the data directly to the MatTableDataSource
+              this.isLoadingResults = false;
+              this.resultsLength = this.requests.data.length;
+              */
+              response.forEach((report) => {
+                this.reportdataApiService.getResidentById(report.residentId).subscribe(
+                  (residentProfile) => {
+                    report.resident = residentProfile;
+                  },
+                  error => {
+                    console.error(`Error loading resident profile for report ID ${report.id}:`, error);
+                  }
+                );
+              });
+              this.requests.data = response; // Set the data directly to the MatTableDataSource
+              this.isLoadingResults = false;
+              this.resultsLength = this.requests.data.length;
+              console.log('Reports loaded:', this.requests.data);
+            },
+            error => {
+              console.error('Error loading reports for provider:', error);
+              this.isLoadingResults = false;
+            }
+          )
+        },
+        error => {
+          console.error('Error loading reports:', error);
+          this.isLoadingResults = false;
+        }
+      );
+    }
   }
 
   applyStatusFilter(event: Event): void {
