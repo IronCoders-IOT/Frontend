@@ -151,21 +151,21 @@
             <!-- Name Column -->
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef>Company</th>
-              <td mat-cell *matCellDef="let provider">{{ provider.tax_name }}</td>
+              <td mat-cell *matCellDef="let provider">{{ provider.taxName }}</td>
             </ng-container>
 
             <!-- Date Column (mock data) -->
             <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef>Joined</th>
-              <td mat-cell *matCellDef="let provider; let i = index">{{ ['2025-05-10', '2025-05-08', '2025-05-05', '2025-05-01', '2025-04-28'][i % 5] }}</td>
+              <th mat-header-cell *matHeaderCellDef>Ruc</th>
+              <td mat-cell *matCellDef="let provider">{{ provider.ruc }}</td>
             </ng-container>
 
             <!-- Status Column (mock data) -->
             <ng-container matColumnDef="status">
               <th mat-header-cell *matHeaderCellDef>Status</th>
               <td mat-cell *matCellDef="let provider; let i = index">
-                <span class="status-badge" [ngClass]="['status-active', 'status-pending', 'status-active', 'status-active', 'status-pending'][i % 5]">
-                  {{ ['Active', 'Pending', 'Active', 'Active', 'Pending'][i % 5] }}
+                <span class="status-badge" [ngClass]="['status-active', 'status-active', 'status-active', 'status-active', 'status-active'][i % 5]">
+                  {{ ['Active', 'Active', 'Active', 'Active', 'Active'][i % 5] }}
                 </span>
               </td>
             </ng-container>

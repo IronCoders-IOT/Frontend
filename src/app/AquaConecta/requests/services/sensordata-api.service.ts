@@ -15,7 +15,7 @@ export class SensordataApiService extends BaseService<WaterRequestEntity> {
   }
 
   getProviderProfile(): Observable<any> {
-    return this.http.get<any>(`${this.basePath}profiles/me`, this.httpOptions);
+    return this.http.get<any>(`${this.basePath}providers/me`, this.httpOptions);
   }
 
   getAllRequests(): Observable<WaterRequestEntity[]> {

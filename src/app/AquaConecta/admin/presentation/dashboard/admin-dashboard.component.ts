@@ -87,6 +87,7 @@ export class AdminDashboardComponent implements OnInit {
             this.totalProviders = providers.length;
             this.recentProviders = providers.slice(0, 5);
 
+            console.log(this.recentProviders);
             // Calculate total sensors
             this.totalSensors = providers.reduce((sum, provider) => sum + provider.sensors_number, 0);
 
@@ -129,13 +130,12 @@ export class AdminDashboardComponent implements OnInit {
       });
 
       // Load reports data
-      /*
-      this.reportService.getAllRequests().subscribe(reports => {
+
+      this.reportService.getAllReports().subscribe(reports => {
         this.totalReports = reports.length;
         this.recentReports = reports.slice(0, 5);
       });
 
-       */
 
     }
 
