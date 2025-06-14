@@ -19,11 +19,15 @@ export class SensordataApiService extends BaseService<WaterRequestEntity> {
   }
 
   getAllRequests(): Observable<WaterRequestEntity[]> {
-    return this.getAll();
+    return this.http.get<WaterRequestEntity[]>(`${this.basePath}${this.resourceEndpoint}/admin`, this.httpOptions);
   }
   // se obtiene el los residentes con el providerId http://localhost:8080/api/v1/residents/by-provider/providerId, este te da el id del resident(id
   getResidentsByProviderId(providerId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.basePath}residents/by-provider/${providerId}`, this.httpOptions);
+  }
+
+  getResidentsByAdmin(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.basePath}residents/admin`, this.httpOptions);
   }
 
   getWaterRequestsByResidentId(residentId: number): Observable<WaterRequestEntity[]> {

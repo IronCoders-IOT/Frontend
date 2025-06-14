@@ -80,7 +80,7 @@ export class WaterRequestComponent implements AfterViewInit {
   getAllRequests(): void {
     this.isLoadingResults = true;
 
-    // Obtener perfil del proveedor autenticado
+    // Intentar obtener el perfil del proveedor autenticado
     this.sensordataApiService.getProviderProfile().subscribe(
       (providerProfile) => {
         const authenticatedProviderId = providerProfile.id;
@@ -99,8 +99,20 @@ export class WaterRequestComponent implements AfterViewInit {
         );
       },
       (error) => {
-        console.error('Error al obtener perfil del proveedor:', error);
-        this.isLoadingResults = false;
+        console.warn('Error al obtener perfil del proveedor. Asumiendo que el usuario es administrador:', error);
+
+        this.sensordataApiService.getAllRequests().subscribe(
+          (allRequests) => {
+            console.log('Todas las solicitudes de agua:', allRequests);
+            this.loadWaterRequestsForAdmin(); // Llama a la nueva función
+          },
+          (error) => {
+            console.error('Error al obtener todas las solicitudes de agua:', error);
+            this.requests.data = [];
+            this.isLoadingResults = false;
+            this.resultsLength = 0;
+          }
+        );
       }
     );
   }
@@ -157,6 +169,52 @@ export class WaterRequestComponent implements AfterViewInit {
     );
   }
 
+  private loadWaterRequestsForAdmin(): void {
+    // Obtener todas las water requests y todos los residentes en paralelo
+    forkJoin({
+      waterRequests: this.sensordataApiService.getAllRequests(),
+      residents: this.sensordataApiService.getResidentsByAdmin() // o el método que tengas para admin
+    }).subscribe(
+      ({ waterRequests, residents }) => {
+        // Crear un mapa de residentes por ID para búsqueda rápida
+        const residentsMap = new Map();
+        residents.forEach(resident => {
+          residentsMap.set(resident.id, resident);
+        });
+
+        // Asignar el residente correspondiente a cada water request
+        const formattedRequests = waterRequests.map(request => {
+          // Buscar el residente por ID en el mapa
+          const resident = residentsMap.get(request.residentId); // o request.resident_id, según tu modelo
+          if (resident) {
+            request.resident = resident;
+          }
+
+          // Formatear el status
+          if (request.status === 'IN_PROGRESS') {
+            request.status = 'In Progress';
+          } else if (request.status === 'CLOSED') {
+            request.status = 'Closed';
+          } else if (request.status === 'RECEIVED') {
+            request.status = 'Received';
+          }
+
+          return request;
+        });
+
+        console.log('Solicitudes de agua con residentes (admin):', formattedRequests);
+        this.requests.data = formattedRequests;
+        this.isLoadingResults = false;
+        this.resultsLength = this.requests.data.length;
+      },
+      (error) => {
+        console.error('Error al obtener datos para admin:', error);
+        this.requests.data = [];
+        this.isLoadingResults = false;
+        this.resultsLength = 0;
+      }
+    );
+  }
 
   applyStatusFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim();
