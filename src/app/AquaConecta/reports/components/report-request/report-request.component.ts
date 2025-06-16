@@ -57,6 +57,7 @@ export class ReportRequestComponent implements AfterViewInit {
       return data.id.toString().toLowerCase().includes(filter);
     };
   }
+
   private loadUsername(): void {
     const storedUser = localStorage.getItem('auth_user');
     if (storedUser) {
@@ -82,10 +83,23 @@ export class ReportRequestComponent implements AfterViewInit {
       this.reportdataApiService.getAllReports().subscribe(
         (response) => {
           console.log('All reports:', response);
+
           response.forEach((report) => {
+            // Formatear el status de cada reporte
+              if (report.status === 'IN_PROGRESS') {
+                report.status = 'In Progress';
+              } else if (report.status === 'CLOSED') {
+                report.status = 'Closed';
+              } else if (report.status === 'RECEIVED') {
+                report.status = 'Received';
+              }
+
+
             this.reportdataApiService.getResidentById(report.residentId).subscribe(
               (residentProfile) => {
                 report.resident = residentProfile;
+
+
               },
               error => {
                 console.error(`Error loading resident profile for report ID ${report.id}:`, error);
@@ -117,7 +131,16 @@ export class ReportRequestComponent implements AfterViewInit {
               this.isLoadingResults = false;
               this.resultsLength = this.requests.data.length;
               */
+              // Formatear el status de cada reporte
+
               response.forEach((report) => {
+                if (report.status === 'IN_PROGRESS') {
+                  report.status = 'In Progress';
+                } else if (report.status === 'CLOSED') {
+                  report.status = 'Closed';
+                } else if (report.status === 'RECEIVED') {
+                  report.status = 'Received';
+                }
                 this.reportdataApiService.getResidentById(report.residentId).subscribe(
                   (residentProfile) => {
                     report.resident = residentProfile;

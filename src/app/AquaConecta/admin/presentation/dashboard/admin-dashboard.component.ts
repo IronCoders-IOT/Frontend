@@ -23,6 +23,7 @@ import { Resident } from '../../../residents/models/resident.model';
 import { WaterRequestEntity } from '../../../requests/model/water-request.entity';
 import { ReportRequestEntity } from '../../../reports/model/report-request.entity';
 import {AuthService} from '../../../auth/application/services/auth.service';
+import {AdminApiServices} from '../services/admin-api.services';
 
 
 
@@ -82,6 +83,7 @@ export class AdminDashboardComponent implements OnInit {
         private residentService: ResidentService,
         private requestService: SensordataApiService, //water requests service no sensordata
         private reportService: ReportdataApiService,
+        private adminService: AdminApiServices,
         private authService: AuthService
 
 ) { }
@@ -154,7 +156,7 @@ export class AdminDashboardComponent implements OnInit {
 
     loadDashboardData(): void {
         // Load providers data
-        this.providerService.getAllProviders().subscribe(providers => {
+      this.providerService.getAllProviders().subscribe(providers => {
             this.totalProviders = providers.length;
             this.recentProviders = providers.slice(0, 5);
 
@@ -163,7 +165,7 @@ export class AdminDashboardComponent implements OnInit {
             this.totalSensors = providers.reduce((sum, provider) => sum + provider.sensors_number, 0);
 
             // Calculate financial metrics
-            this.calculateFinancialMetrics(providers);
+
         });
 
         // Load residents data - assuming we have a method to get all residents
@@ -201,12 +203,35 @@ export class AdminDashboardComponent implements OnInit {
       });
 
       // Load reports data
-
       this.reportService.getAllReports().subscribe(reports => {
         this.totalReports = reports.length;
-        this.recentReports = reports.slice(0, 5);
+        this.recentReports = reports.slice(0, 5).map(reports =>({
+          ...reports,
+          status: reports.status === 'IN_PROGRESS' ? 'In Progress' :
+            reports.status === 'CLOSED' ? 'Closed' :
+              reports.status === 'RECEIVED' ? 'Received' :
+                reports.status,
+        }));
+
+
       });
 
+      // Load admin summary data
+
+      this.adminService.getAdminSummary().subscribe({
+        next: (summary) => {
+          console.log(summary);
+          this.totalProviders = summary.totalProveedores || 85; // Default to 85 if not provided
+          this.totalResidents = summary.totalResidentes || 92; // Default to 92 if not provided
+          this.totalSensors = summary.suscripcionesActivas || 99.7; // Default to 99.7 if not provided
+
+          this.currentMonthRevenue = summary.ingresosMensual || 0; // Default to 0 if not provided
+          this.totalRevenue = summary.ingresosTotales || 0; // Default to 0 if not provided
+        },
+        error: (error) => {
+          console.error('Error loading admin summary:', error);
+        }
+      })
 
     }
 
@@ -238,40 +263,6 @@ export class AdminDashboardComponent implements OnInit {
   getResidentName(residentId: number): string {
     return this.residentNamesMap.get(residentId) || 'Cargando...';
   }
-
-  /*
-    fetchAllResidents(): void {
-        // This is a simplified approach - in a real app, you'd need to handle pagination
-        // or have an endpoint that returns the count
-        let allResidents: Resident[] = [];
-
-        // Here we're assuming we might need to fetch residents for each provider
-        this.providerService.getAllProviders().subscribe(providers => {
-            providers.forEach(provider => {
-                this.residentService.getResidentsByProvider(provider.id).subscribe(residents => {
-                    allResidents = [...allResidents, ...residents];
-                    this.totalResidents = allResidents.length;
-                });
-            });
-        });
-    }
-    */
-
-    calculateFinancialMetrics(providers: Provider[]): void {
-        // Calculate total revenue
-        // Each sensor costs 258 PEN for the first month, then 50 PEN per month
-        const totalSensors = providers.reduce((sum, provider) => sum + provider.sensors_number, 0);
-
-        // Assuming all sensors have been active for 3 months (just for example)
-        const averageMonthsActive = 3;
-
-        // First month: 258 PEN per sensor
-        // Subsequent months: 50 PEN per sensor per month
-        this.totalRevenue = totalSensors * 258 + totalSensors * 50 * (averageMonthsActive - 1);
-
-        // Current month revenue (all sensors at 50 PEN, assuming past first month)
-        this.currentMonthRevenue = totalSensors * 50;
-    }
 
     getStatusClass(value: number): string {
         if (value >= 90) return 'status-excellent';
