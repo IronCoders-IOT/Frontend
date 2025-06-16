@@ -12,9 +12,12 @@ export class SubscriptionApiServiceService extends BaseService<Subscription> {
 
   constructor(http: HttpClient) {
     super(http);
-    this.resourceEndpoint = `${environment.serverBasePath}subscriptions`;
+    this.resourceEndpoint = `subscriptions`;
   }
 
+  getAllSubscriptions() {
+    return this.getAll();
+  }
   //
   getSubscriptionsByResidentId(residentId: number): Observable<Subscription[]> {
     const url = `${this.resourceEndpoint}/resident/${residentId}`;

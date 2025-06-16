@@ -83,25 +83,6 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" formControlName="password" placeholder="Password" class="form-control">
-          <div *ngIf="residentForm.get('password')?.hasError('required') && residentForm.get('password')?.touched" class="error-msg">
-            Password is required.
-          </div>
-          <div *ngIf="residentForm.get('password')?.hasError('minlength') && residentForm.get('password')?.touched" class="error-msg">
-            Password must be at least 6 characters.
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="confirmPassword">Confirm Password</label>
-          <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirm Password" class="form-control">
-          <div *ngIf="residentForm.get('confirmPassword')?.hasError('required') && residentForm.get('confirmPassword')?.touched" class="error-msg">
-            Confirming your password is required.
-          </div>
-        </div>
-
         <!-- Validación cruzada para coincidencia de contraseñas -->
         <div *ngIf="residentForm.errors?.['passwordMismatch'] && residentForm.touched" class="error-msg">
           Passwords do not match.

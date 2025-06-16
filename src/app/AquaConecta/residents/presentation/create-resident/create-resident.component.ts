@@ -34,9 +34,7 @@ export class CreateResidentComponent implements OnInit {
       documentNumber: ['', [Validators.required]],
       direction: ['', [Validators.required, Validators.minLength(5)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]]
+      phone: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]]
     }, { validator: this.passwordMatchValidator });
 
     // Verificación más robusta de autenticación

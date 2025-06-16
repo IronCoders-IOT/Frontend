@@ -112,39 +112,11 @@
         </form>
 
         <div class="provider-stats">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fa fa-users"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>25</h3>
-                    <p>Residents</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fa fa-tint"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>{{ provider.sensors_number }}</h3>
-                    <p>Sensors</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fa fa-clipboard-list"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>12</h3>
-                    <p>Active Plans</p>
-                </div>
-            </div>
+          <div class="card-actions">
+              <button class="btn-view-details" (click)="goToDetails()">
+                  <i class="fa fa-clipboard-list"></i> View Active Plans
+              </button>
+          </div>
         </div>
-      <button (click)="logout()" class="logout-button">Cerrar sesión</button>
-        <div class="card-actions">
-            <button class="btn-view-details" (click)="goToDetails()">
-                <i class="fa fa-clipboard-list"></i> View Active Plans
-            </button>
-        </div>
-    </div>
+
 </div>
