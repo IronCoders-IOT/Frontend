@@ -56,6 +56,9 @@ export class ProviderDetailComponent implements OnInit{
     // Get provider_id from route parameters
     this.providerId = Number(this.route.snapshot.paramMap.get('id'));
 
+    this.getAllSubscriptions();
+
+
     this.providerService.getProviderById(this.providerId).subscribe(
       provider => {
         this.provider = provider;
@@ -63,6 +66,7 @@ export class ProviderDetailComponent implements OnInit{
       }
     );
 
+    /*
     // Fetch residents by provider_id
     this.residentService.getAllResidentByProviderId(this.providerId).subscribe(
       (resident) => {
@@ -89,6 +93,36 @@ export class ProviderDetailComponent implements OnInit{
         console.error('Error fetching residents:', error);
       }
     );
+
+     */
+  }
+
+  getAllSubscriptions(): void {
+    this.subscriptionService.getAllSubscriptions().subscribe(
+      (subscriptions) => {
+
+        subscriptions.forEach((subscription) => {
+          // Sumar un mes al start_date para end_date
+          const startDate = new Date(subscription.start_date);
+          const nextMonth = new Date(startDate);
+          nextMonth.setMonth(startDate.getMonth() + 1);
+          subscription.end_date = nextMonth;
+
+          // Formatear el status
+          if (subscription.status === 'ACTIVE') {
+            subscription.status = 'Active';
+          } else if (subscription.status === 'CANCELED') {
+            subscription.status = 'Canceled';
+          }
+        });
+        this.subscriptionsDataSource.data = subscriptions;
+        console.log('All subscriptions:', this.subscriptionsDataSource.data);
+
+      },
+      (error) => {
+        console.error('Error fetching all subscriptions:', error);
+      }
+    )
   }
 
   getStatusClass(status: string): string {

@@ -76,7 +76,7 @@ export class ProviderProfileComponent implements OnInit {
       const user = JSON.parse(storedUser || '{}');
       console.log('Usuario almacenado:', user);
 
-      
+
       // If we have a provider ID in the route, use it to get that specific provider's profile
       if (user.id) {
         console.log('Usando ID de la ruta:', user.id);
@@ -224,34 +224,5 @@ export class ProviderProfileComponent implements OnInit {
     retry(): void {
         this.loadProviderData();
     }
-
-  logout(): void {
-    console.log('=== INICIO LOGOUT COMPONENT ===');
-
-    // Verificar token ANTES del logout del servicio
-    const tokenBefore = localStorage.getItem('auth_token');
-    console.log('Token ANTES de llamar authService.logout():', tokenBefore ? 'Existe' : 'No existe');
-
-    // Limpiar estado local PRIMERO
-    console.log('Limpiando estado local del componente...');
-    this.provider = new Provider();
-    this.profileForm.reset();
-    this.isEditing = false;
-    this.isLoading = false;
-    this.submitInProgress = false;
-    this.loadError = false;
-    console.log('Estado local limpiado');
-
-    // LLAMAR AL LOGOUT DEL SERVICIO
-    console.log('Llamando a authService.logout()...');
-    this.authService.logout();
-
-    // Verificar token DESPUÉS del logout del servicio
-    setTimeout(() => {
-      const tokenAfter = localStorage.getItem('auth_token');
-      console.log('Token DESPUÉS de authService.logout():', tokenAfter ? 'AÚN EXISTE!' : 'Eliminado');
-      console.log('=== FIN LOGOUT COMPONENT ===');
-    }, 100);
-  }
 
 }
