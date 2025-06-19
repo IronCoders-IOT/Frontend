@@ -22,7 +22,6 @@ import { SubscriptionService } from '../../services/subscription.service';
     CommonModule,
     HeaderContentComponent,
     MatTableModule,
-    MatPaginator,
     MatSort,
     MatProgressSpinnerModule,
     MatFormFieldModule,

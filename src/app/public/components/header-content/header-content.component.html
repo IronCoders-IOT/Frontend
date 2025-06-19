@@ -14,7 +14,7 @@
       <a *ngIf="username === 'admin'" routerLink="/providers" class="nav-item" routerLinkActive="active">Providers</a>
       <a *ngIf="username === 'admin'" routerLink="/admin/dashboard" class="nav-item" routerLinkActive="active">Admin Dashboard</a>
 
-      <a routerLink="/home" class="nav-item" routerLinkActive="active">Home</a>
+      <a *ngIf="username === 'provider'" routerLink="/home" class="nav-item" routerLinkActive="active">Home</a>
     </div>
   </div>
 

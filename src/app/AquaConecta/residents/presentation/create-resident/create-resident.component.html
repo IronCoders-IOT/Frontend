@@ -3,97 +3,130 @@
 <div class="form-section">
   <h2 class="form-title">New Resident</h2>
 
-  <form [formGroup]="residentForm" (ngSubmit)="onSubmit()">
-    <div class="form-layout">
-      <!-- Primera columna -->
-      <div class="form-column left-column">
-        <div class="form-group">
-          <label for="firstName">First Name</label>
-          <input type="text" id="firstName" formControlName="firstName" placeholder="ej. Italo" class="form-control">
-          <div *ngIf="residentForm.get('firstName')?.hasError('required') && residentForm.get('firstName')?.touched" class="error-msg">
-            First Name is required.
+  <div class="main-container">
+    <!-- Formulario del residente -->
+    <div class="form-container">
+      <form [formGroup]="residentForm" (ngSubmit)="onSubmit()">
+        <div class="form-layout">
+          <!-- Primera columna -->
+          <div class="form-column left-column">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" formControlName="firstName" placeholder="ej. Italo" class="form-control">
+              <div *ngIf="residentForm.get('firstName')?.hasError('required') && residentForm.get('firstName')?.touched" class="error-msg">
+                First Name is required.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="documentType">Document Type</label>
+              <select id="documentType" formControlName="documentType" class="form-control">
+                <option value="" disabled>Select a document type</option>
+                <option value="DNI">DNI</option>
+                <option value="Passport">Passport</option>
+                <option value="RUC">RUC</option>
+              </select>
+              <div *ngIf="residentForm.get('documentType')?.hasError('required') && residentForm.get('documentType')?.touched" class="error-msg">
+                Document Type is required.
+              </div>
+            </div>
+          </div>
+
+          <!-- Segunda columna -->
+          <div class="form-column middle-column">
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" formControlName="lastName" placeholder="ej. Kunimoto" class="form-control">
+              <div *ngIf="residentForm.get('lastName')?.hasError('required') && residentForm.get('lastName')?.touched" class="error-msg">
+                Last Name is required.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="documentNumber">Document Number</label>
+              <input type="text" id="documentNumber" formControlName="documentNumber" placeholder="ej. 71323245" class="form-control">
+              <div *ngIf="residentForm.get('documentNumber')?.hasError('required') && residentForm.get('documentNumber')?.touched" class="error-msg">
+                Document Number is required.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="direction">Direction</label>
+              <input type="text" id="direction" formControlName="direction" placeholder="ej. Av. Los Pinos 123" class="form-control">
+              <div *ngIf="residentForm.get('direction')?.hasError('required') && residentForm.get('direction')?.touched" class="error-msg">
+                Direction is required.
+              </div>
+              <div *ngIf="residentForm.get('direction')?.hasError('minlength') && residentForm.get('direction')?.touched" class="error-msg">
+                Direction must be at least 5 characters.
+              </div>
+            </div>
+          </div>
+
+          <!-- Tercera columna -->
+          <div class="form-column right-column">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" formControlName="email" placeholder="ej. tato@gmail.com" class="form-control">
+              <div *ngIf="residentForm.get('email')?.hasError('required') && residentForm.get('email')?.touched" class="error-msg">
+                Email is required.
+              </div>
+              <div *ngIf="residentForm.get('email')?.hasError('email') && residentForm.get('email')?.touched" class="error-msg">
+                Enter a valid email.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" formControlName="phone" placeholder="ej. 979561238" class="form-control">
+              <div *ngIf="residentForm.get('phone')?.hasError('required') && residentForm.get('phone')?.touched" class="error-msg">
+                Phone is required.
+              </div>
+              <div *ngIf="residentForm.get('phone')?.hasError('pattern') && residentForm.get('phone')?.touched" class="error-msg">
+                Phone must have exactly 9 digits.
+              </div>
+            </div>
+
+            <!-- Validación cruzada para coincidencia de contraseñas -->
+            <div *ngIf="residentForm.errors?.['passwordMismatch'] && residentForm.touched" class="error-msg">
+              Passwords do not match.
+            </div>
           </div>
         </div>
+      </form>
+    </div>
 
-        <div class="form-group">
-          <label for="documentType">Document Type</label>
-          <select id="documentType" formControlName="documentType" class="form-control">
-            <option value="" disabled>Select a document type</option>
-            <option value="DNI">DNI</option>
-            <option value="Passport">Passport</option>
-            <option value="RUC">RUC</option>
-          </select>
-          <div *ngIf="residentForm.get('documentType')?.hasError('required') && residentForm.get('documentType')?.touched" class="error-msg">
-            Document Type is required.
-          </div>
-        </div>
-      </div>
+    <!-- Sección de pago -->
+    <div class="payment-container">
+      <div class="payment-section" [ngClass]="{'disabled': !isFormComplete}">
+        <h3 class="payment-title">Payment for Resident Registration</h3>
 
-      <!-- Segunda columna -->
-      <div class="form-column middle-column">
-        <div class="form-group">
-          <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" formControlName="lastName" placeholder="ej. Kunimoto" class="form-control">
-          <div *ngIf="residentForm.get('lastName')?.hasError('required') && residentForm.get('lastName')?.touched" class="error-msg">
-            Last Name is required.
-          </div>
+        <!-- Mensaje cuando el formulario no está completo -->
+        <div *ngIf="!isFormComplete" class="payment-disabled-message">
+          Please complete all resident information fields to enable payment
         </div>
 
-        <div class="form-group">
-          <label for="documentNumber">Document Number</label>
-          <input type="text" id="documentNumber" formControlName="documentNumber" placeholder="ej. 71323245" class="form-control">
-          <div *ngIf="residentForm.get('documentNumber')?.hasError('required') && residentForm.get('documentNumber')?.touched" class="error-msg">
-            Document Number is required.
-          </div>
+        <div class="payment-amount">
+          <span class="amount-label">Amount to pay:</span>
+          <span class="amount-value">S/ 200.00</span>
         </div>
 
-        <div class="form-group">
-          <label for="direction">Direction</label>
-          <input type="text" id="direction" formControlName="direction" placeholder="ej. Av. Los Pinos 123" class="form-control">
-          <div *ngIf="residentForm.get('direction')?.hasError('required') && residentForm.get('direction')?.touched" class="error-msg">
-            Direction is required.
-          </div>
-          <div *ngIf="residentForm.get('direction')?.hasError('minlength') && residentForm.get('direction')?.touched" class="error-msg">
-            Direction must be at least 5 characters.
-          </div>
-        </div>
-      </div>
+        <!-- Payment Brick Container -->
+        <div id="paymentBrick_container" [style.pointer-events]="!isFormComplete ? 'none' : 'auto'"></div>
 
-      <!-- Tercera columna -->
-      <div class="form-column right-column">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" formControlName="email" placeholder="ej. tato@gmail.com" class="form-control">
-          <div *ngIf="residentForm.get('email')?.hasError('required') && residentForm.get('email')?.touched" class="error-msg">
-            Email is required.
-          </div>
-          <div *ngIf="residentForm.get('email')?.hasError('email') && residentForm.get('email')?.touched" class="error-msg">
-            Enter a valid email.
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="phone">Phone</label>
-          <input type="tel" id="phone" formControlName="phone" placeholder="ej. 979561238" class="form-control">
-          <div *ngIf="residentForm.get('phone')?.hasError('required') && residentForm.get('phone')?.touched" class="error-msg">
-            Phone is required.
-          </div>
-          <div *ngIf="residentForm.get('phone')?.hasError('pattern') && residentForm.get('phone')?.touched" class="error-msg">
-            Phone must have exactly 9 digits.
-          </div>
-        </div>
-
-        <!-- Validación cruzada para coincidencia de contraseñas -->
-        <div *ngIf="residentForm.errors?.['passwordMismatch'] && residentForm.touched" class="error-msg">
-          Passwords do not match.
+        <!-- Payment status messages -->
+        <div *ngIf="paymentStatus" class="payment-status" [ngClass]="paymentStatusClass">
+          {{ paymentStatusMessage }}
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="button-container">
-      <button type="submit" class="btn-next" [disabled]="isSubmitting">
-        Next
-      </button>
+  <!-- Overlay de procesamiento -->
+  <div *ngIf="isSubmitting" class="processing-overlay success-overlay">
+    <div class="processing-message">
+      <div class="processing-spinner"></div>
+      <h3>Payment Successful! Creating Resident...</h3>
+      <p>Please wait, this may take a few moments.</p>
     </div>
-  </form>
+  </div>
 </div>
