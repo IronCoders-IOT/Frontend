@@ -14,6 +14,10 @@ export class ReportdataApiService extends BaseService<ReportRequestEntity> {
     this.resourceEndpoint = 'requests';
   }
 
+  getAllProviders(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.basePath}providers`, this.httpOptions);
+  }
+
   getProviderProfile(): Observable<any> {
     return this.http.get<any>(`${this.basePath}providers/me`, this.httpOptions);
   }

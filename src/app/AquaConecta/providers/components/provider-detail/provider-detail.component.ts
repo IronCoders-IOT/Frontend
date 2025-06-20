@@ -33,12 +33,12 @@ import {MatDialog} from '@angular/material/dialog';
 export class ProviderDetailComponent implements OnInit{
   resident: Resident[] = []; // Array to hold residents
 
-  subscriptionsDataSource = new MatTableDataSource<Subscription>();
+  subscriptionsDataSource = new MatTableDataSource<Resident>();
   subscriptions: { [residentId: number]: Subscription[] } = {};
 
   provider!: Provider;
 
-  displayedColumns: string[] = ['id', 'start_date', 'end_date', 'status'];
+  displayedColumns: string[] = ['id', 'firts_name', 'last_name', 'phone','status'];
 
 
   providerId!: number;
@@ -56,8 +56,6 @@ export class ProviderDetailComponent implements OnInit{
     // Get provider_id from route parameters
     this.providerId = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.getAllSubscriptions();
-
 
     this.providerService.getProviderById(this.providerId).subscribe(
       provider => {
@@ -66,63 +64,38 @@ export class ProviderDetailComponent implements OnInit{
       }
     );
 
-    /*
+
     // Fetch residents by provider_id
     this.residentService.getAllResidentByProviderId(this.providerId).subscribe(
-      (resident) => {
-        this.resident = resident; // Asignar los residentes obtenidos
-
-        console.log(this.resident);
-
-        this.resident.forEach((resident) => {
-          this.subscriptionService.getSubscriptionsByResidentId(resident.id).subscribe(
-            (subscriptions) => {
-              this.subscriptions[resident.id] = subscriptions;
-
-              this.subscriptionsDataSource.data = Object.values(this.subscriptions).flat();
-
-              console.log(`Subscriptions for resident ${resident.id}:`, subscriptions);
-            },
-            (error) => {
-              console.error(`Error fetching subscriptions for resident ${resident.id}:`, error);
-            }
-          );
+      (residents) => {
+        const filteredResidents: Resident[] = [];
+        residents.forEach((resident) => {
+          if (resident.providerId === this.providerId) {
+            filteredResidents.push(resident);
+          }
         });
+        this.resident = filteredResidents;
+        this.subscriptionsDataSource.data = this.resident;
+        console.log('Residentes filtrados:', filteredResidents);
+      },
+      (error) => {
+        console.error('Error fetching residents:', error);
+      }
+    );
+    this.residentService.getAllResidentByProviderId(this.providerId).subscribe(
+      (residents) => {
+        residents.forEach((resident) => {
+          resident.status = 'active'; // Asignar estado activo
+        });
+        this.resident = residents;
+        this.subscriptionsDataSource.data = this.resident;
+        console.log('Residentes actualizados:', this.resident);
       },
       (error) => {
         console.error('Error fetching residents:', error);
       }
     );
 
-     */
-  }
-
-  getAllSubscriptions(): void {
-    this.subscriptionService.getAllSubscriptions().subscribe(
-      (subscriptions) => {
-
-        subscriptions.forEach((subscription) => {
-          // Sumar un mes al start_date para end_date
-          const startDate = new Date(subscription.start_date);
-          const nextMonth = new Date(startDate);
-          nextMonth.setMonth(startDate.getMonth() + 1);
-          subscription.end_date = nextMonth;
-
-          // Formatear el status
-          if (subscription.status === 'ACTIVE') {
-            subscription.status = 'Active';
-          } else if (subscription.status === 'CANCELED') {
-            subscription.status = 'Canceled';
-          }
-        });
-        this.subscriptionsDataSource.data = subscriptions;
-        console.log('All subscriptions:', this.subscriptionsDataSource.data);
-
-      },
-      (error) => {
-        console.error('Error fetching all subscriptions:', error);
-      }
-    )
   }
 
   getStatusClass(status: string): string {

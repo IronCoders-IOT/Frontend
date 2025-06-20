@@ -27,22 +27,53 @@ import { Resident } from '../../../residents/models/resident.model';
 export class WaterRequestComponent implements AfterViewInit {
   tittle = 'Solicitud de Agua Potable';
   requests: MatTableDataSource<WaterRequestEntity> = new MatTableDataSource<WaterRequestEntity>();
-  displayedColumns: string[] = ['id', 'firstName', 'requestedLiters', 'emissionDate', 'delivered_at', 'status'];
+  displayedColumns: string[] = [];
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
   resident = new Resident();
+  username: string | null = null;
+  userRole: string | null = null;
+  isAdmin: boolean = false;
 
   constructor(private sensordataApiService: SensordataApiService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
+
+
+    this.loadUsername(); // Cargar el nombre de usuario al iniciar
+
+    this.displayedColumns = ['id', 'firstName', 'emissionDate', 'requestedLiters', 'status'];
+
+    if (!this.isAdmin) {
+      this.displayedColumns.splice(this.displayedColumns.length - 1, 0, 'delivered_at');
+    }
     this.getAllRequests();
+
     this.requests.filterPredicate = (data: WaterRequestEntity, filter: string) => {
       if (!filter.trim()) {
         return true;
       }
+
       return data.id.toString() === filter.trim();
     };
+  }
+
+  private loadUsername(): void {
+    const storedUser = localStorage.getItem('auth_user');
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        this.username = user?.username || null;
+        this.isAdmin = this.username === "admin";
+        console.log(this.username);
+      } catch (error) {
+        console.error('Error parsing user from localStorage:', error);
+        this.username = null;
+        this.userRole = 'Provider';
+        this.isAdmin = false;
+      }
+    }
   }
 
   openScheduleModal(row: WaterRequestEntity): void {

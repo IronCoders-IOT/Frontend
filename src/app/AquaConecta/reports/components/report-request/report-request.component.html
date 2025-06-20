@@ -2,18 +2,41 @@
 
 <div class="request-container">
 
-  <!-- Título y búsqueda -->
+  <!-- Título y filtros -->
   <div class="request-title-search">
     <h1 class="title-request">Report Requests</h1>
 
-    <div class="search-container">
-      <div class="input-wrapper">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00a0ff" stroke-width="2">
-          <path d="M21.71 20.29l-5.4-5.4a7.5 7.5 0 1 0-1.42 1.42l5.4 5.4a1 1 0 0 0 1.42-1.42zM10.5 17a6.5 6.5 0 1 1 6.5-6.5 6.51 6.51 0 0 1-6.5 6.5z"/>
-        </svg>
-        <input matInput (input)="applyStatusFilter($event)" placeholder="Enter ID">
-      </div>
-      <button class="search-button">Search</button>
+    <div class="filters-container">
+      <!-- Select de proveedores (solo visible para admin) -->
+      @if (isAdmin) {
+        <div class="provider-filter">
+          <mat-form-field appearance="outline" class="provider-select">
+            <mat-label>Filter by Provider</mat-label>
+            <mat-select
+              [value]="selectedProviderId"
+              (selectionChange)="onProviderChange($event.value)"
+              panelClass="provider-select-panel">
+              <mat-option [value]="null">All Providers</mat-option>
+              <mat-option *ngFor="let provider of providers" [value]="provider.id">
+                {{ provider.taxName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      }
+
+      @if(!isAdmin){
+        <!-- Búsqueda por ID -->
+        <div class="search-container">
+          <div class="input-wrapper">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00a0ff" stroke-width="2">
+              <path d="M21.71 20.29l-5.4-5.4a7.5 7.5 0 1 0-1.42 1.42l5.4 5.4a1 1 0 0 0 1.42-1.42zM10.5 17a6.5 6.5 0 1 1 6.5-6.5 6.51 6.51 0 0 1-6.5 6.5z"/>
+            </svg>
+            <input matInput (input)="applyStatusFilter($event)" placeholder="Enter ID">
+          </div>
+          <button class="search-button">Search</button>
+        </div>
+      }
     </div>
   </div>
 
@@ -76,21 +99,15 @@
 
         <!-- Filas -->
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
-            (click)="goToDetail(row.id)" 
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            (click)="goToDetail(row.id)"
             class="clickable-row">
         </tr>
 
       </table>
     </div>
-    
-    <!-- Paginador -->
-    <mat-paginator
-      [length]="resultsLength"
-      [pageSize]="10"
-      [pageSizeOptions]="[5, 10, 25, 100]"
-      showFirstLastButtons>
-    </mat-paginator>
+
+
 
   </div>
 </div>

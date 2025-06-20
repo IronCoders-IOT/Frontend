@@ -7,6 +7,7 @@ export class ReportRequestEntity {
   title: string;
   status: string;
   description: string;
+  providerId: number;
 
   firtsName: string;
   lastName: string;
@@ -24,6 +25,7 @@ export class ReportRequestEntity {
     this.resident = null; // CAMBIO: null en lugar de array vacío
     this.description = "";
 
+    this.providerId = 0;
     this.firtsName = "";
     this.lastName = "";
     this.residentAddress = "";

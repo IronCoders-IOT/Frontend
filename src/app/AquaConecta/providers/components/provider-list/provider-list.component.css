@@ -3,6 +3,11 @@
   width: 119rem;
 
 }
+
+.wrap-text {
+  white-space: normal;
+  word-wrap: break-word;
+}
 .provider-title-search{
   margin: 0 auto;
   margin-top: 3%;
@@ -121,12 +126,18 @@ th{
   font-weight: bold; /* Negrita para el texto */
 
 }
-td, th {
+th {
   color: #555555;
   font-size: 18px;
 
   font-family: "Inter-Medium", sans-serif;
+}
 
+td{
+  color: #555555;
+  font-size: 15px;
+
+  font-family: "Inter-Regular", sans-serif;
 }
 
 /* Cambiar el color de las filas al pasar el mouse */
