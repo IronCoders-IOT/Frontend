@@ -1,16 +1,15 @@
 <app-header-content></app-header-content>
 
 <div class="request-container">
-
   <div class="request-title-search">
-    <h1 class="title-request">Residents</h1>
+    <h1 class="title-request">{{ translate('residents_list_title') }}</h1>
 
     <div class="search-container">
       <div class="input-wrapper">
         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00a0ff" stroke-width="2">
           <path d="M21.71 20.29l-5.4-5.4a7.5 7.5 0 1 0-1.42 1.42l5.4 5.4a1 1 0 0 0 1.42-1.42zM10.5 17a6.5 6.5 0 1 1 6.5-6.5 6.51 6.51 0 0 1-6.5 6.5z"/>
         </svg>
-        <input matInput (input)="applyStatusFilter($event)" placeholder="Enter ID">
+        <input matInput (input)="applyStatusFilter($event)" [placeholder]="translate('search_placeholder')">
       </div>
 
       <button class="search-button">Search</button>

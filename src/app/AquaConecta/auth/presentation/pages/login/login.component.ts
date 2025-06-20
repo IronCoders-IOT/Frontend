@@ -5,13 +5,16 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../application/services/auth.service';
 import { AuthCredentials } from '../../../domain/models/auth-credentials.model';
 import {User} from '../../../domain/models/user.model';
+import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../../../shared/services/translation.service';
+import { LanguageToggleComponent } from '../../../../../shared/components/language-toggle/language-toggle.component';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule]
+    imports: [CommonModule, ReactiveFormsModule, TranslatePipe, LanguageToggleComponent]
 })
 export class LoginComponent implements OnInit {
     loginForm!: FormGroup;
@@ -21,7 +24,8 @@ export class LoginComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private translationService: TranslationService
     ) { }
 
     ngOnInit(): void {

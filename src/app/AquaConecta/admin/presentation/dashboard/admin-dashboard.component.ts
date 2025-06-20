@@ -1,6 +1,6 @@
-// admin-dashboard.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HeaderContentComponent } from '../../../../public/components/header-content/header-content.component';
+import { LanguageToggleComponent } from '../../../../shared/components/language-toggle/language-toggle.component';
 
 import { forkJoin, of } from 'rxjs';
 import { tap, switchMap, catchError } from 'rxjs/operators';
@@ -24,6 +25,8 @@ import { WaterRequestEntity } from '../../../requests/model/water-request.entity
 import { ReportRequestEntity } from '../../../reports/model/report-request.entity';
 import {AuthService} from '../../../auth/application/services/auth.service';
 import {AdminApiServices} from '../services/admin-api.services';
+import { LanguageService } from '../../../../shared/services/language.service';
+import { TranslationService } from '../../../../shared/services/translation.service';
 
 
 
@@ -34,6 +37,7 @@ import {AdminApiServices} from '../services/admin-api.services';
     standalone: true,
     imports: [
         CommonModule,
+        FormsModule,
         RouterModule,
         MatCardModule,
         MatIconModule,
@@ -41,13 +45,15 @@ import {AdminApiServices} from '../services/admin-api.services';
         MatTableModule,
         MatDividerModule,
         MatProgressBarModule,
-        HeaderContentComponent
+        HeaderContentComponent,
+        LanguageToggleComponent
     ]
 })
 export class AdminDashboardComponent implements OnInit {
     username: string | null = null;
     userRole: string | null = null;
     showProfileDropdown: boolean = false;
+    selectedLanguage: string = 'en';
 
   // Summary cards data
     totalProviders: number = 0;
@@ -76,21 +82,32 @@ export class AdminDashboardComponent implements OnInit {
     requestColumns: string[] = ['id', 'resident', 'date', 'status'];
     reportColumns: string[] = ['id', 'title', 'date', 'status'];
 
-    residentNamesMap: Map<number, string> = new Map();
-
-    constructor(
+    residentNamesMap: Map<number, string> = new Map();    constructor(
         private providerService: ProviderApiServiceService,
         private residentService: ResidentService,
         private requestService: SensordataApiService, //water requests service no sensordata
         private reportService: ReportdataApiService,
         private adminService: AdminApiServices,
-        private authService: AuthService
+        private authService: AuthService,
+        private languageService: LanguageService,
+        private translationService: TranslationService
 
 ) { }
 
     ngOnInit(): void {
       this.loadUsername();
       this.loadDashboardData();
+      
+      // Load saved language
+      const savedLanguage = localStorage.getItem('selected_language');
+      if (savedLanguage) {
+        this.selectedLanguage = savedLanguage;
+      }
+      
+      // Subscribe to language changes
+      this.languageService.currentLanguage$.subscribe(language => {
+        this.selectedLanguage = language;
+      });
     }
   private loadUsername(): void {
     const storedUser = localStorage.getItem('auth_user');
@@ -270,4 +287,23 @@ export class AdminDashboardComponent implements OnInit {
         if (value >= 50) return 'status-average';
         return 'status-poor';
     }
+
+    changeLanguage(event: any): void {
+        this.selectedLanguage = event.target.value;
+        this.languageService.changeLanguage(this.selectedLanguage);
+      }
+  
+      translate(key: string): string {
+        return this.translationService.translate(key);
+      }
+
+      translateStatus(status: string): string {
+        const statusMap: { [key: string]: string } = {
+          'Received': 'received',
+          'In Progress': 'in_progress', 
+          'Closed': 'closed',
+          'Active': 'active'
+        };
+        return this.translate(statusMap[status] || status.toLowerCase());
+      }
 }

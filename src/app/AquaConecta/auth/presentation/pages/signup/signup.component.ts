@@ -6,13 +6,16 @@ import { AuthService } from '../../../application/services/auth.service';
 import { ProviderApiServiceService } from '../../../../providers/services/provider-api.service.service';
 import { AuthCredentials } from '../../../domain/models/auth-credentials.model';
 import { User } from '../../../domain/models/user.model';
+import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../../../shared/services/translation.service';
+import { LanguageToggleComponent } from '../../../../../shared/components/language-toggle/language-toggle.component';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe, LanguageToggleComponent]
 })
 export class SignupComponent implements OnInit {
   signupForm!: FormGroup;
@@ -26,7 +29,8 @@ export class SignupComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private profileService: ProviderApiServiceService, // Assuming you have a profile service for user data
-    private router: Router
+    private router: Router,
+    private translationService: TranslationService
   ) { }
 
   ngOnInit(): void {

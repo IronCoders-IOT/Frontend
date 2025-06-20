@@ -2,10 +2,9 @@
 
 <div class="home-container">
   <!-- Welcome Section -->
-  <div class="welcome-section">
-    <div class="welcome-content">
-      <h1>Welcome <span>{{username || 'Usuario'}}</span></h1>
-      <p>Your comprehensive water management dashboard</p>
+  <div class="welcome-section">    <div class="welcome-content">
+      <h1>{{ translate('welcome') }} <span>{{username || 'Usuario'}}</span></h1>
+      <p>{{ translate('water_management_dashboard') }}</p>
     </div>
 
     <div class="user-profile-section">
@@ -17,14 +16,16 @@
           -->
           <p class="profile-role">{{userRole || 'Provider'}}</p>
         </div>
-      </button>
-
-      <div class="profile-dropdown" [class.show]="showProfileDropdown">
-        <a class="dropdown-item" routerLink="/provider/1/profile">
-          👤 View Profile
-        </a>
+      </button>      <div class="profile-dropdown" [class.show]="showProfileDropdown">        <a class="dropdown-item" routerLink="/provider/1/profile">
+          👤 {{ translate('view_profile') }}
+        </a>        <div class="dropdown-divider"></div>
+        <div class="dropdown-item language-selector" (click)="$event.stopPropagation()">
+          🌐 {{ translate('language') }}
+          <app-language-toggle></app-language-toggle>
+        </div>
+        <div class="dropdown-divider"></div>
         <a class="dropdown-item logout" (click)="logout()">
-          🚪 Sign Out
+          🚪 {{ translate('sign_out') }}
         </a>
       </div>
     </div>
@@ -35,85 +36,81 @@
     <div class="dashboard-grid">
 
       <!-- Water Requests Card -->
-      <div class="dashboard-card" routerLink="/requests">
-        <div class="card-header">
+      <div class="dashboard-card" routerLink="/requests">        <div class="card-header">
           <div class="card-icon water-requests">💧</div>
-          <h3 class="card-title">Water Requests</h3>
+          <h3 class="card-title">{{ translate('water_requests') }}</h3>
         </div>
         <div class="card-content">
           <div class="card-info">
             <p class="card-description">
-              Active water supply requests awaiting approval and processing
+              {{ translate('active_water_requests') }}
             </p>
-            <div class="status-badge status-pending">{{waterRequestsPending || '0'}} Pending</div>
-            <a class="card-action">View all requests</a>
+            <div class="status-badge status-pending">{{waterRequestsPending || '0'}} {{ translate('pending') }}</div>
+            <a class="card-action">{{ translate('view_all_requests') }}</a>
           </div>
           <div class="card-metric">
             <span class="card-number">{{waterRequestsCount || '0'}}</span>
-            <span class="card-label">Total Requests</span>
+            <span class="card-label">{{ translate('total_requests') }}</span>
           </div>
         </div>
       </div>
 
       <!-- General Requests Card -->
-      <div class="dashboard-card" routerLink="/reports">
-        <div class="card-header">
+      <div class="dashboard-card" routerLink="/reports">        <div class="card-header">
           <div class="card-icon general-requests">📋</div>
-          <h3 class="card-title">Service Reports</h3>
+          <h3 class="card-title">{{ translate('service_reports') }}</h3>
         </div>
         <div class="card-content">
           <div class="card-info">
             <p class="card-description">
-              Maintenance reports and service issues from residents
+              {{ translate('maintenance_reports') }}
             </p>
-            <div class="status-badge status-active">{{reportsActive || '0'}} Active</div>
-            <a class="card-action">View all reports</a>
+            <div class="status-badge status-active">{{reportsActive || '0'}} {{ translate('active') }}</div>
+            <a class="card-action">{{ translate('view_all_reports') }}</a>
           </div>
           <div class="card-metric">
             <span class="card-number">{{reportsCount || '0'}}</span>
-            <span class="card-label">Total Reports</span>
+            <span class="card-label">{{ translate('total_reports') }}</span>
           </div>
         </div>
       </div>
 
       <!-- Residents Card -->
-      <div class="dashboard-card" routerLink="/residents">
-        <div class="card-header">
+      <div class="dashboard-card" routerLink="/residents">        <div class="card-header">
           <div class="card-icon residents">👥</div>
-          <h3 class="card-title">Residents</h3>
+          <h3 class="card-title">{{ translate('residents') }}</h3>
         </div>
         <div class="card-content">
           <div class="card-info">
             <p class="card-description">
-              Total number of residents registered in the system
+              {{ translate('total_residents') }}
             </p>
-            <div class="status-badge status-active">Active Community</div>
-            <a class="card-action">View residents list</a>
+            <div class="status-badge status-active">{{ translate('active_community') }}</div>
+            <a class="card-action">{{ translate('view_residents_list') }}</a>
           </div>
           <div class="card-metric">
             <span class="card-number">{{residentsCount || '0'}}</span>
-            <span class="card-label">Registered</span>
+            <span class="card-label">{{ translate('registered') }}</span>
           </div>
         </div>
       </div>
 
       <!-- Sensor History Card -->
-      <div class="dashboard-card" routerLink="/history">
-        <div class="card-header">
+      <div class="dashboard-card" routerLink="/history">        <div class="card-header">
           <div class="card-icon sensors">📊</div>
-          <h3 class="card-title">Sensor Monitoring</h3>
+          <h3 class="card-title">{{ translate('sensor_monitoring') }}</h3>
         </div>
         <div class="card-content">
           <div class="card-info">
             <p class="card-description">
-              Real-time monitoring of water quality and flow sensors
+              {{ translate('realtime_monitoring') }}
             </p>
-            <div class="status-badge status-active">{{lastSensorUpdate || 'Live'}} Data</div>
-            <a class="card-action">View sensor history</a>
+            <div class="status-badge status-active">{{lastSensorUpdate || translate('live_data') }}</div>
+            <a class="card-action">{{ translate('view_sensor_history') }}</a>
           </div>
           <div class="card-metric">
             <span class="card-number">{{sensorsActive || '0'}}</span>
-            <span class="card-label">Active Sensors</span>
+            <span class="card-label">{{ translate('active_sensors') }}</span>
           </div>
         </div>
       </div>

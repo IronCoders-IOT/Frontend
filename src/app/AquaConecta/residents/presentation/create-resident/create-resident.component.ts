@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HeaderContentComponent } from '../../../../public/components/header-content/header-content.component';
 import { ResidentService } from '../../services/resident.service';
 import { Resident } from '../../models/resident.model';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../../shared/services/translation.service';
 
 declare var MercadoPago: any;
 
@@ -40,7 +42,8 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
     private formBuilder: FormBuilder,
     private router: Router,
     private residentService: ResidentService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private translationService: TranslationService
   ) {}
 
   ngOnInit(): void {
@@ -335,5 +338,9 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
       this.residentForm.markAllAsTouched();
       return;
     }
+  }
+
+  translate(key: string): string {
+    return this.translationService.translate(key);
   }
 }

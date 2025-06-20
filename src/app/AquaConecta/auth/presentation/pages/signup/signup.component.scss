@@ -14,6 +14,7 @@
   background-position: center;
   background-repeat: no-repeat;
   min-height: 100vh; // Asegura que se muestre la imagen completa
+  position: relative;
 }
 
 .signup-container {
@@ -288,6 +289,13 @@ label {
   font-family: sans-serif;
 
   margin-bottom: 20px;
+}
+
+.language-toggle-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
 }
 
 // Responsive design

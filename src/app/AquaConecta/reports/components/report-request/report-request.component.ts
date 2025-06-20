@@ -17,6 +17,9 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import {ReportdataApiService} from '../../services/reportdata-api.service';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../../shared/services/translation.service';
+import { LanguageToggleComponent } from '../../../../shared/components/language-toggle/language-toggle.component';
 
 // Interfaz para el proveedor
 interface Provider {
@@ -27,7 +30,7 @@ interface Provider {
 @Component({
   selector: 'app-report-request',
   imports: [CommonModule, HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
-    MatPaginatorModule, DatePipe, MatFormFieldModule, MatInputModule, MatSelectModule],
+    MatPaginatorModule, DatePipe, MatFormFieldModule, MatInputModule, MatSelectModule, TranslatePipe, LanguageToggleComponent],
   templateUrl: './report-request.component.html',
   standalone: true,
   styleUrl: './report-request.component.css'
@@ -54,10 +57,10 @@ export class ReportRequestComponent implements AfterViewInit {
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
-
   constructor(private router: Router,
               private reportdataApiService: ReportdataApiService,
-              private dialog: MatDialog) {}
+              private dialog: MatDialog,
+              private translationService: TranslationService) {}
 
   ngAfterViewInit(): void {
     // Implementar lógica necesaria aquí
@@ -217,7 +220,6 @@ export class ReportRequestComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
   getStatusClass(status: string): string {
     switch (status) {
       case 'Received':
@@ -228,6 +230,17 @@ export class ReportRequestComponent implements AfterViewInit {
         return 'status-closed';
       default:
         return '';
+    }
+  }
+
+  getTranslatedStatus(status: string): string {
+    switch (status) {
+      case 'Received': return this.translationService.translate('received');
+      case 'In Progress': return this.translationService.translate('in_progress');
+      case 'Closed': return this.translationService.translate('closed');
+      case 'ACTIVE': return this.translationService.translate('active');
+      case 'INACTIVE': return this.translationService.translate('inactive');
+      default: return status;
     }
   }
 }

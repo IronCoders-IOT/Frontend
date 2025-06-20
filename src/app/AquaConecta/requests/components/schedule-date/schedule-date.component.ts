@@ -3,15 +3,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 
 @Component({
   selector: 'app-schedule-date',
   standalone: true,
   templateUrl: './schedule-date.component.html',
   styleUrls: ['./schedule-date.component.css'],
-  imports: [FormsModule, DatePipe]
-
-
+  imports: [FormsModule, DatePipe, TranslatePipe]
 })
 export class ScheduleDateComponent implements OnInit {
   deliveredDateString: string = ''; // Para el ngModel del input date

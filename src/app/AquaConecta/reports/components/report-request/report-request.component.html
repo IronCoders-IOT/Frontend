@@ -4,19 +4,20 @@
 
   <!-- Título y filtros -->
   <div class="request-title-search">
-    <h1 class="title-request">Report Requests</h1>
+    <h1 class="title-request">{{ 'report_requests_title' | translate }}</h1>
+    <app-language-toggle></app-language-toggle>
 
     <div class="filters-container">
       <!-- Select de proveedores (solo visible para admin) -->
       @if (isAdmin) {
         <div class="provider-filter">
           <mat-form-field appearance="outline" class="provider-select">
-            <mat-label>Filter by Provider</mat-label>
+            <mat-label>{{ 'filter_by_provider' | translate }}</mat-label>
             <mat-select
               [value]="selectedProviderId"
               (selectionChange)="onProviderChange($event.value)"
               panelClass="provider-select-panel">
-              <mat-option [value]="null">All Providers</mat-option>
+              <mat-option [value]="null">{{ 'all_providers' | translate }}</mat-option>
               <mat-option *ngFor="let provider of providers" [value]="provider.id">
                 {{ provider.taxName }}
               </mat-option>
@@ -32,9 +33,9 @@
             <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00a0ff" stroke-width="2">
               <path d="M21.71 20.29l-5.4-5.4a7.5 7.5 0 1 0-1.42 1.42l5.4 5.4a1 1 0 0 0 1.42-1.42zM10.5 17a6.5 6.5 0 1 1 6.5-6.5 6.51 6.51 0 0 1-6.5 6.5z"/>
             </svg>
-            <input matInput (input)="applyStatusFilter($event)" placeholder="Enter ID">
+            <input matInput (input)="applyStatusFilter($event)" [placeholder]="'search_placeholder' | translate">
           </div>
-          <button class="search-button">Search</button>
+          <button class="search-button">{{ 'search_button' | translate }}</button>
         </div>
       }
     </div>
@@ -48,10 +49,9 @@
       <div class="example-loading-shade">
         @if (isLoadingResults) {
           <mat-spinner></mat-spinner>
-        }
-        @if (isRateLimitReached) {
+        }        @if (isRateLimitReached) {
           <div class="example-rate-limit-reached">
-            GitHub's API rate limit has been reached. It will be reset in one minute.
+            {{ 'github_rate_limit' | translate }}
           </div>
         }
       </div>
@@ -63,13 +63,13 @@
 
         <!-- ID -->
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'id' | translate }}</th>
           <td mat-cell *matCellDef="let row">{{ row.id }}</td>
         </ng-container>
 
         <!-- Resident -->
         <ng-container matColumnDef="resident_name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Resident</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'resident' | translate }}</th>
           <td mat-cell *matCellDef="let row">
             {{ row.resident[0]?.firstName }} {{ row.resident[0]?.lastName }}
           </td>
@@ -77,22 +77,22 @@
 
         <!-- Title -->
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'title' | translate }}</th>
           <td mat-cell *matCellDef="let row">{{ row.title }}</td>
         </ng-container>
 
         <!-- Emission Date -->
         <ng-container matColumnDef="emissionDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Emission Date</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'emission_date' | translate }}</th>
           <td mat-cell *matCellDef="let row">{{ row.emissionDate | date }}</td>
         </ng-container>
 
         <!-- Status -->
         <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'status' | translate }}</th>
           <td mat-cell *matCellDef="let row">
             <span class="custom-cell-status" [ngClass]="getStatusClass(row.status)">
-              {{ row.status }}
+              {{ getTranslatedStatus(row.status) }}
             </span>
           </td>
         </ng-container>

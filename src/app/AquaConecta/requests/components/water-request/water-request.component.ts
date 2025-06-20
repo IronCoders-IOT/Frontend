@@ -15,11 +15,14 @@ import {MatInputModule} from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { ScheduleDateComponent } from '../schedule-date/schedule-date.component';
 import { Resident } from '../../../residents/models/resident.model';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../../shared/services/translation.service';
+import { LanguageToggleComponent } from '../../../../shared/components/language-toggle/language-toggle.component';
 
 @Component({
   selector: 'app-water-request',
   imports: [CommonModule,HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
-    MatPaginatorModule, DatePipe, MatFormFieldModule,MatInputModule],
+    MatPaginatorModule, DatePipe, MatFormFieldModule,MatInputModule, TranslatePipe, LanguageToggleComponent],
   templateUrl: './water-request.component.html',
   standalone: true,
   styleUrl: './water-request.component.css'
@@ -36,7 +39,7 @@ export class WaterRequestComponent implements AfterViewInit {
   userRole: string | null = null;
   isAdmin: boolean = false;
 
-  constructor(private sensordataApiService: SensordataApiService, private dialog: MatDialog) {}
+  constructor(private sensordataApiService: SensordataApiService, private dialog: MatDialog, private translationService: TranslationService) {}
 
   ngOnInit(): void {
 
@@ -278,7 +281,6 @@ export class WaterRequestComponent implements AfterViewInit {
       )
       .subscribe();
   }
-
   getStatusClass(status: string): string {
     switch (status) {
       case 'Received':
@@ -289,6 +291,17 @@ export class WaterRequestComponent implements AfterViewInit {
         return 'status-closed';
       default:
         return '';
+    }
+  }
+
+  getTranslatedStatus(status: string): string {
+    switch (status) {
+      case 'Received': return this.translationService.translate('received');
+      case 'In Progress': return this.translationService.translate('in_progress');
+      case 'Closed': return this.translationService.translate('closed');
+      case 'ACTIVE': return this.translationService.translate('active');
+      case 'INACTIVE': return this.translationService.translate('inactive');
+      default: return status;
     }
   }
 }

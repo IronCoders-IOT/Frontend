@@ -9,6 +9,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { HeaderContentComponent } from '../../../../public/components/header-content/header-content.component';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../../shared/services/translation.service';
+import { LanguageToggleComponent } from '../../../../shared/components/language-toggle/language-toggle.component';
 
 import { Resident } from '../../models/resident.model';
 import { SubscriptionModel } from '../../models/subscription.model';
@@ -25,7 +28,9 @@ import { SubscriptionService } from '../../services/subscription.service';
     MatSort,
     MatProgressSpinnerModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    TranslatePipe,
+    LanguageToggleComponent
   ],
   templateUrl: './view-history.component.html',
   styleUrl: './view-history.component.css'
@@ -40,12 +45,12 @@ export class ViewHistoryComponent implements OnInit {
   displayedColumns: string[] = ['id', 'sensorId', 'startDate', 'endDate', 'status'];
   isLoadingResults = true;
   error: string | null = null;
-
   constructor(
     private route: ActivatedRoute,
     private residentService: ResidentService,
     private subscriptionService: SubscriptionService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private translationService: TranslationService
   ) {}
 
   ngOnInit(): void {
@@ -85,12 +90,22 @@ export class ViewHistoryComponent implements OnInit {
       }
     });
   }
-
   getStatusClass(status: string): string {
     switch (status.toUpperCase()) {
       case 'ACTIVE': return 'status-active';
       case 'INACTIVE': return 'status-inactive';
       default: return 'status-unknown';
+    }
+  }
+
+  getTranslatedStatus(status: string): string {
+    switch (status.toUpperCase()) {
+      case 'ACTIVE': return this.translationService.translate('active');
+      case 'INACTIVE': return this.translationService.translate('inactive');
+      case 'RECEIVED': return this.translationService.translate('received');
+      case 'IN_PROGRESS': return this.translationService.translate('in_progress');
+      case 'CLOSED': return this.translationService.translate('closed');
+      default: return status;
     }
   }
 }

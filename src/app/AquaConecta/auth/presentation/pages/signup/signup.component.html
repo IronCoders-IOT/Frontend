@@ -1,7 +1,12 @@
 <!-- signup.component.html -->   
  
 <div class="signup-wrapper">
- <div class="image-section"></div>
+ <div class="image-section">
+   <!-- Componente de cambio de idioma -->
+   <div class="language-toggle-container">
+     <app-language-toggle></app-language-toggle>
+   </div>
+ </div>
 <div class="signup-container">
 
   <div class="form-container">
@@ -27,219 +32,204 @@
     </div>
 
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-      
-      <!-- Step 1: Essential Info -->
+        <!-- Step 1: Essential Info -->
       <div class="form-step" [class.active]="isStepActive(1)" *ngIf="isStepActive(1)">
-        <h3 class="form-section-title">Let's get started</h3>
+        <h3 class="form-section-title">{{ 'lets_get_started' | translate }}</h3>
         
         <div class="form-row">
           <div class="form-group">
-            <label for="name">First Name</label>
+            <label for="name">{{ 'first_name' | translate }}</label>
             <input 
               type="text" 
               id="name" 
               formControlName="name" 
               class="form-control"
               [class.invalid]="isFieldInvalid('name')"
-              placeholder="John">
+              [placeholder]="'first_name_placeholder' | translate">
             <div class="error-message" *ngIf="hasError('name', 'required')">
-              First name is required
+              {{ 'first_name_required' | translate }}
             </div>
           </div>
           
           <div class="form-group">
-            <label for="lastName">Last Name</label>
+            <label for="lastName">{{ 'last_name' | translate }}</label>
             <input 
               type="text" 
               id="lastName" 
               formControlName="lastName" 
               class="form-control"
               [class.invalid]="isFieldInvalid('lastName')"
-              placeholder="Doe">
+              [placeholder]="'last_name_placeholder' | translate">
             <div class="error-message" *ngIf="hasError('lastName', 'required')">
-              Last name is required
+              {{ 'last_name_required' | translate }}
             </div>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email Address</label>
+        </div>        <div class="form-group">
+          <label for="email">{{ 'email_address' | translate }}</label>
           <input 
             type="email" 
             id="email" 
             formControlName="email" 
             class="form-control"
             [class.invalid]="isFieldInvalid('email')"
-            placeholder="john@company.com">
+            [placeholder]="'email_placeholder' | translate">
           <div class="error-message" *ngIf="hasError('email', 'required')">
-            Email is required
+            {{ 'email_required' | translate }}
           </div>
           <div class="error-message" *ngIf="hasError('email', 'email')">
-            Please enter a valid email
+            {{ 'email_invalid' | translate }}
           </div>
         </div>
 
         <div class="form-group">
-          <label for="phone">Phone Number</label>
+          <label for="phone">{{ 'phone_number' | translate }}</label>
           <input 
             type="tel" 
             id="phone" 
             formControlName="phone" 
             class="form-control"
             [class.invalid]="isFieldInvalid('phone')"
-            placeholder="+51 999 999 999">
+            [placeholder]="'phone_placeholder' | translate">
           <div class="error-message" *ngIf="hasError('phone', 'required')">
-            Phone is required
+            {{ 'phone_required' | translate }}
           </div>
         </div>
 
         <div class="button-group">
           <button type="button" class="btn btn-primary" (click)="nextStep()">
-            Continue
+            {{ 'continue' | translate }}
           </button>
         </div>
-      </div>
-
-      <!-- Step 2: Company Info -->
+      </div>      <!-- Step 2: Company Info -->
       <div class="form-step" [class.active]="isStepActive(2)" *ngIf="isStepActive(2)">
-        <h3 class="form-section-title">Company Information</h3>
+        <h3 class="form-section-title">{{ 'company_information' | translate }}</h3>
         
         <div class="form-group">
-          <label for="companyName">Company Name</label>
+          <label for="companyName">{{ 'company_name' | translate }}</label>
           <input 
             type="text" 
             id="companyName" 
             formControlName="companyName" 
             class="form-control"
             [class.invalid]="isFieldInvalid('companyName')"
-            placeholder="Your Company Ltd.">
+            [placeholder]="'company_placeholder' | translate">
           <div class="error-message" *ngIf="hasError('companyName', 'required')">
-            Company name is required
+            {{ 'company_required' | translate }}
           </div>
-        </div>
-
-        <div class="form-row">
+        </div>        <div class="form-row">
           <div class="form-group">
-            <label for="ruc">RUC</label>
+            <label for="ruc">{{ 'ruc' | translate }}</label>
             <input 
               type="text" 
               id="ruc" 
               formControlName="ruc" 
               class="form-control"
               [class.invalid]="isFieldInvalid('ruc')"
-              placeholder="20123456789">
+              [placeholder]="'ruc_placeholder' | translate">
             <div class="error-message" *ngIf="hasError('ruc', 'required')">
-              RUC is required
+              {{ 'ruc_required' | translate }}
             </div>
           </div>
           
           <div class="form-group">
-            <label for="documentType">ID Type</label>
+            <label for="documentType">{{ 'id_type' | translate }}</label>
             <select 
               id="documentType" 
               formControlName="documentType" 
               class="form-control"
               [class.invalid]="isFieldInvalid('documentType')">
-              <option value="">Select</option>
-              <option value="dni">DNI</option>
-              <option value="passport">Passport</option>
-              <option value="carnet">Carnet</option>
+              <option value="">{{ 'select' | translate }}</option>
+              <option value="dni">{{ 'dni' | translate }}</option>
+              <option value="passport">{{ 'passport' | translate }}</option>
+              <option value="carnet">{{ 'carnet' | translate }}</option>
             </select>
             <div class="error-message" *ngIf="hasError('documentType', 'required')">
-              Document type is required
+              {{ 'document_type_required' | translate }}
             </div>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label for="documentNumber">Document Number</label>
+        </div>        <div class="form-group">
+          <label for="documentNumber">{{ 'document_number' | translate }}</label>
           <input 
             type="text" 
             id="documentNumber" 
             formControlName="documentNumber" 
             class="form-control"
             [class.invalid]="isFieldInvalid('documentNumber')"
-            placeholder="12345678">
+            [placeholder]="'document_number_placeholder' | translate">
           <div class="error-message" *ngIf="hasError('documentNumber', 'required')">
-            Document number is required
+            {{ 'document_number_required' | translate }}
           </div>
         </div>
 
         <div class="button-group">
           <button type="button" class="btn btn-secondary" (click)="prevStep()">
-            Back
+            {{ 'back' | translate }}
           </button>
           <button type="button" class="btn btn-primary" (click)="nextStep()">
-            Continue
+            {{ 'continue' | translate }}
           </button>
         </div>
-      </div>
-
-      <!-- Step 3: Security & Address -->
+      </div>      <!-- Step 3: Security & Address -->
       <div class="form-step" [class.active]="isStepActive(3)" *ngIf="isStepActive(3)">
-        <h3 class="form-section-title">Almost done!</h3>
+        <h3 class="form-section-title">{{ 'almost_done' | translate }}</h3>
         
         <div class="form-group">
           <label for="direction">
-            Address 
-            <span class="optional-badge">Optional</span>
+            {{ 'address' | translate }}
+            <span class="optional-badge">{{ 'optional' | translate }}</span>
           </label>
           <input 
             type="text" 
             id="direction" 
             formControlName="direction" 
             class="form-control"
-            placeholder="123 Main Street, Lima">
-        </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
+            [placeholder]="'address_placeholder' | translate">
+        </div>        <div class="form-group">
+          <label for="password">{{ 'password' | translate }}</label>
           <input 
             type="password" 
             id="password" 
             formControlName="password" 
             class="form-control"
             [class.invalid]="isFieldInvalid('password')"
-            placeholder="At least 8 characters">
+            [placeholder]="'password_signup_placeholder' | translate">
           <div class="error-message" *ngIf="hasError('password', 'required')">
-            Password is required
+            {{ 'password_required' | translate }}
           </div>
           <div class="error-message" *ngIf="hasError('password', 'minlength')">
-            Password must be at least 8 characters
+            {{ 'password_signup_minlength' | translate }}
           </div>
         </div>
 
         <div class="form-group">
-          <label for="confirmPassword">Confirm Password</label>
+          <label for="confirmPassword">{{ 'confirm_password' | translate }}</label>
           <input 
             type="password" 
             id="confirmPassword" 
             formControlName="confirmPassword" 
             class="form-control"
             [class.invalid]="isFieldInvalid('confirmPassword') || signupForm.hasError('passwordMismatch')"
-            placeholder="Repeat your password">
+            [placeholder]="'confirm_password_placeholder' | translate">
           <div class="error-message" *ngIf="hasError('confirmPassword', 'required')">
-            Password confirmation is required
+            {{ 'confirm_password_required' | translate }}
           </div>
           <div class="error-message" *ngIf="signupForm.hasError('passwordMismatch') && signupForm.get('confirmPassword')?.touched">
-            Passwords do not match
+            {{ 'passwords_no_match' | translate }}
           </div>
-        </div>
-
-        <div class="button-group">
+        </div>        <div class="button-group">
           <button type="button" class="btn btn-secondary" (click)="prevStep()">
-            Back
+            {{ 'back' | translate }}
           </button>
           <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
-            {{ isSubmitting ? 'Creating account...' : 'Create Account' }}
+            {{ isSubmitting ? ('creating_account' | translate) : ('create_account' | translate) }}
           </button>
         </div>
       </div>
     </form>
 
     <div class="login-section">
-      <span>Already have an account?</span>
-      <a (click)="goToLogin()" class="login-link">Sign in here</a>
+      <span>{{ 'already_have_account' | translate }}</span>
+      <a (click)="goToLogin()" class="login-link">{{ 'sign_in_here' | translate }}</a>
     </div>
   </div>
 </div>

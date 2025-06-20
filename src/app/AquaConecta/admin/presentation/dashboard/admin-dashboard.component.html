@@ -4,10 +4,9 @@
 <div class="dashboard-container">
   <div class="dashboard-header">
 
-    <div class="welcome-section">
-      <div class="welcome-content">
-        <h1 class="dashboard-title">Admin Dashboard</h1>
-        <p class="dashboard-subtitle">Welcome to AquaConecta admin control panel</p>
+    <div class="welcome-section">      <div class="welcome-content">
+        <h1 class="dashboard-title">{{ translate('admin_dashboard') }}</h1>
+        <p class="dashboard-subtitle">{{ translate('manage_system') }}</p>
       </div>
 
       <div class="user-profile-section">
@@ -17,18 +16,22 @@
             <!--
             <p class="profile-name">{{username || 'Usuario'}}</p>
             -->
-            <p class="profile-role">{{userRole || 'Provider'}}</p>
+            <p class="profile-role">{{userRole || 'Administrator'}}</p>
           </div>
-        </button>
-
-        <div class="profile-dropdown" [class.show]="showProfileDropdown">
+        </button>        <div class="profile-dropdown" [class.show]="showProfileDropdown">
           <!--
           <a class="dropdown-item" routerLink="/provider/1/profile">
             👤 View Profile
           </a>
           -->
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-item language-selector" (click)="$event.stopPropagation()">
+            🌐 {{ translate('language') }}
+            <app-language-toggle></app-language-toggle>
+          </div>
+          <div class="dropdown-divider"></div>
           <a class="dropdown-item logout" (click)="logout()">
-            🚪 Sign Out
+            🚪 {{ translate('sign_out') }}
           </a>
         </div>
       </div>
@@ -41,9 +44,8 @@
       <mat-card-content>
         <div class="card-icon-container blue">
           <mat-icon>business</mat-icon>
-        </div>
-        <div class="card-data">
-          <h3>Total Providers</h3>
+        </div>        <div class="card-data">
+          <h3>{{ translate('providers') }}</h3>
           <p class="card-value">{{ totalProviders }}</p>
         </div>
       </mat-card-content>
@@ -55,7 +57,7 @@
           <mat-icon>people</mat-icon>
         </div>
         <div class="card-data">
-          <h3>Total Residents</h3>
+          <h3>{{ translate('residents') }}</h3>
           <p class="card-value">{{ totalResidents }}</p>
         </div>
       </mat-card-content>
@@ -67,7 +69,7 @@
           <mat-icon>sensors</mat-icon>
         </div>
         <div class="card-data">
-          <h3>Active Sensors</h3>
+          <h3>{{ translate('active_sensors') }}</h3>
           <p class="card-value">{{ totalSensors }}</p>
         </div>
       </mat-card-content>
@@ -77,153 +79,137 @@
       <mat-card-content>
         <div class="card-icon-container orange">
           <mat-icon>assignment</mat-icon>
-        </div>
-        <div class="card-data">
-          <h3>Reports & Requests</h3>
+        </div>        <div class="card-data">
+          <h3>{{ translate('reports_requests') }}</h3>
           <p class="card-value">{{ totalReports + totalRequests }}</p>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
-
   <!-- Financial Summary -->
   <div class="dashboard-section">
     <div class="section-header">
-      <h2>Financial Overview</h2>
+      <h2>{{ translate('financial_overview') }}</h2>
     </div>
     <div class="finance-cards">
-      <mat-card class="finance-card light-card">
-        <mat-card-content>
+      <mat-card class="finance-card light-card">        <mat-card-content>
           <div class="finance-card-header">
-            <h3>Total Revenue</h3>
+            <h3>{{ translate('total_revenue') }}</h3>
             <mat-icon>monetization_on</mat-icon>
           </div>
           <p class="finance-value">S/. {{ totalRevenue.toLocaleString() }}</p>
-          <p class="finance-description">Total revenue generated from all sensors</p>
+          <p class="finance-description">{{ translate('total_revenue_description') }}</p>
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="finance-card light-card">
-        <mat-card-content>
+      <mat-card class="finance-card light-card">        <mat-card-content>
           <div class="finance-card-header">
-            <h3>Current Month Revenue</h3>
+            <h3>{{ translate('current_month_revenue') }}</h3>
             <mat-icon>date_range</mat-icon>
           </div>
           <p class="finance-value">S/. {{ currentMonthRevenue.toLocaleString() }}</p>
-          <p class="finance-description">Projected revenue for the current month</p>
+          <p class="finance-description">{{ translate('current_month_revenue_description') }}</p>
         </mat-card-content>
       </mat-card>
     </div>
   </div>
-
   <!-- Status Overview Section -->
   <div class="dashboard-section">
     <div class="section-header">
-      <h2>System Health Status</h2>
+      <h2>{{ translate('system_health_status') }}</h2>
     </div>
     <div class="status-overview">
-      <mat-card class="status-card light-card">
-        <mat-card-content>
+      <mat-card class="status-card light-card">        <mat-card-content>
           <div class="status-header">
-            <h3>Water Quality</h3>
+            <h3>{{ translate('water_quality') }}</h3>
             <span class="status-value" [ngClass]="getStatusClass(waterQualityAverage)">{{ waterQualityAverage }}%</span>
           </div>
           <mat-progress-bar mode="determinate" [value]="waterQualityAverage" [ngClass]="getStatusClass(waterQualityAverage)"></mat-progress-bar>
-          <p class="status-description">Average water quality across all providers</p>
+          <p class="status-description">{{ translate('water_quality_description') }}</p>
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="status-card light-card">
-        <mat-card-content>
+      <mat-card class="status-card light-card">        <mat-card-content>
           <div class="status-header">
-            <h3>Sensor Health</h3>
+            <h3>{{ translate('sensor_health') }}</h3>
             <span class="status-value" [ngClass]="getStatusClass(sensorHealthAverage)">{{ sensorHealthAverage }}%</span>
           </div>
           <mat-progress-bar mode="determinate" [value]="sensorHealthAverage" [ngClass]="getStatusClass(sensorHealthAverage)"></mat-progress-bar>
-          <p class="status-description">Overall sensor operational status</p>
+          <p class="status-description">{{ translate('sensor_health_description') }}</p>
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="status-card light-card">
-        <mat-card-content>
+      <mat-card class="status-card light-card">        <mat-card-content>
           <div class="status-header">
-            <h3>System Uptime</h3>
+            <h3>{{ translate('system_uptime') }}</h3>
             <span class="status-value" [ngClass]="getStatusClass(systemUptimeAverage)">{{ systemUptimeAverage }}%</span>
           </div>
           <mat-progress-bar mode="determinate" [value]="systemUptimeAverage" [ngClass]="getStatusClass(systemUptimeAverage)"></mat-progress-bar>
-          <p class="status-description">AquaConecta system availability</p>
+          <p class="status-description">{{ translate('system_uptime_description') }}</p>
         </mat-card-content>
       </mat-card>
     </div>
   </div>
-
   <!-- Recent Activity Section -->
   <div class="dashboard-section">
     <div class="section-header">
-      <h2>Recent Activity</h2>
+      <h2>{{ translate('recent_activity') }}</h2>
     </div>
-    <div class="activity-grid">
-      <!-- Recent Providers -->
+    <div class="activity-grid">      <!-- Recent Providers -->
       <mat-card class="activity-card light-card">
         <mat-card-header>
-          <mat-card-title>New Providers</mat-card-title>
+          <mat-card-title>{{ translate('new_providers') }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <table mat-table [dataSource]="recentProviders" class="activity-table">
-            <!-- ID Column -->
+          <table mat-table [dataSource]="recentProviders" class="activity-table">            <!-- ID Column -->
             <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef>ID</th>
+              <th mat-header-cell *matHeaderCellDef>{{ translate('id') }}</th>
               <td mat-cell *matCellDef="let provider">{{ provider.id }}</td>
             </ng-container>
 
             <!-- Name Column -->
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Company</th>
+              <th mat-header-cell *matHeaderCellDef>{{ translate('company') }}</th>
               <td mat-cell *matCellDef="let provider">{{ provider.taxName }}</td>
             </ng-container>
 
             <!-- Date Column (mock data) -->
             <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef>Ruc</th>
+              <th mat-header-cell *matHeaderCellDef>{{ translate('ruc') }}</th>
               <td mat-cell *matCellDef="let provider">{{ provider.ruc }}</td>
             </ng-container>
 
             <!-- Status Column (mock data) -->
             <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <th mat-header-cell *matHeaderCellDef>{{ translate('status') }}</th>
               <td mat-cell *matCellDef="let provider; let i = index">
                 <span class="status-badge" [ngClass]="['status-active', 'status-active', 'status-active', 'status-active', 'status-active'][i % 5]">
-                  {{ ['Active', 'Active', 'Active', 'Active', 'Active'][i % 5] }}
+                  {{ translate('active') }}
                 </span>
               </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="providerColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: providerColumns;"></tr>
-          </table>
-
-          <div class="view-all-container">
-            <a routerLink="/providers" class="view-all-link">View all providers</a>
+          </table>          <div class="view-all-container">
+            <a routerLink="/providers" class="view-all-link">{{ translate('view_all_providers') }}</a>
           </div>
         </mat-card-content>
-      </mat-card>
-
-      <!-- Recent Water Requests -->
+      </mat-card>      <!-- Recent Water Requests -->
       <mat-card class="activity-card light-card">
         <mat-card-header>
-          <mat-card-title>Recent Water Requests</mat-card-title>
+          <mat-card-title>{{ translate('recent_water_requests') }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <table mat-table [dataSource]="recentRequests" class="activity-table">
-            <!-- ID Column -->
+          <table mat-table [dataSource]="recentRequests" class="activity-table">            <!-- ID Column -->
             <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef>ID</th>
+              <th mat-header-cell *matHeaderCellDef>{{ translate('id') }}</th>
               <td mat-cell *matCellDef="let request">{{ request.id }}</td>
             </ng-container>
 
             <!-- Resident Column -->
             <ng-container matColumnDef="resident">
-              <th mat-header-cell *matHeaderCellDef>Resident</th>
+              <th mat-header-cell *matHeaderCellDef>{{ translate('resident') }}</th>
               <td mat-cell *matCellDef="let request">
                 {{getResidentName(request.residentId)}}
               </td>
@@ -231,71 +217,64 @@
 
             <!-- Date Column -->
             <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <th mat-header-cell *matHeaderCellDef>{{ translate('date') }}</th>
               <td mat-cell *matCellDef="let request">{{ request.emissionDate | date }}</td>
             </ng-container>
 
             <!-- Status Column -->
             <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <th mat-header-cell *matHeaderCellDef>{{ translate('status') }}</th>
               <td mat-cell *matCellDef="let request">
                 <span class="status-badge" [ngClass]="{'status-received': request.status === 'Received', 'status-in-progress': request.status === 'In Progress', 'status-closed': request.status === 'Closed'}">
-                  {{ request.status }}
+                  {{ translateStatus(request.status) }}
                 </span>
               </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="requestColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: requestColumns;"></tr>
-          </table>
-
-          <div class="view-all-container">
-            <a routerLink="/requests" class="view-all-link">View all requests</a>
+          </table>          <div class="view-all-container">
+            <a routerLink="/requests" class="view-all-link">{{ translate('view_all_requests') }}</a>
           </div>
         </mat-card-content>
-      </mat-card>
-
-      <!-- Recent Reports -->
+      </mat-card>      <!-- Recent Reports -->
       <mat-card class="activity-card light-card">
         <mat-card-header>
-          <mat-card-title>Recent Reports</mat-card-title>
+          <mat-card-title>{{ translate('recent_reports') }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <table mat-table [dataSource]="recentReports" class="activity-table">
-            <!-- ID Column -->
+          <table mat-table [dataSource]="recentReports" class="activity-table">            <!-- ID Column -->
             <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef>ID</th>
+              <th mat-header-cell *matHeaderCellDef>{{ translate('id') }}</th>
               <td mat-cell *matCellDef="let report">{{ report.id }}</td>
             </ng-container>
 
             <!-- Title Column -->
             <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef>Title</th>
+              <th mat-header-cell *matHeaderCellDef>{{ translate('title') }}</th>
               <td mat-cell *matCellDef="let report">{{ report.title }}</td>
             </ng-container>
 
             <!-- Date Column -->
             <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <th mat-header-cell *matHeaderCellDef>{{ translate('date') }}</th>
               <td mat-cell *matCellDef="let report">{{ report.emissionDate | date }}</td>
             </ng-container>
 
             <!-- Status Column -->
             <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <th mat-header-cell *matHeaderCellDef>{{ translate('status') }}</th>
               <td mat-cell *matCellDef="let report">
                 <span class="status-badge" [ngClass]="{'status-received': report.status === 'Received', 'status-in-progress': report.status === 'In Progress', 'status-closed': report.status === 'Closed'}">
-                  {{ report.status }}
+                  {{ translateStatus(report.status) }}
                 </span>
               </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="reportColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: reportColumns;"></tr>
-          </table>
-
-          <div class="view-all-container">
-            <a routerLink="/reports" class="view-all-link">View all reports</a>
+          </table>          <div class="view-all-container">
+            <a routerLink="/reports" class="view-all-link">{{ translate('view_all_reports') }}</a>
           </div>
         </mat-card-content>
       </mat-card>

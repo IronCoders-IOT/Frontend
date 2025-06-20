@@ -3,18 +3,16 @@
   <div class="header-container">
     <div class="logo" (click)="navigateToDashboard()">
       <h1 class="logo-text">Aqua<span class="conecta">Conecta</span></h1>
-    </div>
-
-    <div class="navigation">
-      <a *ngIf="username === 'provider'" routerLink="/residents" class="nav-item" routerLinkActive="active">Residents</a>
-      <a *ngIf="username === 'provider'" routerLink="/reports" class="nav-item" routerLinkActive="active">Reports</a>
-      <a *ngIf="username === 'provider'" routerLink="/requests" class="nav-item" routerLinkActive="active">Requests</a>
+    </div>    <div class="navigation">
+      <a *ngIf="username === 'provider'" routerLink="/residents" class="nav-item" routerLinkActive="active">{{ translate('residents_nav') }}</a>
+      <a *ngIf="username === 'provider'" routerLink="/reports" class="nav-item" routerLinkActive="active">{{ translate('reports_nav') }}</a>
+      <a *ngIf="username === 'provider'" routerLink="/requests" class="nav-item" routerLinkActive="active">{{ translate('requests_nav') }}</a>
 
 
-      <a *ngIf="username === 'admin'" routerLink="/providers" class="nav-item" routerLinkActive="active">Providers</a>
-      <a *ngIf="username === 'admin'" routerLink="/admin/dashboard" class="nav-item" routerLinkActive="active">Admin Dashboard</a>
+      <a *ngIf="username === 'admin'" routerLink="/providers" class="nav-item" routerLinkActive="active">{{ translate('providers_nav') }}</a>
+      <a *ngIf="username === 'admin'" routerLink="/admin/dashboard" class="nav-item" routerLinkActive="active">{{ translate('admin_dashboard_nav') }}</a>
 
-      <a *ngIf="username === 'provider'" routerLink="/home" class="nav-item" routerLinkActive="active">Home</a>
+      <a *ngIf="username === 'provider'" routerLink="/home" class="nav-item" routerLinkActive="active">{{ translate('home_nav') }}</a>
     </div>
   </div>
 

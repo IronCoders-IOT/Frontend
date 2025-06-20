@@ -4,7 +4,7 @@
 
       <!-- Información del residente -->
       <div class="card-header">
-        <div class="card-title">Resident</div>
+        <div class="card-title">{{ 'resident_info' | translate }}</div>
         <div class="card-content">
           {{ data?.resident?.firstName }} {{ data?.resident?.lastName }}
         </div>
@@ -12,7 +12,7 @@
 
       <!-- Cantidad de agua solicitada -->
       <div class="card-header">
-        <div class="card-title">Water Quantity Request (Liters)</div>
+        <div class="card-title">{{ 'water_quantity_request' | translate }}</div>
         <div class="card-content">{{ data?.requestedLiters }}</div>
       </div>
 
@@ -20,21 +20,21 @@
       <div class="container-dates">
         <!-- Fecha de emisión -->
         <div class="header-date">
-          <label class="card-title">Emission Date:</label>
+          <label class="card-title">{{ 'emission_date_label' | translate }}</label>
           <div class="card-content">{{  data?.emissionDate | date:'medium'  }}</div>
         </div>
 
         <div class="field-group">
-          <label for="status-selector">Status:</label>
+          <label for="status-selector">{{ 'status_label' | translate }}</label>
           <select [(ngModel)]="status" id="status-selector" class="status-selector">
-            <option value="IN_PROGRESS">In Progress</option>
-            <option value="CLOSED">Closed</option>
+            <option value="IN_PROGRESS">{{ 'in_progress_status' | translate }}</option>
+            <option value="CLOSED">{{ 'closed_status' | translate }}</option>
           </select>
         </div>
 
         <!-- Fecha de entrega -->
         <div class="header-date">
-          <label for="date-picker" class="card-title">Delivered Date:</label>
+          <label for="date-picker" class="card-title">{{ 'delivered_date_label' | translate }}</label>
           <input
             id="date-picker"
             type="date"
@@ -47,8 +47,8 @@
 
       <!-- Botones de acción -->
       <div class="card-actions">
-        <button class="button-cancel" (click)="closeModal()">Cancel</button>
-        <button class="button-save" (click)="saveDate()">Save</button>
+        <button class="button-cancel" (click)="closeModal()">{{ 'cancel_button' | translate }}</button>
+        <button class="button-save" (click)="saveDate()">{{ 'save_button' | translate }}</button>
       </div>
 
     </div>

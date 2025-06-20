@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { HeaderContentComponent } from '../../components/header-content/header-content.component';
 import { HttpClient } from '@angular/common/http';
 import {SensordataApiService} from '../../../AquaConecta/requests/services/sensordata-api.service';
@@ -9,10 +10,13 @@ import {AuthService} from '../../../AquaConecta/auth/application/services/auth.s
 import {catchError} from 'rxjs/operators';
 import {forkJoin, of} from 'rxjs';
 import {ReportdataApiService} from '../../../AquaConecta/reports/services/reportdata-api.service';
+import { LanguageService } from '../../../shared/services/language.service';
+import { TranslationService } from '../../../shared/services/translation.service';
+import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, CommonModule, HeaderContentComponent],
+  imports: [RouterLink, CommonModule, HeaderContentComponent, FormsModule, LanguageToggleComponent],
   templateUrl: './home.component.html',
   standalone: true,
   styleUrl: './home.component.css'
@@ -22,6 +26,7 @@ export class HomeComponent implements OnInit {
   username: string | null = null;
   userRole: string | null = null;
   showProfileDropdown: boolean = false;
+  selectedLanguage: string = 'en';
 
   // Dashboard metrics
   waterRequestsCount: number = 0;
@@ -42,18 +47,41 @@ export class HomeComponent implements OnInit {
     { path: '/providers', name: 'Lista de proveedores' },
     { path: '/provider', name: 'Detalles del proveedor' },
   ];
-
   constructor(
     private sensordataApiService: SensordataApiService,
     private residentService: ResidentService,
     private authService: AuthService,
     private reportdataapiservice: ReportdataApiService,
-    private http: HttpClient ) {
+    private http: HttpClient,
+    private languageService: LanguageService,
+    private translationService: TranslationService ) {
   }
-
   ngOnInit(): void {
     this.loadUsername();
     this.loadDashboardData();
+    
+    // Load saved language
+    const savedLanguage = localStorage.getItem('selected_language');
+    if (savedLanguage) {
+      this.selectedLanguage = savedLanguage;
+    }
+    
+    // Subscribe to language changes
+    this.languageService.currentLanguage$.subscribe(language => {
+      this.selectedLanguage = language;
+    });
+  }
+
+  changeLanguage(event: any): void {
+    this.selectedLanguage = event.target.value;
+    this.languageService.changeLanguage(this.selectedLanguage);
+  }
+
+  translate(key: string): string {
+    const result = this.translationService.translate(key);
+    const currentLang = this.languageService.getCurrentLanguage();
+    console.log(`Translating key: ${key}, Language: ${currentLang}, Result: ${result}`);
+    return result;
   }
 
   private loadUsername(): void {

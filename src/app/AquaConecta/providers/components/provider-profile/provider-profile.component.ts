@@ -9,18 +9,21 @@ import { Provider } from '../../model/provider.entity';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {AuthService} from '../../../auth/application/services/auth.service';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { LanguageToggleComponent } from '../../../../shared/components/language-toggle/language-toggle.component';
 
 @Component({
     selector: 'app-provider-profile',
     templateUrl: './provider-profile.component.html',
     styleUrls: ['./provider-profile.component.css'],
-    standalone: true,
-    imports: [
+    standalone: true,    imports: [
         CommonModule,
         ReactiveFormsModule,
         HeaderContentComponent,
         MatSnackBarModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        TranslatePipe,
+        LanguageToggleComponent
     ]
 })
 export class ProviderProfileComponent implements OnInit {

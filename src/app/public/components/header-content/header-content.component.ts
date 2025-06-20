@@ -2,13 +2,14 @@
 import { Component } from '@angular/core';
 import { RouterModule,Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../shared/services/translation.service';
 
 @Component({
   selector: 'app-header-content',
   templateUrl: './header-content.component.html',
   styleUrls: ['./header-content.component.css'],
-  standalone: true,
-  imports: [
+  standalone: true,  imports: [
     RouterModule,
     CommonModule
   ]
@@ -18,7 +19,7 @@ export class HeaderContentComponent {
   username: string | null = null;
 
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private translationService: TranslationService) {
   }
 
   ngOnInit(): void {
@@ -56,5 +57,9 @@ export class HeaderContentComponent {
   identifyUser(): void {
     this.loadUsername();
 
+  }
+
+  translate(key: string): string {
+    return this.translationService.translate(key);
   }
 }

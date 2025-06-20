@@ -17,6 +17,8 @@ import {RouterLink, RouterModule} from '@angular/router';
 import {Resident} from '../../models/resident.model';
 import {ResidentService} from '../../services/resident.service';
 import { MatCardModule } from '@angular/material/card';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../../shared/services/translation.service';
 
 @Component({
   selector: 'app-resident-list',
@@ -24,8 +26,7 @@ import { MatCardModule } from '@angular/material/card';
     CommonModule,
     HeaderContentComponent,
     MatTable,
-    MatTableModule,
-    MatColumnDef,
+    MatTableModule,    MatColumnDef,
     MatHeaderCell,
     MatHeaderRow,
     MatRow,
@@ -49,6 +50,7 @@ export class ResidentListComponent implements OnInit {
 
   constructor(private residentService: ResidentService,
               private router: Router,
+              private translationService: TranslationService
   ) {}
 
   ngOnInit(): void {
@@ -97,18 +99,8 @@ export class ResidentListComponent implements OnInit {
     }
   }
 
-/*
-  getAllResidents(): void {
-    this.isLoadingResults = true;
-  this.residentService.getAllResidents().subscribe(
-  (response: Resident[]) => {
-    this.residents.data = response;
-    this.isLoadingResults = false;
-    this.resultsLength = this.residents.data.length;
-    console.log(this.residents);
+  translate(key: string): string {
+    return this.translationService.translate(key);
   }
-);
-}
-*/
 
 }
