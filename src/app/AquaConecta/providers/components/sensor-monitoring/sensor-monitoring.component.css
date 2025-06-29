@@ -3,10 +3,9 @@
 /* Container principal */
 .dashboard-container {
   margin: 0 auto;
-  max-width: 1500px;
-  padding: 2rem;
+  max-width: 1200px;
+  padding: 1.5rem;
   font-family: 'Inter-Regular', sans-serif;
-  background: #f8fafc;
   min-height: 100vh;
 }
 
@@ -15,33 +14,34 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   background: white;
-  padding: 2rem;
-  border-radius: 16px;
+  padding: 1.5rem;
+  border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border: 1px solid #e2e8f0;
 }
 
 .header-content h1.dashboard-title {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  margin-bottom: 0.4rem;
   color: #2c3e50;
   font-family: 'Inter-Bold', sans-serif;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
 .dashboard-title i.fa-tint {
   color: #2196f3;
-  font-size: 2rem;
+  font-size: 1.7rem;
 }
 
 .dashboard-subtitle {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #64748b;
   margin: 0;
+  font-family: 'Inter-Regular', sans-serif;
 }
 
 .header-actions .btn-refresh {
@@ -128,21 +128,21 @@
 .dashboard-content {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 /* Stats Grid - siguiendo el patrón del home */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
 }
 
 .stat-card {
   background: white;
-  border-radius: 16px;
-  padding: 2rem;
+  border-radius: 12px;
+  padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border: 1px solid #e2e8f0;
   transition: all 0.3s ease;
@@ -182,15 +182,15 @@
 }
 
 .stat-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: white;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 .total-residents .stat-icon {
@@ -210,11 +210,12 @@
 }
 
 .stat-content h3 {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: 700;
   color: #2196f3;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.4rem 0;
   line-height: 1;
+  font-family: 'Inter-Bold', sans-serif;
 }
 
 .stat-content p {
@@ -224,6 +225,7 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 /* Residents Section */
@@ -236,13 +238,14 @@
 }
 
 .section-title {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: #2c3e50;
-  margin: 0 0 2rem 0;
+  margin: 0 0 1.5rem 0;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
+  font-family: 'Inter-Bold', sans-serif;
 }
 
 .section-title i {
@@ -252,15 +255,15 @@
 /* Residents Grid */
 .residents-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.2rem;
 }
 
 .resident-dashboard-card {
   background: white;
   border: 2px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 1.5rem;
+  border-radius: 12px;
+  padding: 1.2rem;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -294,8 +297,8 @@
 }
 
 .resident-avatar {
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: linear-gradient(135deg, #2196f3, #03a9f4);
   display: flex;
@@ -303,8 +306,9 @@
   justify-content: center;
   color: white;
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1rem;
   flex-shrink: 0;
+  font-family: 'Inter-Bold', sans-serif;
 }
 
 .resident-info {
@@ -312,16 +316,18 @@
 }
 
 .resident-info h4 {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #2c3e50;
-  margin: 0 0 0.25rem 0;
+  margin: 0 0 0.2rem 0;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 .resident-id {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #64748b;
   margin: 0;
+  font-family: 'Inter-Regular', sans-serif;
 }
 
 .sensor-status-indicator {
@@ -356,6 +362,7 @@
   margin-bottom: 1rem;
   color: #64748b;
   font-size: 0.9rem;
+  font-family: 'Inter-Regular', sans-serif;
 }
 
 .location-info i {
@@ -379,12 +386,14 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 .metric-value {
   font-size: 1.2rem;
   font-weight: 600;
   color: #2c3e50;
+  font-family: 'Inter-Bold', sans-serif;
 }
 
 .no-sensor-info {
@@ -396,6 +405,7 @@
   background: #fee2e2;
   padding: 0.75rem;
   border-radius: 8px;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 /* Card Footer */
@@ -417,6 +427,7 @@
   font-size: 0.85rem;
   color: #64748b;
   font-weight: 500;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 /* Status badges */
@@ -425,6 +436,7 @@
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 500;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 .status-active {
@@ -481,13 +493,14 @@
 
 .modal-content {
   background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  max-width: 800px;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 700px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
   position: relative;
+  font-family: 'Inter-Regular', sans-serif;
 }
 
 .modal-header {
@@ -504,6 +517,7 @@
   font-weight: 600;
   color: #2c3e50;
   margin: 0;
+  font-family: 'Inter-Bold', sans-serif;
 }
 
 .btn-close {
@@ -515,6 +529,7 @@
   padding: 0.5rem;
   border-radius: 8px;
   transition: all 0.3s ease;
+  font-family: 'Inter-Regular', sans-serif;
 }
 
 .btn-close:hover {
@@ -532,6 +547,7 @@
   margin: 0 0 1rem 0;
   color: #2c3e50;
   font-size: 1.2rem;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 .detail-item {
@@ -547,17 +563,20 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 0.25rem;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 .detail-value {
   color: #6b7280;
   font-size: 0.95rem;
+  font-family: 'Inter-Regular', sans-serif;
 }
 
 .sensor-events h3 {
   margin: 0 0 1.5rem 0;
   color: #2c3e50;
   font-size: 1.2rem;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 .events-table {
@@ -580,11 +599,13 @@
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 .events-table td {
   color: #6b7280;
   font-size: 0.9rem;
+  font-family: 'Inter-Regular', sans-serif;
 }
 
 /* Event type badges */
@@ -595,6 +616,7 @@
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 500;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 .event-warning {
@@ -604,6 +626,7 @@
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 500;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 .event-critical {
@@ -613,6 +636,7 @@
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 500;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 .event-maintenance {
@@ -622,6 +646,7 @@
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 500;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 .event-unknown {
@@ -631,6 +656,7 @@
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 500;
+  font-family: 'Inter-Medium', sans-serif;
 }
 
 /* Responsive design */
