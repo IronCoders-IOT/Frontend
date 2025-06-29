@@ -273,7 +273,7 @@ export class HomeComponent implements OnInit {
 
   private loadSensors(): void {
     // Ejemplo de llamada a API para obtener datos de sensores
-    this.http.get<any[]>(`${this.apiUrl}/sensors`).subscribe({
+    this.http.get<any[]>(`${this.apiUrl}/events`).subscribe({
       next: (sensors) => {
         this.sensorsActive = sensors.filter(sensor => sensor.status === 'active').length;
         // Obtener la última actualización

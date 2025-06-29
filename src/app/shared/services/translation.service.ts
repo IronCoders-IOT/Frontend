@@ -144,6 +144,7 @@ export class TranslationService {
       'residents_nav': 'Residents',
       'reports_nav': 'Reports', 
       'requests_nav': 'Requests',
+      'sensor_monitoring_nav': 'Sensor Monitoring',
       'providers_nav': 'Providers',
       'admin_dashboard_nav': 'Admin Dashboard',
       'home_nav': 'Home',
@@ -286,7 +287,31 @@ export class TranslationService {
       'phone_required_error': 'Phone is required',
       'phone_pattern_error': 'Phone must be 9 digits',
       'address_required_error': 'Address is required',
-      'view_active_plans': 'View Active Plans'
+      'view_active_plans': 'View Active Plans',
+      
+      // Sensor Monitoring
+      'sensor_monitoring_title': 'Water Sensor Monitoring',
+      'updating': 'Updating...',
+      'update_data': 'Update Data',
+      'loading_sensor_data': 'Loading sensor data...',
+      'error_loading_data': 'Error loading data',
+      'retry_button': 'Retry',
+      'sensor_id': 'Sensor ID',
+      'no_active_sensor': 'No active sensor',
+      'events': 'Events',
+      'current_quality': 'Current Quality',
+      'current_level': 'Current Level',
+      'no_sensor_data': 'No sensor data available',
+      'sensor_details': 'Sensor Details',
+      'resident_information': 'Resident Information',
+      'full_name': 'Full Name',
+      'subscription_status': 'Subscription Status',
+      'sensor_events': 'Sensor Events',
+      'event_type': 'Event Type',
+      'quality_value': 'Quality Value',
+      'water_level': 'Water Level',
+      'no_events_recorded': 'No events recorded',
+      'no_events_available': 'No event data available for this sensor.'
     },
     es: {
       // Home page
@@ -426,6 +451,7 @@ export class TranslationService {
       'residents_nav': 'Residentes',
       'reports_nav': 'Reportes',
       'requests_nav': 'Solicitudes', 
+      'sensor_monitoring_nav': 'Monitoreo de Sensores',
       'providers_nav': 'Proveedores',
       'admin_dashboard_nav': 'Panel de Administración',
       'home_nav': 'Inicio',
@@ -568,7 +594,30 @@ export class TranslationService {
       'phone_required_error': 'El teléfono es requerido',
       'phone_pattern_error': 'El teléfono debe tener 9 dígitos',
       'address_required_error': 'La dirección es requerida',
-      'view_active_plans': 'Ver Planes Activos'
+      'view_active_plans': 'Ver Planes Activos',
+      
+      // Sensor monitoring dashboard - Spanish
+      'sensor_monitoring_title': 'Panel de Monitoreo de Sensores',
+      'updating': 'Actualizando...',
+      'update_data': 'Actualizar Datos',
+      'loading_sensor_data': 'Cargando datos de sensores...',
+      'error_loading_data': 'Error al Cargar Datos',
+      'retry_button': 'Intentar de Nuevo',
+      'events': 'Eventos',
+      'current_quality': 'Calidad Actual',
+      'sensor_id': 'ID del Sensor',
+      'current_level': 'Nivel Actual',
+      'no_active_sensor': 'Sin sensor activo',
+      'sensor_details': 'Detalles del Sensor',
+      'resident_information': 'Información del Residente',
+      'full_name': 'Nombre Completo',
+      'subscription_status': 'Estado de Suscripción',
+      'sensor_events': 'Eventos del Sensor',
+      'event_type': 'Tipo de Evento',
+      'quality_value': 'Valor de Calidad',
+      'water_level': 'Nivel de Agua',
+      'no_events_recorded': 'Sin Eventos Registrados',
+      'no_events_available': 'Aún no se han registrado eventos del sensor para este residente.'
     }
   };
 
