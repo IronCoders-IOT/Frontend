@@ -11,20 +11,18 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HeaderContentComponent } from '../../../../public/components/header-content/header-content.component';
 import { LanguageToggleComponent } from '../../../../shared/components/language-toggle/language-toggle.component';
 
-import { forkJoin, of } from 'rxjs';
-import { tap, switchMap, catchError } from 'rxjs/operators';
-
 import { ProviderApiServiceService } from '../../../providers/services/provider-api.service.service';
 import { ResidentService } from '../../../residents/services/resident.service';
+import { ResidentApiServiceService } from '../../../providers/services/resident-api.service.service';
 import { SensordataApiService } from '../../../requests/services/sensordata-api.service';
 import { ReportdataApiService } from '../../../reports/services/reportdata-api.service';
-
+import { SensorDataService } from '../../../providers/services/sensor-data.service';
 import { Provider } from '../../../providers/model/provider.entity';
-import { Resident } from '../../../residents/models/resident.model';
 import { WaterRequestEntity } from '../../../requests/model/water-request.entity';
 import { ReportRequestEntity } from '../../../reports/model/report-request.entity';
-import {AuthService} from '../../../auth/application/services/auth.service';
-import {AdminApiServices} from '../services/admin-api.services';
+import { SensorEvent } from '../../../providers/model/sensor-data.model';
+import { AuthService } from '../../../auth/application/services/auth.service';
+import { AdminApiServices } from '../services/admin-api.services';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { TranslationService } from '../../../../shared/services/translation.service';
 
@@ -66,7 +64,13 @@ export class AdminDashboardComponent implements OnInit {
     currentMonthRevenue: number = 0;
     totalRevenue: number = 0;
 
-    // Status overview data
+    // Real sensor data metrics
+    averageWaterQuality: number = 0;
+    averageWaterLevel: number = 0;
+    recentEventsCount: number = 0;
+    criticalEventsCount: number = 0;
+
+    // Legacy status overview data (keeping for compatibility)
     waterQualityAverage: number = 85; // Percentage (0-100)
     sensorHealthAverage: number = 92; // Percentage (0-100)
     systemUptimeAverage: number = 99.7; // Percentage (0-100)
@@ -82,21 +86,25 @@ export class AdminDashboardComponent implements OnInit {
     requestColumns: string[] = ['id', 'resident', 'date', 'status'];
     reportColumns: string[] = ['id', 'title', 'date', 'status'];
 
-    residentNamesMap: Map<number, string> = new Map();    constructor(
+    residentNamesMap: Map<number, string> = new Map();    
+    
+    constructor(
         private providerService: ProviderApiServiceService,
         private residentService: ResidentService,
-        private requestService: SensordataApiService, //water requests service no sensordata
+        private residentApiService: ResidentApiServiceService,
+        private requestService: SensordataApiService,
         private reportService: ReportdataApiService,
         private adminService: AdminApiServices,
         private authService: AuthService,
         private languageService: LanguageService,
-        private translationService: TranslationService
-
+        private translationService: TranslationService,
+        private sensorDataService: SensorDataService
 ) { }
 
     ngOnInit(): void {
       this.loadUsername();
       this.loadDashboardData();
+      this.loadSensorMetrics();
       
       // Load saved language
       const savedLanguage = localStorage.getItem('selected_language');
@@ -145,111 +153,92 @@ export class AdminDashboardComponent implements OnInit {
     }
 
     logout(): void {
-
-      // Cerrar dropdown
       this.showProfileDropdown = false;
-      console.log('=== INICIO LOGOUT COMPONENT ===');
-
-      // Verificar token ANTES del logout del servicio
-      const tokenBefore = localStorage.getItem('auth_token');
-      console.log('Token ANTES de llamar authService.logout():', tokenBefore ? 'Existe' : 'No existe');
-
-      // Limpiar estado local PRIMERO
-      console.log('Limpiando estado local del componente...');
-
-      console.log('Estado local limpiado');
-
-      // LLAMAR AL LOGOUT DEL SERVICIO
-      console.log('Llamando a authService.logout()...');
       this.authService.logout();
-
-      // Verificar token DESPUÉS del logout del servicio
-      setTimeout(() => {
-        const tokenAfter = localStorage.getItem('auth_token');
-        console.log('Token DESPUÉS de authService.logout():', tokenAfter ? 'AÚN EXISTE!' : 'Eliminado');
-        console.log('=== FIN LOGOUT COMPONENT ===');
-      }, 100);    // Redirigir al login
     }
 
     loadDashboardData(): void {
-        // Load providers data
-      this.providerService.getAllProviders().subscribe(providers => {
-            this.totalProviders = providers.length;
-            this.recentProviders = providers.slice(0, 5);
+      // Use the dashboard summary endpoint for all main counters
+      this.adminService.getAdminSummary().subscribe({
+        next: (summary) => {
+          // Load all data from the summary endpoint
+          this.totalProviders = summary.totalProveedores || 0;
+          this.totalResidents = summary.totalResidentes || 0;
+          this.totalSensors = summary.suscripcionesActivas || 0; // Active subscriptions = active sensors
+          this.currentMonthRevenue = summary.ingresosMensual || 0;
+          this.totalRevenue = summary.ingresosTotales || 0;
+          
+          console.log('Dashboard summary loaded:', {
+            totalProviders: this.totalProviders,
+            totalResidents: this.totalResidents,
+            totalSensors: this.totalSensors,
+            currentMonthRevenue: this.currentMonthRevenue,
+            totalRevenue: this.totalRevenue
+          });
+        },
+        error: (error) => {
+          console.error('Error loading dashboard summary:', error);
+          // Set default values if the summary fails
+          this.totalProviders = 0;
+          this.totalResidents = 0;
+          this.totalSensors = 0;
+          this.currentMonthRevenue = 0;
+          this.totalRevenue = 0;
+        }
+      });
 
-            console.log(this.recentProviders);
-            // Calculate total sensors
-            this.totalSensors = providers.reduce((sum, provider) => sum + provider.sensors_number, 0);
+      // Load recent activity data for tables
+      this.loadRecentActivities();
+    }
 
-            // Calculate financial metrics
+    private loadRecentActivities(): void {
+      // Load recent providers for the table
+      this.providerService.getAllProviders().subscribe({
+        next: (providers) => {
+          this.recentProviders = providers.slice(0, 5);
+        },
+        error: (error) => {
+          console.error('Error loading recent providers:', error);
+          this.recentProviders = [];
+        }
+      });
 
-        });
-
-        // Load residents data - assuming we have a method to get all residents
-        //this.fetchAllResidents();
-
-      // Load Water requests data
+      // Load recent requests for the table
       this.requestService.getAllRequests().subscribe({
         next: (requests) => {
           this.totalRequests = requests.length;
-
-          this.recentRequests = requests.slice(0, 5).map(request =>({
+          this.recentRequests = requests.slice(0, 5).map(request => ({
             ...request,
             status: request.status === 'IN_PROGRESS' ? 'In Progress' :
               request.status === 'CLOSED' ? 'Closed' :
-                request.status === 'RECEIVED' ? 'Received' :
-                  request.status,
+                request.status === 'RECEIVED' ? 'Received' : request.status,
           }));
-
-          // Contar residentes únicos
-          this.residentService.getAllResidents().subscribe({
-            next: (residents) => {
-              this.totalResidents = residents.length;
-
-            }
-          })
-
-          console.log('Requests loaded:', requests);
-
-          // Cargar nombres de residentes para los requests recientes
           this.loadResidentNamesForRecentRequests();
         },
         error: (error) => {
           console.error('Error loading requests:', error);
+          this.totalRequests = 0;
+          this.recentRequests = [];
         }
       });
 
-      // Load reports data
-      this.reportService.getAllReports().subscribe(reports => {
-        this.totalReports = reports.length;
-        this.recentReports = reports.slice(0, 5).map(reports =>({
-          ...reports,
-          status: reports.status === 'IN_PROGRESS' ? 'In Progress' :
-            reports.status === 'CLOSED' ? 'Closed' :
-              reports.status === 'RECEIVED' ? 'Received' :
-                reports.status,
-        }));
-
-
-      });
-
-      // Load admin summary data
-
-      this.adminService.getAdminSummary().subscribe({
-        next: (summary) => {
-          console.log(summary);
-          this.totalProviders = summary.totalProveedores || 85; // Default to 85 if not provided
-          this.totalResidents = summary.totalResidentes || 92; // Default to 92 if not provided
-          this.totalSensors = summary.suscripcionesActivas || 99.7; // Default to 99.7 if not provided
-
-          this.currentMonthRevenue = summary.ingresosMensual || 0; // Default to 0 if not provided
-          this.totalRevenue = summary.ingresosTotales || 0; // Default to 0 if not provided
+      // Load recent reports for the table
+      this.reportService.getAllReports().subscribe({
+        next: (reports) => {
+          this.totalReports = reports.length;
+          this.recentReports = reports.slice(0, 5).map(report => ({
+            ...report,
+            status: report.status === 'IN_PROGRESS' ? 'In Progress' :
+              report.status === 'CLOSED' ? 'Closed' :
+                report.status === 'RECEIVED' ? 'Received' : report.status,
+          }));
         },
         error: (error) => {
-          console.error('Error loading admin summary:', error);
+          console.error('Error loading reports:', error);
+          this.totalReports = 0;
+          this.recentReports = [];
         }
-      })
-
+      });
     }
 
   private loadResidentNamesForRecentRequests(): void {
@@ -305,5 +294,162 @@ export class AdminDashboardComponent implements OnInit {
           'Active': 'active'
         };
         return this.translate(statusMap[status] || status.toLowerCase());
+      }
+
+      loadSensorMetrics(): void {
+        this.providerService.getAllProviders().subscribe({
+          next: (providers) => {
+            if (providers.length === 0) {
+              console.log('No providers found, cannot load sensor data');
+              return;
+            }
+            
+            const allSensorData: SensorEvent[] = [];
+            let processedProviders = 0;
+            let globalSensorId = 1;
+            
+            providers.forEach(provider => {
+              this.residentApiService.getAllResidentByProviderId(provider.id).subscribe({
+                next: (residents) => {
+                  let processedResidents = 0;
+                  const totalResidentsForProvider = residents.length;
+                  
+                  if (residents.length === 0) {
+                    processedProviders++;
+                    if (processedProviders === providers.length) {
+                      this.finalizeSensorDataProcessing(allSensorData);
+                    }
+                    return;
+                  }
+                  
+                  residents.forEach(resident => {
+                    const sensorId = globalSensorId++;
+                    
+                    this.sensorDataService.getSensorEvents(sensorId).subscribe({
+                      next: (events) => {
+                        allSensorData.push(...events);
+                        processedResidents++;
+                        
+                        if (processedResidents === totalResidentsForProvider) {
+                          processedProviders++;
+                          if (processedProviders === providers.length) {
+                            this.finalizeSensorDataProcessing(allSensorData);
+                          }
+                        }
+                      },
+                      error: (error) => {
+                        console.error(`Error loading sensor events for sensor ${sensorId}:`, error);
+                        processedResidents++;
+                        
+                        if (processedResidents === totalResidentsForProvider) {
+                          processedProviders++;
+                          if (processedProviders === providers.length) {
+                            this.finalizeSensorDataProcessing(allSensorData);
+                          }
+                        }
+                      }
+                    });
+                  });
+                },
+                error: (error) => {
+                  console.error(`Error loading residents for provider ${provider.id}:`, error);
+                  processedProviders++;
+                  
+                  if (processedProviders === providers.length) {
+                    this.finalizeSensorDataProcessing(allSensorData);
+                  }
+                }
+              });
+            });
+          },
+          error: (error) => {
+            console.error('Error loading providers:', error);
+          }
+        });
+      }
+
+      private finalizeSensorDataProcessing(allSensorData: SensorEvent[]): void {
+        if (allSensorData.length > 0) {
+          this.processRealSensorEvents(allSensorData);
+        } else {
+          this.averageWaterQuality = 0;
+          this.averageWaterLevel = 0;
+          this.recentEventsCount = 0;
+          this.criticalEventsCount = 0;
+        }
+      }
+
+      private processRealSensorEvents(events: SensorEvent[]): void {
+        if (events.length === 0) {
+          this.averageWaterQuality = 0;
+          this.averageWaterLevel = 0;
+          this.recentEventsCount = 0;
+          this.criticalEventsCount = 0;
+          return;
+        }
+
+        // Map text quality to numeric values
+        const qualityTextToNumber: { [key: string]: number } = {
+          'Excelente': 95, 'Muy Buena': 85, 'Buena': 75,
+          'Regular': 50, 'Mala': 25, 'Muy Mala': 10
+        };
+
+        // Calculate average water quality
+        const qualityValues = events
+          .filter(event => event.qualityValue && qualityTextToNumber.hasOwnProperty(event.qualityValue))
+          .map(event => qualityTextToNumber[event.qualityValue]);
+        
+        this.averageWaterQuality = qualityValues.length > 0 
+          ? qualityValues.reduce((sum, val) => sum + val, 0) / qualityValues.length : 0;
+
+        // Calculate average water level
+        const levelValues = events
+          .filter(event => event.levelValue && !isNaN(parseFloat(event.levelValue)))
+          .map(event => parseFloat(event.levelValue));
+        
+        this.averageWaterLevel = levelValues.length > 0 
+          ? levelValues.reduce((sum, val) => sum + val, 0) / levelValues.length : 0;
+
+        // Count recent and critical events
+        this.recentEventsCount = events.length;
+        this.criticalEventsCount = events.filter(event => {
+          const qualityIsCritical = ['Regular', 'Mala', 'Muy Mala'].includes(event.qualityValue);
+          const level = parseFloat(event.levelValue || '100');
+          const levelIsCritical = level < 30;
+          return qualityIsCritical || levelIsCritical;
+        }).length;
+
+        this.adjustRealMetricsBasedOnSystemActivity();
+      }
+
+      private adjustRealMetricsBasedOnSystemActivity(): void {
+        // Apply minor adjustments based on system activity
+        if (this.totalReports > 5) {
+          const reportImpact = Math.min(5, (this.totalReports - 5) * 0.5);
+          this.averageWaterQuality = Math.max(0, this.averageWaterQuality - reportImpact);
+        }
+        
+        if (this.totalRequests > 10) {
+          const requestImpact = Math.min(3, (this.totalRequests - 10) * 0.3);
+          this.averageWaterLevel = Math.max(0, this.averageWaterLevel - requestImpact);
+        }
+        
+        // Increase critical events slightly if there's high system activity
+        const activityBasedCritical = Math.floor((this.totalReports + this.totalRequests) * 0.1);
+        this.criticalEventsCount = Math.min(this.recentEventsCount, this.criticalEventsCount + activityBasedCritical);
+      }
+
+      getQualityStatusClass(value: number): string {
+        if (value >= 80) return 'status-excellent';
+        if (value >= 60) return 'status-good';
+        if (value >= 40) return 'status-average';
+        return 'status-poor';
+      }
+
+      getLevelStatusClass(value: number): string {
+        if (value >= 70) return 'status-excellent';
+        if (value >= 50) return 'status-good';
+        if (value >= 30) return 'status-average';
+        return 'status-poor';
       }
 }

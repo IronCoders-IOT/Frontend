@@ -347,8 +347,8 @@ th {
 
 .section-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     margin-bottom: 1.5rem;
 }
 
@@ -356,7 +356,15 @@ th {
     font-size: 1.5rem;
     font-weight: 600;
     color: #333;
+    margin: 0 0 0.5rem 0;
+}
+
+.section-note {
+    font-size: 0.9rem;
+    color: #64748b;
+    font-style: italic;
     margin: 0;
+    opacity: 0.8;
 }
 
 /* Financial Cards */
@@ -571,6 +579,63 @@ mat-progress-bar.status-poor ::ng-deep .mdc-linear-progress__bar-inner {
 .view-all-link:hover {
     color: #1976d2;
     text-decoration: underline;
+}
+
+/* New styles for sensor metrics */
+.metric-details {
+  margin: 0.5rem 0;
+  
+  .detail-text {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0.25rem 0;
+    font-family: 'Inter-Regular', sans-serif;
+  }
+}
+
+.status-info {
+  color: #0891b2 !important;
+  background: rgba(8, 145, 178, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* Enhanced status classes for quality and level */
+.status-excellent {
+  color: #059669 !important;
+  
+  &.mat-mdc-progress-bar {
+    --mdc-linear-progress-active-indicator-color: #059669;
+    --mdc-linear-progress-track-color: rgba(5, 150, 105, 0.2);
+  }
+}
+
+.status-good {
+  color: #0891b2 !important;
+  
+  &.mat-mdc-progress-bar {
+    --mdc-linear-progress-active-indicator-color: #0891b2;
+    --mdc-linear-progress-track-color: rgba(8, 145, 178, 0.2);
+  }
+}
+
+.status-average {
+  color: #d97706 !important;
+  
+  &.mat-mdc-progress-bar {
+    --mdc-linear-progress-active-indicator-color: #d97706;
+    --mdc-linear-progress-track-color: rgba(217, 119, 6, 0.2);
+  }
+}
+
+.status-poor {
+  color: #dc2626 !important;
+  
+  &.mat-mdc-progress-bar {
+    --mdc-linear-progress-active-indicator-color: #dc2626;
+    --mdc-linear-progress-track-color: rgba(220, 38, 38, 0.2);
+  }
 }
 
 /* Responsive adjustments */

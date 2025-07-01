@@ -100,7 +100,6 @@ input:focus {
   width: 92.5%;
   margin: 0 auto;
   margin-top: 1%;
-
 }
 
 .example-table-container {
@@ -259,4 +258,84 @@ tr:hover {
 .schedule-link {
   color: blue;
   text-decoration: underline; /* Opcional, para que parezca un enlace */
+}
+
+/* Loading Indicator */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  font-family: "Inter-Regular", sans-serif;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #00a0ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: #666;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Error Message */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  font-family: "Inter-Regular", sans-serif;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.retry-button {
+  background-color: #00a0ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.retry-button:hover {
+  background-color: #0082cc;
+}
+
+/* No Data Message */
+.no-data-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  font-family: "Inter-Regular", sans-serif;
+}
+
+.no-data-container p {
+  color: #666;
+  font-size: 16px;
+  text-align: center;
+  margin: 0;
 }

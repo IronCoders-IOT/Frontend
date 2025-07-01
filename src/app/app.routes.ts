@@ -13,6 +13,7 @@ import { ReportDetailComponent } from './AquaConecta/reports/components/report-d
 import { AdminDashboardComponent } from './AquaConecta/admin/presentation/dashboard/admin-dashboard.component';
 import { ProviderProfileComponent } from './AquaConecta/providers/components/provider-profile/provider-profile.component';
 import {ResidentListComponent} from './AquaConecta/residents/presentation/resident-list/resident-list.component';
+import { SensorMonitoringComponent } from './AquaConecta/providers/components/sensor-monitoring/sensor-monitoring.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -31,5 +32,6 @@ export const routes: Routes = [
   { path: 'provider/:id', redirectTo: 'provider/:id/detail', pathMatch: 'full' },
   { path: 'provider/:id/detail', component: ProviderDetailComponent },
   { path: 'provider/:id/profile', component: ProviderProfileComponent },
+  { path: 'sensor-monitoring', component: SensorMonitoringComponent },
 
 ];

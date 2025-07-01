@@ -34,6 +34,10 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
   // Nueva variable para controlar si el formulario está completo
   isFormComplete = false;
 
+  // Variables para controlar la inicialización de MercadoPago
+  private mercadoPagoInitialized = false;
+  private mercadoPagoScriptLoaded = false;
+
   // Credenciales de test
   private readonly PUBLIC_KEY = 'TEST-0048c430-d4a9-4088-a0e9-3ba720f06760';
   private readonly PAYMENT_AMOUNT = 200; // Monto en soles
@@ -49,22 +53,33 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnInit(): void {
     this.initializeForm();
     this.checkAuthentication();
-    this.loadMercadoPagoScript();
     this.setupFormValidation();
+    this.loadMercadoPagoScript();
   }
 
   ngAfterViewInit(): void {
-    // Esperamos un poco para asegurar que el script de MercadoPago esté cargado
-    setTimeout(() => {
-      this.initializeMercadoPago();
-    }, 1000);
+    // Solo intentamos inicializar si el script ya está cargado y no hemos inicializado aún
+    if (this.mercadoPagoScriptLoaded && !this.mercadoPagoInitialized) {
+      setTimeout(() => {
+        this.initializeMercadoPago();
+      }, 500);
+    }
   }
 
   ngOnDestroy(): void {
     // Limpiar el brick al destruir el componente
     if (this.paymentBrickController) {
-      this.paymentBrickController.unmount();
+      try {
+        this.paymentBrickController.unmount();
+        this.paymentBrickController = null;
+      } catch (error) {
+        console.error('Error unmounting payment brick:', error);
+      }
     }
+    
+    // Reset de variables de control
+    this.mercadoPagoInitialized = false;
+    this.mercadoPagoScriptLoaded = false;
   }
 
   private initializeForm(): void {
@@ -118,8 +133,18 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private loadMercadoPagoScript(): void {
+    // Verificar si ya está cargado
     if (typeof MercadoPago !== 'undefined') {
-      return; // Ya está cargado
+      this.mercadoPagoScriptLoaded = true;
+      this.initializeMercadoPago();
+      return;
+    }
+
+    // Verificar si el script ya está siendo cargado
+    const existingScript = document.querySelector('script[src="https://sdk.mercadopago.com/js/v2"]');
+    if (existingScript) {
+      this.mercadoPagoScriptLoaded = true;
+      return;
     }
 
     const script = document.createElement('script');
@@ -127,6 +152,7 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
     script.async = true;
     script.onload = () => {
       console.log('MercadoPago SDK loaded');
+      this.mercadoPagoScriptLoaded = true;
       this.initializeMercadoPago();
     };
     script.onerror = () => {
@@ -138,14 +164,27 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
 
   private initializeMercadoPago(): void {
     try {
+      // Verificar si ya está inicializado
+      if (this.mercadoPagoInitialized) {
+        console.log('MercadoPago already initialized, skipping...');
+        return;
+      }
+
       if (typeof MercadoPago === 'undefined') {
         console.error('MercadoPago SDK not loaded');
         return;
       }
 
       if (this.paymentBrickController) {
-        console.log('Payment Brick already initialized');
-        return; // Evita inicializar el Payment Brick nuevamente
+        console.log('Payment Brick already exists, unmounting first...');
+        this.paymentBrickController.unmount();
+        this.paymentBrickController = null;
+      }
+
+      // Limpiar el contenedor antes de inicializar
+      const container = document.getElementById('paymentBrick_container');
+      if (container) {
+        container.innerHTML = '';
       }
 
       this.mp = new MercadoPago(this.PUBLIC_KEY, {
@@ -154,6 +193,10 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
 
       const bricksBuilder = this.mp.bricks();
       this.renderPaymentBrick(bricksBuilder);
+      
+      // Marcar como inicializado
+      this.mercadoPagoInitialized = true;
+      console.log('MercadoPago initialized successfully');
     } catch (error) {
       console.error('Error initializing MercadoPago:', error);
       this.showPaymentError('Error initializing payment system');
@@ -161,6 +204,20 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private async renderPaymentBrick(bricksBuilder: any): Promise<void> {
+    // Verificar que el contenedor existe antes de proceder
+    const container = document.getElementById('paymentBrick_container');
+    if (!container) {
+      console.error('Payment container not found');
+      this.showPaymentError('Payment form container not available');
+      return;
+    }
+
+    // Verificar si ya hay un brick controller activo
+    if (this.paymentBrickController) {
+      console.log('Payment Brick already exists, skipping creation');
+      return;
+    }
+
     const settings = {
       initialization: {
         amount: this.PAYMENT_AMOUNT,
@@ -219,11 +276,13 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
     };
 
     try {
+      console.log('Creating Payment Brick...');
       this.paymentBrickController = await bricksBuilder.create(
         "payment",
         "paymentBrick_container",
         settings
       );
+      console.log('Payment Brick created successfully');
     } catch (error) {
       console.error('Error creating Payment Brick:', error);
       this.showPaymentError('Error creating payment form');
