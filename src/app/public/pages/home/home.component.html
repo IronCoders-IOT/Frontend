@@ -1,18 +1,130 @@
-<div class="home-container">
-  <h1>Welcome to AquaConecta V1</h1>
-  <p>Your water management solution</p>
+<app-header-content></app-header-content>
 
+<div class="home-container">
+  <!-- Welcome Section -->
+  <div class="welcome-section">    <div class="welcome-content">
+      <h1>{{ translate('welcome') }} <span>{{username || 'Usuario'}}</span></h1>
+      <p>{{ translate('water_management_dashboard') }}</p>
+    </div>
+
+    <div class="user-profile-section">
+      <button class="profile-button" (click)="toggleProfileDropdown()">
+        <div class="profile-avatar">{{getUserInitials()}}</div>
+        <div class="profile-info">
+          <!--
+          <p class="profile-name">{{username || 'Usuario'}}</p>
+          -->
+          <p class="profile-role">{{userRole || 'Provider'}}</p>
+        </div>
+      </button>      <div class="profile-dropdown" [class.show]="showProfileDropdown">        <a class="dropdown-item" routerLink="/provider/1/profile">
+          👤 {{ translate('view_profile') }}
+        </a>        <div class="dropdown-divider"></div>
+        <div class="dropdown-item language-selector" (click)="$event.stopPropagation()">
+          🌐 {{ translate('language') }}
+          <app-language-toggle></app-language-toggle>
+        </div>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item logout" (click)="logout()">
+          🚪 {{ translate('sign_out') }}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Cards -->
+  <div class="dashboard-container">
+    <div class="dashboard-grid">
+
+      <!-- Water Requests Card -->
+      <div class="dashboard-card" routerLink="/requests">        <div class="card-header">
+          <div class="card-icon water-requests">💧</div>
+          <h3 class="card-title">{{ translate('water_requests') }}</h3>
+        </div>
+        <div class="card-content">
+          <div class="card-info">
+            <p class="card-description">
+              {{ translate('active_water_requests') }}
+            </p>
+            <div class="status-badge status-pending">{{waterRequestsPending || '0'}} {{ translate('pending') }}</div>
+            <a class="card-action">{{ translate('view_all_requests') }}</a>
+          </div>
+          <div class="card-metric">
+            <span class="card-number">{{waterRequestsCount || '0'}}</span>
+            <span class="card-label">{{ translate('total_requests') }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- General Requests Card -->
+      <div class="dashboard-card" routerLink="/reports">        <div class="card-header">
+          <div class="card-icon general-requests">📋</div>
+          <h3 class="card-title">{{ translate('service_reports') }}</h3>
+        </div>
+        <div class="card-content">
+          <div class="card-info">
+            <p class="card-description">
+              {{ translate('maintenance_reports') }}
+            </p>
+            <div class="status-badge status-active">{{reportsActive || '0'}} {{ translate('active') }}</div>
+            <a class="card-action">{{ translate('view_all_reports') }}</a>
+          </div>
+          <div class="card-metric">
+            <span class="card-number">{{reportsCount || '0'}}</span>
+            <span class="card-label">{{ translate('total_reports') }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Residents Card -->
+      <div class="dashboard-card" routerLink="/residents">        <div class="card-header">
+          <div class="card-icon residents">👥</div>
+          <h3 class="card-title">{{ translate('residents') }}</h3>
+        </div>
+        <div class="card-content">
+          <div class="card-info">
+            <p class="card-description">
+              {{ translate('total_residents') }}
+            </p>
+            <div class="status-badge status-active">{{ translate('active_community') }}</div>
+            <a class="card-action">{{ translate('view_residents_list') }}</a>
+          </div>
+          <div class="card-metric">
+            <span class="card-number">{{residentsCount || '0'}}</span>
+            <span class="card-label">{{ translate('registered') }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sensor History Card -->
+      <div class="dashboard-card" routerLink="/sensor-monitoring">        <div class="card-header">
+          <div class="card-icon sensors">📊</div>
+          <h3 class="card-title">{{ translate('sensor_monitoring') }}</h3>
+        </div>
+        <div class="card-content">
+          <div class="card-info">
+            <p class="card-description">
+              {{ translate('realtime_monitoring') }}
+            </p>
+            <div class="status-badge status-active">{{lastSensorUpdate || translate('live_data') }}</div>
+            <a class="card-action">{{ translate('view_sensor_history') }}</a>
+          </div>
+          <div class="card-metric">
+            <span class="card-number">{{sensorsActive || '0'}}</span>
+            <span class="card-label">{{ translate('active_sensors') }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Quick Actions
   <div class="buttons-container">
     <button routerLink="/admin/dashboard" class="btn-info">Admin Dashboard</button>
     <button routerLink="/login" class="btn-primary">Sign In</button>
     <button routerLink="/signup" class="btn-secondary">Sign Up</button>
-    <button routerLink="/requests" class="btn-info">Supply Requests</button>
-    <button routerLink="/reports" class="btn-info" >Report List</button>
-    <button routerLink="/providers" class="btn-info">Providers List</button>
+    <button routerLink="/providers" class="btn-info">Providers</button>
     <button routerLink="/provider/1/profile" class="btn-info">Provider Profile</button>
-    <button routerLink="/residents" class="btn-info">Residents</button>
-    <button routerLink="/history" class="btn-info">Sensor History</button>
-    <button routerLink="/residents" class="btn-info">Residents</button>
-    
   </div>
+  -->
 </div>

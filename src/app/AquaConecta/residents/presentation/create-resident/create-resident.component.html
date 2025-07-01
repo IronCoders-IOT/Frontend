@@ -1,70 +1,123 @@
 <app-header-content></app-header-content>
 
 <div class="form-section">
-    <h2 class="form-title">New resident</h2>
+  <h2 class="form-title">{{ translate('new_resident') }}</h2>
 
-    <form [formGroup]="residentForm" (ngSubmit)="onSubmit()">
+  <div class="main-container">
+    <!-- Formulario del residente -->
+    <div class="form-container">
+      <form [formGroup]="residentForm" (ngSubmit)="onSubmit()">
         <div class="form-layout">
-            <!-- Primera columna -->
-            <div class="form-column left-column">
-                <div class="form-group">
-                    <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" formControlName="firstName" placeholder="ej. Italo"
-                        class="form-control">
-                </div>
+          <!-- Primera columna -->
+          <div class="form-column left-column">            <div class="form-group">
+              <label for="firstName">{{ translate('first_name_resident') }}</label>
+              <input type="text" id="firstName" formControlName="firstName" [placeholder]="translate('first_name_placeholder_resident')" class="form-control">
+              <div *ngIf="residentForm.get('firstName')?.hasError('required') && residentForm.get('firstName')?.touched" class="error-msg">
+                {{ translate('first_name_required_resident') }}
+              </div>
+            </div>            <div class="form-group">
+              <label for="documentType">{{ translate('document_type_resident') }}</label>
+              <select id="documentType" formControlName="documentType" class="form-control">
+                <option value="" disabled>{{ translate('select_document_type') }}</option>
+                <option value="DNI">{{ translate('dni') }}</option>
+                <option value="Passport">{{ translate('passport') }}</option>
+                <option value="RUC">{{ translate('ruc') }}</option>
+              </select>
+              <div *ngIf="residentForm.get('documentType')?.hasError('required') && residentForm.get('documentType')?.touched" class="error-msg">
+                {{ translate('document_type_required_resident') }}
+              </div>
+            </div>
+          </div>
 
-                <div class="form-group">
-                <label for="documentType">Document type</label>
-                <select id="documentType" formControlName="documentType" class="form-control">
-                    <option value="" disabled selected>Select a document type</option>
-                    <option value="DNI">DNI</option>
-                    <option value="Passport">Passport</option>
-                    <option value="RUC">RUC</option>
-                </select>
-                </div>
-
+          <!-- Segunda columna -->
+          <div class="form-column middle-column">            <div class="form-group">
+              <label for="lastName">{{ translate('last_name_resident') }}</label>
+              <input type="text" id="lastName" formControlName="lastName" [placeholder]="translate('last_name_placeholder_resident')" class="form-control">
+              <div *ngIf="residentForm.get('lastName')?.hasError('required') && residentForm.get('lastName')?.touched" class="error-msg">
+                {{ translate('last_name_required_resident') }}
+              </div>
+            </div>            <div class="form-group">
+              <label for="documentNumber">{{ translate('document_number_resident') }}</label>
+              <input type="text" id="documentNumber" formControlName="documentNumber" [placeholder]="translate('document_number_placeholder_resident')" class="form-control">
+              <div *ngIf="residentForm.get('documentNumber')?.hasError('required') && residentForm.get('documentNumber')?.touched" class="error-msg">
+                {{ translate('document_number_required_resident') }}
+              </div>
             </div>
 
-            <!-- Segunda columna -->
-            <div class="form-column middle-column">
-                <div class="form-group">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" formControlName="lastName" placeholder="ej. Kunimoto"
-                        class="form-control">
-                </div>
+            <div class="form-group">
+              <label for="direction">{{ translate('direction_resident') }}</label>
+              <input type="text" id="direction" formControlName="direction" [placeholder]="translate('direction_placeholder_resident')" class="form-control">
+              <div *ngIf="residentForm.get('direction')?.hasError('required') && residentForm.get('direction')?.touched" class="error-msg">
+                {{ translate('direction_required_resident') }}
+              </div>
+              <div *ngIf="residentForm.get('direction')?.hasError('minlength') && residentForm.get('direction')?.touched" class="error-msg">
+                {{ translate('direction_minlength_resident') }}
+              </div>
+            </div>
+          </div>
 
-                <div class="form-group">
-                    <label for="documentNumber">Document Number</label>
-                    <input type="text" id="documentNumber" formControlName="documentNumber"
-                        placeholder="ej. 71323245" class="form-control">
-                </div>
+          <!-- Tercera columna -->
+          <div class="form-column right-column">            <div class="form-group">
+              <label for="email">{{ translate('email_resident') }}</label>
+              <input type="email" id="email" formControlName="email" [placeholder]="translate('email_placeholder_resident')" class="form-control">
+              <div *ngIf="residentForm.get('email')?.hasError('required') && residentForm.get('email')?.touched" class="error-msg">
+                {{ translate('email_required_resident') }}
+              </div>
+              <div *ngIf="residentForm.get('email')?.hasError('email') && residentForm.get('email')?.touched" class="error-msg">
+                {{ translate('email_invalid_resident') }}
+              </div>
             </div>
 
-            <!-- Tercera columna -->
-            <div class="form-column right-column">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" formControlName="email" placeholder="ej. tato@gmail.com" class="form-control">
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" formControlName="password" placeholder="Password"
-                        class="form-control">
-                </div>
-
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm your password</label>
-                    <input type="password" id="confirmPassword" formControlName="confirmPassword"
-                        placeholder="Confirm your password" class="form-control">
-                </div>
+            <div class="form-group">
+              <label for="phone">{{ translate('phone_resident') }}</label>
+              <input type="tel" id="phone" formControlName="phone" [placeholder]="translate('phone_placeholder_resident')" class="form-control">
+              <div *ngIf="residentForm.get('phone')?.hasError('required') && residentForm.get('phone')?.touched" class="error-msg">
+                {{ translate('phone_required_resident') }}
+              </div>
+              <div *ngIf="residentForm.get('phone')?.hasError('pattern') && residentForm.get('phone')?.touched" class="error-msg">
+                {{ translate('phone_pattern_resident') }}
+              </div>
             </div>
+
+            <!-- Validación cruzada para coincidencia de contraseñas -->
+            <div *ngIf="residentForm.errors?.['passwordMismatch'] && residentForm.touched" class="error-msg">
+              {{ translate('passwords_no_match_resident') }}
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Sección de pago -->
+    <div class="payment-container">
+      <div class="payment-section" [ngClass]="{'disabled': !isFormComplete}">        <h3 class="payment-title">{{ translate('payment_for_registration') }}</h3>
+
+        <!-- Mensaje cuando el formulario no está completo -->
+        <div *ngIf="!isFormComplete" class="payment-disabled-message">
+          {{ translate('complete_fields_message') }}
         </div>
 
-        <div class="button-container">
-            <button type="submit" class="btn-next" [disabled]="isSubmitting">
-                Next
-            </button>
+        <div class="payment-amount">
+          <span class="amount-label">{{ translate('amount_to_pay') }}</span>
+          <span class="amount-value">S/ 200.00</span>
         </div>
-    </form>
+
+        <!-- Payment Brick Container -->
+        <div id="paymentBrick_container" [style.pointer-events]="!isFormComplete ? 'none' : 'auto'"></div>
+
+        <!-- Payment status messages -->
+        <div *ngIf="paymentStatus" class="payment-status" [ngClass]="paymentStatusClass">
+          {{ paymentStatusMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Overlay de procesamiento -->
+  <div *ngIf="isSubmitting" class="processing-overlay success-overlay">
+    <div class="processing-message">
+      <div class="processing-spinner"></div>
+      <h3>{{ translate('payment_successful_creating') }}</h3>
+      <p>{{ translate('please_wait_message') }}</p>
+    </div>
+  </div>
 </div>

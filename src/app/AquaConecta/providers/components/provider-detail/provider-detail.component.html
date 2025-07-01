@@ -5,7 +5,7 @@
   <div class="provider-details-card">
 
     <div class="title-container">
-      <h1>{{ provider.tax_name }}</h1>
+      <h1>{{ provider.taxName }}</h1>
     </div>
 
     <div class="provider-ruc-phone">
@@ -13,14 +13,14 @@
       <p><span class="subtitle">Phone: </span><span class="tlf">{{ provider.phone }}</span></p>
     </div>
 
-    <p class="subtitle" style="margin-top: 20px;">Av. Hermilio Valdizan 225 Jesús María</p>
+    <p class="subtitle" style="margin-top: 20px;">{{provider.direction}}</p>
 
     <!-- <div class="provider-actions">
       <button class="btn-profile" (click)="goToProfile()">View Profile</button>
     </div> -->
   </div>
 
-  <p class="title-active-plans">Active Plans</p>
+  <p class="title-active-plans">Active Residents</p>
 
   <table mat-table [dataSource]="subscriptionsDataSource" class="mat-elevation-z8">
 
@@ -30,19 +30,25 @@
     <!-- Position Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="">1</td>
+      <td mat-cell *matCellDef="let row">{{row.id}}</td>
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container matColumnDef="start_date">
-      <th mat-header-cell *matHeaderCellDef>Start date</th>
-      <td mat-cell *matCellDef="let row"> {{row.start_date | date:'dd/MM/yyyy'}} </td>
+    <ng-container matColumnDef="firts_name">
+      <th mat-header-cell *matHeaderCellDef>First name</th>
+      <td mat-cell *matCellDef="let row"> {{row.firstName}} </td>
     </ng-container>
 
     <!-- Weight Column -->
-    <ng-container matColumnDef="end_date">
-      <th mat-header-cell *matHeaderCellDef>End date</th>
-      <td mat-cell *matCellDef="let row"> {{row.end_date | date:'dd/MM/yyyy' }} </td>
+    <ng-container matColumnDef="last_name">
+      <th mat-header-cell *matHeaderCellDef>Last name</th>
+      <td mat-cell *matCellDef="let row"> {{row.lastName }} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef>Phone</th>
+      <td mat-cell *matCellDef="let row"> {{row.phone }} </td>
     </ng-container>
 
     <!-- Symbol Column -->

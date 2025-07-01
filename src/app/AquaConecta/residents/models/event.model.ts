@@ -5,7 +5,7 @@ export class Event {
   status: string;
   level_value: string;
 
-  
+
   constructor(params: Partial<Event> = {}) {
     this.id = params.id;
     this.event_type = params.event_type || '';

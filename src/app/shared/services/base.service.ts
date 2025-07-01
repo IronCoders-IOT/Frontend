@@ -10,16 +10,19 @@ export class BaseService<T> {
 
   basePath: string = `${environment.serverBasePath}`;
   resourceEndpoint: string = '/resources';
-  
 
-
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    })
+  // Getter que obtiene headers dinámicamente con el token actual
+  get httpOptions(): { headers: HttpHeaders } {
+    const token = localStorage.getItem('auth_token');
+    return {
+      headers: new HttpHeaders({
+        'Content-type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : ''
+      })
+    };
   }
-  constructor(protected http: HttpClient) {  }
+
+  constructor(protected http: HttpClient) { }
 
   handleError(error: HttpErrorResponse) {
     // Default error handling
@@ -56,7 +59,7 @@ export class BaseService<T> {
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  private resourcePath(): string {
+  protected resourcePath(): string {
     return `${this.basePath}${this.resourceEndpoint}`;
   }
 }

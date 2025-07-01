@@ -1,67 +1,61 @@
 <div class="login-container">
   <div class="image-section">
     <div class="background-image"></div>
-    
+    <!-- Componente de cambio de idioma -->
+    <div class="language-toggle-container">
+      <app-language-toggle></app-language-toggle>
+    </div>
     <!-- La imagen de fondo de manos y agua se carga mediante CSS -->
   </div>
-  <div class="form-section">
-    <div class="form-container">
+  <div class="form-section">    <div class="form-container">
       <h1 class="app-title">Aqua<span class="highlight">Conecta</span></h1>
-      
-      <p class="welcome-message">Welcome back! Please enter your details</p>
-      
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input 
-            type="email" 
-            id="email" 
-            formControlName="email" 
-            placeholder="Email"
+
+      <p class="welcome-message">{{ 'welcome_back' | translate }}</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">        <div class="form-group">
+          <label for="username">{{ 'username' | translate }}</label>
+          <input
+            type="text"
+            id="username"
+            formControlName="username"
+            [placeholder]="'username_placeholder' | translate"
             class="form-control"
-            [ngClass]="{'invalid': hasError('email', 'required') || hasError('email', 'email')}"
+            [ngClass]="{'invalid': hasError('username', 'required')}"
           >
-          <div class="error-message" *ngIf="hasError('email', 'required')">
-            Email is required
+          <div class="error-message" *ngIf="hasError('username', 'required')">
+            {{ 'username_required' | translate }}
           </div>
-          <div class="error-message" *ngIf="hasError('email', 'email')">
-            Please enter a valid email
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input 
-            type="password" 
-            id="password" 
+        </div>        <div class="form-group">
+          <label for="password">{{ 'password' | translate }}</label>
+          <input
+            type="password"
+            id="password"
             formControlName="password"
-            placeholder="Password"
+            [placeholder]="'password_placeholder' | translate"
             class="form-control"
             [ngClass]="{'invalid': hasError('password', 'required') || hasError('password', 'minlength')}"
           >
           <div class="error-message" *ngIf="hasError('password', 'required')">
-            Password is required
+            {{ 'password_required' | translate }}
           </div>
           <div class="error-message" *ngIf="hasError('password', 'minlength')">
-            Password must be at least 6 characters
+            {{ 'password_minlength' | translate }}
           </div>
         </div>
-        
+
         <div class="error-container" *ngIf="errorMessage">
           <p class="error-message">{{ errorMessage }}</p>
-        </div>
-        
-        <button 
-          type="submit" 
+        </div>        <button
+          type="submit"
           class="btn-signin"
           [disabled]="isSubmitting"
         >
-          {{ isSubmitting ? 'Signing in...' : 'Sign in' }}
+          {{ isSubmitting ? ('signing_in' | translate) : ('sign_in' | translate) }}
         </button>
-        
+
         <div class="signup-section">
-          <span>Don't have an account?</span>
-          <a (click)="onSignup()" class="signup-link">Sign up here</a>
+          <span>{{ 'dont_have_account' | translate }}</span>
+          <a (click)="onSignup()" class="signup-link">{{ 'sign_up_here' | translate }}</a>
         </div>
       </form>
     </div>

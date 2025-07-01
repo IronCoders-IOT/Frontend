@@ -4,29 +4,34 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../application/services/auth.service';
 import { AuthCredentials } from '../../../domain/models/auth-credentials.model';
+import {User} from '../../../domain/models/user.model';
+import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../../../shared/services/translation.service';
+import { LanguageToggleComponent } from '../../../../../shared/components/language-toggle/language-toggle.component';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule]
+    imports: [CommonModule, ReactiveFormsModule, TranslatePipe, LanguageToggleComponent]
 })
 export class LoginComponent implements OnInit {
     loginForm!: FormGroup;
     isSubmitting = false;
     errorMessage = '';
-
+    // Fix: Add explicit type for the errorMessage property
     constructor(
         private formBuilder: FormBuilder,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private translationService: TranslationService
     ) { }
 
     ngOnInit(): void {
         this.loginForm = this.formBuilder.group({
-            email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            username: ['', [Validators.required, Validators.maxLength(100)]],
+            password: ['', [Validators.required, Validators.minLength(1)]]
         });
     }
 
@@ -40,14 +45,19 @@ export class LoginComponent implements OnInit {
         this.errorMessage = '';
 
         const credentials = new AuthCredentials(
-            this.loginForm.value.email,
+            this.loginForm.value.username,
             this.loginForm.value.password
         );
 
         this.authService.login(credentials).subscribe({
-            next: () => {
-                // Navigate to the home page or dashboard after successful login
+            next: (user: User) => {
+              console.log('Usuario autenticado:');
+                if(credentials.email === "admin"){
+                  this.router.navigate(['/admin/dashboard']);
+                }else{
+              // Navigate to the home page or dashboard after successful login
                 this.router.navigate(['/home']);
+                }
             },
             // Fix: Add explicit type for the error parameter
             error: (error: Error) => {
@@ -57,6 +67,7 @@ export class LoginComponent implements OnInit {
             complete: () => {
                 this.isSubmitting = false;
             }
+
         });
     }
 

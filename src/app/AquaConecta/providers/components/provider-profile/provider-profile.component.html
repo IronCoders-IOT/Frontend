@@ -1,21 +1,22 @@
 <!-- provider-profile.component.html -->
 <app-header-content></app-header-content>
+<app-language-toggle></app-language-toggle>
 
 <div class="profile-container">
     <div class="profile-header">
-        <h1 class="profile-title">Provider Profile</h1>
+        <h1 class="profile-title">{{ 'provider_profile' | translate }}</h1>
         <div class="action-buttons">
             <button *ngIf="!isEditing" class="btn-edit" (click)="toggleEditMode()">
-                <i class="fa fa-pencil-alt"></i> Edit Profile
+                <i class="fa fa-pencil-alt"></i> {{ 'edit_profile' | translate }}
             </button>
             <div *ngIf="isEditing" class="edit-buttons">
                 <button class="btn-cancel" (click)="toggleEditMode()">
-                    <i class="fa fa-times"></i> Cancel
+                    <i class="fa fa-times"></i> {{ 'cancel' | translate }}
                 </button>
                 <button class="btn-save" [disabled]="profileForm.invalid || submitInProgress" (click)="onSubmit()">
                     <i *ngIf="!submitInProgress" class="fa fa-check"></i>
                     <i *ngIf="submitInProgress" class="fa fa-spinner fa-spin"></i>
-                    {{ submitInProgress ? 'Saving...' : 'Save Changes' }}
+                    {{ submitInProgress ? ('saving' | translate) : ('save_changes' | translate) }}
                 </button>
             </div>
         </div>
@@ -23,17 +24,17 @@
 
     <div *ngIf="isLoading" class="loading-container">
         <div class="loading-spinner"></div>
-        <p>Loading provider information...</p>
+        <p>{{ 'loading_provider_info' | translate }}</p>
     </div>
 
     <div *ngIf="loadError" class="error-container">
         <div class="error-icon">
             <i class="fa fa-exclamation-triangle"></i>
         </div>
-        <h3>Unable to load provider data</h3>
-        <p>There was a problem retrieving the provider information. Please try again.</p>
+        <h3>{{ 'unable_load_provider' | translate }}</h3>
+        <p>{{ 'problem_retrieving_info' | translate }}</p>
         <button class="btn-retry" (click)="retry()">
-            <i class="fa fa-sync-alt"></i> Retry
+            <i class="fa fa-sync-alt"></i> {{ 'retry' | translate }}
         </button>
     </div>
 
@@ -43,32 +44,31 @@
                 <!-- First column -->
                 <div class="form-column">
                     <div class="form-group">
-                        <label for="tax_name">Company Name</label>
-                        <input type="text" id="tax_name" formControlName="tax_name" class="form-control"
-                            [ngClass]="{'invalid': hasError('tax_name', 'required')}">
-                        <div class="error-message" *ngIf="hasError('tax_name', 'required')">
-                            Company name is required
-                        </div>
+                        <label for="taxName">{{ 'company_name_label' | translate }}</label>
+                        <input type="text" id="taxName" formControlName="taxName" class="form-control"
+                            [ngClass]="{'invalid': hasError('taxName', 'required')}">
+                        <div class="error-message" *ngIf="hasError('taxName', 'required')">
+                            {{ 'company_name_required_error' | translate }}                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="ruc">RUC</label>
+                        <label for="ruc">{{ 'ruc' | translate }}</label>
                         <input type="text" id="ruc" formControlName="ruc" class="form-control"
                             [ngClass]="{'invalid': hasError('ruc', 'required') || hasError('ruc', 'pattern')}">
                         <div class="error-message" *ngIf="hasError('ruc', 'required')">
-                            RUC is required
+                            {{ 'ruc_required_error' | translate }}
                         </div>
                         <div class="error-message" *ngIf="hasError('ruc', 'pattern')">
-                            RUC must be 11 digits
+                            {{ 'ruc_pattern_error' | translate }}
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="sensors_number">Number of Sensors</label>
+                        <label for="sensors_number">{{ 'number_sensors_label' | translate }}</label>
                         <input type="number" id="sensors_number" formControlName="sensors_number" class="form-control"
                             [ngClass]="{'invalid': hasError('sensors_number', 'min')}">
                         <div class="error-message" *ngIf="hasError('sensors_number', 'min')">
-                            Number of sensors must be positive
+                            {{ 'sensors_positive_error' | translate }}
                         </div>
                     </div>
                 </div>
@@ -76,35 +76,35 @@
                 <!-- Second column -->
                 <div class="form-column">
                     <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="email">{{ 'email' | translate }}</label>
                         <input type="email" id="email" formControlName="email" class="form-control"
                             [ngClass]="{'invalid': hasError('email', 'required') || hasError('email', 'email')}">
                         <div class="error-message" *ngIf="hasError('email', 'required')">
-                            Email is required
+                            {{ 'email_required_error' | translate }}
                         </div>
                         <div class="error-message" *ngIf="hasError('email', 'email')">
-                            Please enter a valid email
+                            {{ 'valid_email_error' | translate }}
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="phone">Phone</label>
+                        <label for="phone">{{ 'phone' | translate }}</label>
                         <input type="text" id="phone" formControlName="phone" class="form-control"
                             [ngClass]="{'invalid': hasError('phone', 'required') || hasError('phone', 'pattern')}">
                         <div class="error-message" *ngIf="hasError('phone', 'required')">
-                            Phone is required
+                            {{ 'phone_required_error' | translate }}
                         </div>
                         <div class="error-message" *ngIf="hasError('phone', 'pattern')">
-                            Phone must be 9 digits
+                            {{ 'phone_pattern_error' | translate }}
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="address">Address</label>
+                        <label for="address">{{ 'address' | translate }}</label>
                         <input type="text" id="address" formControlName="address" class="form-control"
                             [ngClass]="{'invalid': hasError('address', 'required')}">
                         <div class="error-message" *ngIf="hasError('address', 'required')">
-                            Address is required
+                            {{ 'address_required_error' | translate }}
                         </div>
                     </div>
                 </div>
@@ -112,39 +112,11 @@
         </form>
 
         <div class="provider-stats">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fa fa-users"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>25</h3>
-                    <p>Residents</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fa fa-tint"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>{{ provider.sensors_number }}</h3>
-                    <p>Sensors</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fa fa-clipboard-list"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>12</h3>
-                    <p>Active Plans</p>
-                </div>
-            </div>
+          <div class="card-actions">
+              <button class="btn-view-details" (click)="goToDetails()">
+                  <i class="fa fa-clipboard-list"></i> {{ 'view_active_plans' | translate }}
+              </button>
+          </div>
         </div>
 
-        <div class="card-actions">
-            <button class="btn-view-details" (click)="goToDetails()">
-                <i class="fa fa-clipboard-list"></i> View Active Plans
-            </button>
-        </div>
-    </div>
 </div>

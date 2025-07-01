@@ -1,34 +1,91 @@
 .report-detail-container {
   max-width: 900px;
-  margin: auto;
+  margin: 0 auto;
+  margin-top: 50px;
   padding: 20px;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', Arial, sans-serif;
+  color: #333;
 }
 
 .report-header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
+}
+
+.report-titles h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #555;
+}
+
+.report-titles h1 {
+  margin: 5px 0 0;
+  font-size: 28px;
+  color: #222;
 }
 
 .status-button {
   background-color: #00a0ff;
   color: white;
   border-radius: 20px;
+  font-weight: 500;
+  padding: 6px 16px;
+  font-size: 14px;
+}
+
+hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #ddd;
 }
 
 .report-info {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
+  gap: 20px;
   margin-top: 20px;
 }
 
-.resident-info, .technician-info {
-  width: 45%;
+.resident-info,
+.technician-info {
+  flex: 1 1 45%;
+  min-width: 250px;
+}
+
+.resident-info h3,
+.technician-info h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #00a0ff;
 }
 
 .description-section {
   margin-top: 30px;
+}
+
+.description-section label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.description-display {
+  width: 95%;
+  min-height: 120px;
+  border: 2px solid #00a0ff;  /* Cambia esta línea */
+  border-radius: 8px;
+  padding: 15px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  background-color: #ffffff;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 textarea {
@@ -38,10 +95,50 @@ textarea {
   border-radius: 8px;
   padding: 10px;
   resize: vertical;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
 }
 
 .back-button {
-  margin-top: 20px;
+  margin-top: 25px;
   border-color: #00a0ff;
   color: #00a0ff;
+  font-weight: 500;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .report-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .report-info {
+    flex-direction: column;
+  }
+
+  .report-titles h1 {
+    font-size: 22px;
+  }
+
+  .status-button {
+    align-self: flex-start;
+  }
+}
+.back-button {
+  padding: 10px 25px;
+  background-color: white;
+  color: #00a0ff;
+  border: 2px solid #00a0ff;
+  border-radius: 25px;
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #00a0ff;
+  color: white;
 }

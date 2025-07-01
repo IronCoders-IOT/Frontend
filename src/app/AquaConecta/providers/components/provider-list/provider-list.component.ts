@@ -15,13 +15,14 @@ import {MatInputModule} from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
-
 import {HeaderContentComponent} from '../../../../public/components/header-content/header-content.component';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { LanguageToggleComponent } from '../../../../shared/components/language-toggle/language-toggle.component';
 
 @Component({
   selector: 'app-provider-list',
   imports: [CommonModule,HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
-    MatPaginatorModule, MatFormFieldModule,MatInputModule],
+    MatPaginatorModule, MatFormFieldModule,MatInputModule, TranslatePipe, LanguageToggleComponent],
   templateUrl: './provider-list.component.html',
   standalone: true,
   styleUrl: './provider-list.component.css'

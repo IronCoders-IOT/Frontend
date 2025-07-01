@@ -1,59 +1,61 @@
 <app-header-content></app-header-content>
-<div class="user-info-card" *ngIf="resident">
-  <h1 class="user-name">{{ resident.firstName + resident.lastName }}</h1>
+
+<div class="user-info-card" *ngIf="residentData">
+  <h1 class="user-name">{{residentData.firstName +' '+ residentData.lastName}}</h1>
   <div class="user-details">
-    <span class="dni">DNI: <span class="highlight">{{ 10253689 }}</span></span>
-    <span class="phone">Phone: <span class="highlight">{{ resident.phone }}</span></span>
+    <span class="dni">{{ 'doc_number' | translate }}: <span class="highlight">{{ residentData.documentNumber }}</span></span>
+    <span class="phone">{{ 'phone_column' | translate }}: <span class="highlight">{{ residentData.phone }}</span></span>
   </div>
-  <p class="address">{{ resident.address }}</p>
+  <app-language-toggle></app-language-toggle>
 </div>
 
 <div>
   <div class="request-title-search">
-    <h1 class="title-request">Sensor Activity History</h1>
+    <h1 class="title-request">{{ 'subscriptions' | translate }}</h1>
   </div>
-    <div class="example-table-container">
-      <table mat-table [dataSource]="events" class="example-table" matSort>
-        <!-- Number Column -->
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-          <td mat-cell *matCellDef="let row">{{ row.id }}</td>
-        </ng-container>
 
-        <!-- Title Column -->
-        <ng-container matColumnDef="event">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Event</th>
-          <td mat-cell *matCellDef="let row">{{ row.event_type }}</td>
-        </ng-container>
+  <div class="example-table-container">
+    <table mat-table [dataSource]="subscriptions" class="example-table" matSort>
 
-        <!-- State Column -->
-        <ng-container matColumnDef="water_quality">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Water Quality</th>
-          <td mat-cell *matCellDef="let row">{{ row.quality_value}}</td>
-        </ng-container>
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'id' | translate }}</th>
+        <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+      </ng-container>
 
-        <!-- Status Column -->
-        <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-          <td mat-cell *matCellDef="let row" class="custom-cell-status">
+      <!-- Sensor ID Column -->
+      <ng-container matColumnDef="sensorId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'sensor' | translate }}</th>
+        <td mat-cell *matCellDef="let row">#S{{ row.sensorId }}</td>
+      </ng-container>
+
+
+      <!-- Start Date Column -->
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'start_date' | translate }}</th>
+        <td mat-cell *matCellDef="let row">{{ row.startDate | date }}</td>
+      </ng-container>
+
+      <!-- End Date Column -->
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'end_date' | translate }}</th>
+        <td mat-cell *matCellDef="let row">{{ row.endDate | date }}</td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'status' | translate }}</th>
+        <td mat-cell *matCellDef="let row" class="custom-cell-status">
           <span [ngClass]="getStatusClass(row.status)">
-            {{ row.status }}
-            </span>
-          </td>
-        </ng-container>
+            {{ getTranslatedStatus(row.status) }}
+          </span>
+        </td>
+      </ng-container>
 
-        <!-- Created Column -->
-        <ng-container matColumnDef="water_level">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Water Level</th>
-          <td mat-cell *matCellDef="let row">{{ row.level_value }}</td>
-        </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </div>
-
+    </table>
   </div>
 
+</div>
