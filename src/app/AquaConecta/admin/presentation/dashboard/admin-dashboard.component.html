@@ -117,35 +117,42 @@
   <div class="dashboard-section">
     <div class="section-header">
       <h2>{{ translate('system_health_status') }}</h2>
+      <p class="section-note">{{ translate('metrics_estimated_note') }}</p>
     </div>
     <div class="status-overview">
-      <mat-card class="status-card light-card">        <mat-card-content>
+      <mat-card class="status-card light-card">
+        <mat-card-content>
           <div class="status-header">
-            <h3>{{ translate('water_quality') }}</h3>
-            <span class="status-value" [ngClass]="getStatusClass(waterQualityAverage)">{{ waterQualityAverage }}%</span>
+            <h3>{{ translate('average_water_quality') }}</h3>
+            <span class="status-value" [ngClass]="getQualityStatusClass(averageWaterQuality)">{{ averageWaterQuality | number:'1.1-1' }}%</span>
           </div>
-          <mat-progress-bar mode="determinate" [value]="waterQualityAverage" [ngClass]="getStatusClass(waterQualityAverage)"></mat-progress-bar>
-          <p class="status-description">{{ translate('water_quality_description') }}</p>
+          <mat-progress-bar mode="determinate" [value]="averageWaterQuality" [ngClass]="getQualityStatusClass(averageWaterQuality)"></mat-progress-bar>
+          <p class="status-description">{{ translate('average_water_quality_description') }}</p>
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="status-card light-card">        <mat-card-content>
+      <mat-card class="status-card light-card">
+        <mat-card-content>
           <div class="status-header">
-            <h3>{{ translate('sensor_health') }}</h3>
-            <span class="status-value" [ngClass]="getStatusClass(sensorHealthAverage)">{{ sensorHealthAverage }}%</span>
+            <h3>{{ translate('average_water_level') }}</h3>
+            <span class="status-value" [ngClass]="getLevelStatusClass(averageWaterLevel)">{{ averageWaterLevel | number:'1.1-1' }}%</span>
           </div>
-          <mat-progress-bar mode="determinate" [value]="sensorHealthAverage" [ngClass]="getStatusClass(sensorHealthAverage)"></mat-progress-bar>
-          <p class="status-description">{{ translate('sensor_health_description') }}</p>
+          <mat-progress-bar mode="determinate" [value]="averageWaterLevel" [ngClass]="getLevelStatusClass(averageWaterLevel)"></mat-progress-bar>
+          <p class="status-description">{{ translate('average_water_level_description') }}</p>
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="status-card light-card">        <mat-card-content>
+      <mat-card class="status-card light-card">
+        <mat-card-content>
           <div class="status-header">
-            <h3>{{ translate('system_uptime') }}</h3>
-            <span class="status-value" [ngClass]="getStatusClass(systemUptimeAverage)">{{ systemUptimeAverage }}%</span>
+            <h3>{{ translate('recent_events') }}</h3>
+            <span class="status-value status-info">{{ recentEventsCount }}</span>
           </div>
-          <mat-progress-bar mode="determinate" [value]="systemUptimeAverage" [ngClass]="getStatusClass(systemUptimeAverage)"></mat-progress-bar>
-          <p class="status-description">{{ translate('system_uptime_description') }}</p>
+          <div class="metric-details">
+            <p class="detail-text">{{ translate('last_24_hours') }}: {{ recentEventsCount }}</p>
+            <p class="detail-text">{{ translate('critical_events') }}: {{ criticalEventsCount }}</p>
+          </div>
+          <p class="status-description">{{ translate('recent_events_description') }}</p>
         </mat-card-content>
       </mat-card>
     </div>
