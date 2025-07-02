@@ -71,7 +71,8 @@
                     <p>{{ translate('events') }}</p>
                 </div>
             </div>
-
+            
+            <!--
             <div class="stat-card avg-quality">
                 <div class="stat-icon">
                     <i class="fa fa-water"></i>
@@ -81,6 +82,7 @@
                     <p>{{ translate('current_quality') }}</p>
                 </div>
             </div>
+            -->
         </div>
 
         <!-- Residents Grid -->
@@ -143,12 +145,14 @@
                     </div>
 
                     <div class="card-footer">
+                       
                         <div class="events-summary" *ngIf="hasActiveSensor(residentData)">
                             <span class="events-count">{{ residentData.sensorEvents.length }} {{ translate('events') }}</span>
                             <span class="status-badge" [ngClass]="getStatusClass(residentData.subscription?.status || '')">
                                 {{ getStatusText(residentData.subscription?.status || '') }}
                             </span>
                         </div>
+
                         <div class="view-details">
                             <i class="fa fa-arrow-right"></i>
                             <span>{{ translate('view_more') }}</span>
@@ -217,7 +221,6 @@
                                 <th>{{ translate('event_type') }}</th>
                                 <th>{{ translate('quality_value') }}</th>
                                 <th>{{ translate('water_level') }}</th>
-                                <th>{{ translate('state') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -238,14 +241,6 @@
                                     <span class="level-value" [ngClass]="getLevelClass(event.levelValue)">
                                         {{ event.levelValue }}%
                                     </span>
-                                </td>
-                                <td>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" 
-                                             [style.width.%]="event.levelValue"
-                                             [ngClass]="getLevelClass(event.levelValue)">
-                                        </div>
-                                    </div>
                                 </td>
                             </tr>
                         </tbody>

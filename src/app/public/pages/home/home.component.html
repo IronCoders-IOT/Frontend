@@ -95,7 +95,7 @@
         </div>
       </div>
 
-      <!-- Sensor History Card -->
+      <!-- Sensor Events Card -->
       <div class="dashboard-card" routerLink="/sensor-monitoring">        <div class="card-header">
           <div class="card-icon sensors">📊</div>
           <h3 class="card-title">{{ translate('sensor_monitoring') }}</h3>
@@ -103,14 +103,14 @@
         <div class="card-content">
           <div class="card-info">
             <p class="card-description">
-              {{ translate('realtime_monitoring') }}
+              {{ translate('sensor_events_data') }}
             </p>
             <div class="status-badge status-active">{{lastSensorUpdate || translate('live_data') }}</div>
             <a class="card-action">{{ translate('view_sensor_history') }}</a>
           </div>
           <div class="card-metric">
-            <span class="card-number">{{sensorsActive || '0'}}</span>
-            <span class="card-label">{{ translate('active_sensors') }}</span>
+            <span class="card-number">{{sensorEventsCount || '0'}}</span>
+            <span class="card-label">{{ translate('sensor_events') }}</span>
           </div>
         </div>
       </div>
