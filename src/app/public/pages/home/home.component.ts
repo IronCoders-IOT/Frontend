@@ -13,6 +13,7 @@ import {ReportdataApiService} from '../../../AquaConecta/reports/services/report
 import { LanguageService } from '../../../shared/services/language.service';
 import { TranslationService } from '../../../shared/services/translation.service';
 import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
+import { SensorDataService } from '../../../AquaConecta/providers/services/sensor-data.service';
 
 @Component({
   selector: 'app-home',
@@ -34,7 +35,7 @@ export class HomeComponent implements OnInit {
   reportsCount: number = 0;
   reportsActive: number = 0;
   residentsCount: number = 0;
-  sensorsActive: number = 0;
+  sensorEventsCount: number = 0;
   lastSensorUpdate: string = 'Live';
 
   private apiUrl = 'http://localhost:3000/api';
@@ -54,7 +55,8 @@ export class HomeComponent implements OnInit {
     private reportdataapiservice: ReportdataApiService,
     private http: HttpClient,
     private languageService: LanguageService,
-    private translationService: TranslationService ) {
+    private translationService: TranslationService,
+    private sensorDataService: SensorDataService ) {
   }
   ngOnInit(): void {
     this.loadUsername();
@@ -272,23 +274,28 @@ export class HomeComponent implements OnInit {
   }
 
   private loadSensors(): void {
-    // Ejemplo de llamada a API para obtener datos de sensores
-    this.http.get<any[]>(`${this.apiUrl}/events`).subscribe({
-      next: (sensors) => {
-        this.sensorsActive = sensors.filter(sensor => sensor.status === 'active').length;
-        // Obtener la última actualización
-        const lastUpdate = sensors.reduce((latest, sensor) => {
-          const sensorDate = new Date(sensor.last_update || sensor.updated_at);
-          return sensorDate > latest ? sensorDate : latest;
-        }, new Date(0));
+    // Obtener todos los datos de sensores del proveedor autenticado
+    this.sensorDataService.getCompleteSensorData().subscribe({
+      next: (sensorData) => {
+        // Contar todos los eventos de sensores
+        let totalEvents = 0;
 
-        this.lastSensorUpdate = this.formatRelativeTime(lastUpdate);
+        sensorData.forEach(residentData => {
+          if (residentData.sensorEvents && residentData.sensorEvents.length > 0) {
+            totalEvents += residentData.sensorEvents.length;
+          }
+        });
+
+        this.sensorEventsCount = totalEvents;
+        this.lastSensorUpdate = totalEvents > 0 ? 'Live' : 'No data';
+        
+        console.log(`Total sensor events: ${this.sensorEventsCount}`);
       },
       error: (error) => {
-        console.error('Error loading sensors:', error);
-        // Datos de ejemplo en caso de error
-        this.sensorsActive = 8;
-        this.lastSensorUpdate = '2min ago';
+        console.error('Error loading sensor events:', error);
+        // Valores por defecto en caso de error
+        this.sensorEventsCount = 0;
+        this.lastSensorUpdate = 'No data';
       }
     });
   }
