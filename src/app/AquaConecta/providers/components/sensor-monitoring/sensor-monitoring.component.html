@@ -1,6 +1,5 @@
 <!-- sensor-monitoring.component.html -->
 <app-header-content></app-header-content>
-<app-language-toggle></app-language-toggle>
 
 <div class="dashboard-container">
     <!-- Header Section -->
@@ -43,9 +42,6 @@
         <!-- Statistics Cards -->
         <div class="stats-grid">
             <div class="stat-card total-residents">
-                <div class="stat-icon">
-                    <i class="fa fa-users"></i>
-                </div>
                 <div class="stat-content">
                     <h3>{{ residentSensorData.length }}</h3>
                     <p>{{ translate('residents') }}</p>
@@ -53,9 +49,6 @@
             </div>
 
             <div class="stat-card active-sensors">
-                <div class="stat-icon">
-                    <i class="fa fa-tint"></i>
-                </div>
                 <div class="stat-content">
                     <h3>{{ getActiveSensorsCount() }}</h3>
                     <p>{{ translate('active_sensors') }}</p>
@@ -63,9 +56,6 @@
             </div>
 
             <div class="stat-card total-events">
-                <div class="stat-icon">
-                    <i class="fa fa-chart-line"></i>
-                </div>
                 <div class="stat-content">
                     <h3>{{ getTotalEventsCount() }}</h3>
                     <p>{{ translate('events') }}</p>
