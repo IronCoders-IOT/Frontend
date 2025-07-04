@@ -110,11 +110,29 @@ export class SensorMonitoringComponent implements OnInit {
   }
 
   getQualityClass(quality: string): string {
-    const qualityNum = parseFloat(quality);
-    if (qualityNum >= 8) return 'quality-excellent';
-    if (qualityNum >= 6) return 'quality-good';
-    if (qualityNum >= 4) return 'quality-fair';
-    return 'quality-poor';
+    // Mapeo de los nuevos valores de calidad del agua
+    switch (quality.toLowerCase().trim()) {
+      case 'excelente':
+        return 'quality-excellent';
+      case 'aceptable':
+        return 'quality-good';
+      case 'no potable':
+        return 'quality-fair';
+      case 'no hay agua':
+      case 'error tds':
+      case 'agua contaminada':
+        return 'quality-poor';
+      default:
+        // Fallback para valores numéricos o desconocidos
+        const qualityNum = parseFloat(quality);
+        if (!isNaN(qualityNum)) {
+          if (qualityNum >= 8) return 'quality-excellent';
+          if (qualityNum >= 6) return 'quality-good';
+          if (qualityNum >= 4) return 'quality-fair';
+          return 'quality-poor';
+        }
+        return 'quality-poor';
+    }
   }
 
   getLevelClass(level: string): string {

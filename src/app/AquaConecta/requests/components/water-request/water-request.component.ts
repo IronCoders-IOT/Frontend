@@ -110,17 +110,17 @@ export class WaterRequestComponent implements AfterViewInit {
     });
   }
 
-  // MÉTODO CORREGIDO: Filtra por proveedor autenticado
+  
   getAllRequests(): void {
     this.isLoadingResults = true;
 
-    // Intentar obtener el perfil del proveedor autenticado
+    
     this.sensordataApiService.getProviderProfile().subscribe(
       (providerProfile) => {
         const authenticatedProviderId = providerProfile.id;
         console.log('Proveedor autenticado:', providerProfile);
 
-        // Obtener residentes del proveedor
+        
         this.sensordataApiService.getResidentsByProviderId(authenticatedProviderId).subscribe(
           (residents) => {
             console.log('Residentes del proveedor:', residents);

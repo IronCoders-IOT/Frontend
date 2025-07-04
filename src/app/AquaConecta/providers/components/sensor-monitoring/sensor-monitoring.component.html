@@ -1,6 +1,5 @@
 <!-- sensor-monitoring.component.html -->
 <app-header-content></app-header-content>
-<app-language-toggle></app-language-toggle>
 
 <div class="dashboard-container">
     <!-- Header Section -->
@@ -43,9 +42,6 @@
         <!-- Statistics Cards -->
         <div class="stats-grid">
             <div class="stat-card total-residents">
-                <div class="stat-icon">
-                    <i class="fa fa-users"></i>
-                </div>
                 <div class="stat-content">
                     <h3>{{ residentSensorData.length }}</h3>
                     <p>{{ translate('residents') }}</p>
@@ -53,9 +49,6 @@
             </div>
 
             <div class="stat-card active-sensors">
-                <div class="stat-icon">
-                    <i class="fa fa-tint"></i>
-                </div>
                 <div class="stat-content">
                     <h3>{{ getActiveSensorsCount() }}</h3>
                     <p>{{ translate('active_sensors') }}</p>
@@ -63,15 +56,13 @@
             </div>
 
             <div class="stat-card total-events">
-                <div class="stat-icon">
-                    <i class="fa fa-chart-line"></i>
-                </div>
                 <div class="stat-content">
                     <h3>{{ getTotalEventsCount() }}</h3>
                     <p>{{ translate('events') }}</p>
                 </div>
             </div>
-
+            
+            <!--
             <div class="stat-card avg-quality">
                 <div class="stat-icon">
                     <i class="fa fa-water"></i>
@@ -81,6 +72,7 @@
                     <p>{{ translate('current_quality') }}</p>
                 </div>
             </div>
+            -->
         </div>
 
         <!-- Residents Grid -->
@@ -143,12 +135,14 @@
                     </div>
 
                     <div class="card-footer">
+                       
                         <div class="events-summary" *ngIf="hasActiveSensor(residentData)">
                             <span class="events-count">{{ residentData.sensorEvents.length }} {{ translate('events') }}</span>
                             <span class="status-badge" [ngClass]="getStatusClass(residentData.subscription?.status || '')">
                                 {{ getStatusText(residentData.subscription?.status || '') }}
                             </span>
                         </div>
+
                         <div class="view-details">
                             <i class="fa fa-arrow-right"></i>
                             <span>{{ translate('view_more') }}</span>
@@ -217,7 +211,6 @@
                                 <th>{{ translate('event_type') }}</th>
                                 <th>{{ translate('quality_value') }}</th>
                                 <th>{{ translate('water_level') }}</th>
-                                <th>{{ translate('state') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -238,14 +231,6 @@
                                     <span class="level-value" [ngClass]="getLevelClass(event.levelValue)">
                                         {{ event.levelValue }}%
                                     </span>
-                                </td>
-                                <td>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" 
-                                             [style.width.%]="event.levelValue"
-                                             [ngClass]="getLevelClass(event.levelValue)">
-                                        </div>
-                                    </div>
                                 </td>
                             </tr>
                         </tbody>

@@ -43,6 +43,16 @@ export class ReportDetailComponent implements OnInit {
       this.reportService.getReportById(id).pipe(
         switchMap((data) => {
           this.report = data;
+          
+          // Format status
+          if (this.report.status === 'IN_PROGRESS') {
+            this.report.status = 'In Progress';
+          } else if (this.report.status === 'CLOSED') {
+            this.report.status = 'Closed';
+          } else if (this.report.status === 'RECEIVED') {
+            this.report.status = 'Received';
+          }
+          
           return this.reportService.getResidentById(data.residentId);
         })
       ).subscribe((residentData) => {
