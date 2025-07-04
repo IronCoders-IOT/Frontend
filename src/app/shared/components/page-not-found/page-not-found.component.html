@@ -1,0 +1,44 @@
+<div class="page-not-found-container">
+  <div class="error-content">
+    <!-- Error Icon -->
+    <div class="error-icon">
+      <img src="assets/images/aquaconecta.png" alt="AquaConecta" class="logo">
+      <div class="error-number">404</div>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-message">
+      <h1>Página no encontrada</h1>
+      <p *ngIf="!currentUser">Lo sentimos, la página que estás buscando no existe o ha sido movida.</p>
+      <p *ngIf="currentUser && isAdminUser()">Como administrador, serás redirigido al panel de control.</p>
+      <p *ngIf="currentUser && !isAdminUser()">Lo sentimos, la página que estás buscando no existe o ha sido movida.</p>
+    </div>
+
+    <!-- Redirect Information -->
+    <div class="redirect-info" *ngIf="redirectingMessage">
+      <div class="redirect-message">
+        <div class="loading-spinner"></div>
+        <span>{{ redirectingMessage }}...</span>
+      </div>
+      <div class="countdown">
+        Redirigiendo en {{ countDown }} segundo{{ countDown !== 1 ? 's' : '' }}
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-primary" (click)="goToRedirect()">
+        <span *ngIf="!currentUser">Ir al Login</span>
+        <span *ngIf="currentUser && isAdminUser()">Ir al Dashboard</span>
+        <span *ngIf="currentUser && !isAdminUser()">Ir al Inicio</span>
+      </button>
+      
+      <!-- No mostrar botón secundario - cada tipo de usuario tiene solo una opción principal -->
+    </div>
+
+    <!-- Additional Info -->
+    <div class="additional-info">
+      <p>Si el problema persiste, contacta al soporte técnico.</p>
+    </div>
+  </div>
+</div>
