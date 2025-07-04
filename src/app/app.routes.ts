@@ -14,6 +14,7 @@ import { AdminDashboardComponent } from './AquaConecta/admin/presentation/dashbo
 import { ProviderProfileComponent } from './AquaConecta/providers/components/provider-profile/provider-profile.component';
 import {ResidentListComponent} from './AquaConecta/residents/presentation/resident-list/resident-list.component';
 import { SensorMonitoringComponent } from './AquaConecta/providers/components/sensor-monitoring/sensor-monitoring.component';
+import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -33,5 +34,6 @@ export const routes: Routes = [
   { path: 'provider/:id/detail', component: ProviderDetailComponent },
   { path: 'provider/:id/profile', component: ProviderProfileComponent },
   { path: 'sensor-monitoring', component: SensorMonitoringComponent },
-
+  // Wildcard route for 404 page - must be last
+  { path: '**', component: PageNotFoundComponent }
 ];
