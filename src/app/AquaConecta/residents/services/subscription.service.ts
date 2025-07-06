@@ -16,9 +16,9 @@ export class SubscriptionService extends BaseService<SubscriptionModel> {
   }
 
   getSubscriptionsByResidentId(residentId: number): Observable<SubscriptionModel[]> {
-const url = `${this.basePath}${this.resourceEndpoint}/resident/${residentId}`;
-  return this.http.get<SubscriptionModel[]>(url, this.httpOptions);
-}
+    const url = `${this.basePath}residents/${residentId}/subscriptions`;
+    return this.http.get<SubscriptionModel[]>(url, this.httpOptions);
+  }
 
   getAllSubscriptions(): Observable<SubscriptionModel[]> {
     return this.http.get<SubscriptionModel[]>(`${this.basePath}${this.resourceEndpoint}`, this.httpOptions);

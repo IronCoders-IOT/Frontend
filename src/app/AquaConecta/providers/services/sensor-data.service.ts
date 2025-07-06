@@ -19,21 +19,21 @@ export class SensorDataService extends BaseService<any> {
   }
 
   getResidentsByProvider(providerId: number): Observable<ResidentData[]> {
-    const url = `${this.basePath}residents/by-provider/${providerId}`;
+    const url = `${this.basePath}residents`;
     return this.http.get<ResidentData[]>(url, this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }
 
   getSubscriptionByResident(residentId: number): Observable<SubscriptionData[]> {
-    const url = `${this.basePath}subscriptions/resident/${residentId}`;
+    const url = `${this.basePath}residents/${residentId}/subscriptions`;
     return this.http.get<SubscriptionData[]>(url, this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }
 
   getSensorEvents(sensorId: number): Observable<SensorEvent[]> {
-    const url = `${this.basePath}events/sensor/${sensorId}`;
+    const url = `${this.basePath}devices/${sensorId}/events`;
     return this.http.get<SensorEvent[]>(url, this.httpOptions).pipe(
       catchError(this.handleError)
     );
