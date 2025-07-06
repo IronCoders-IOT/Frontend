@@ -11,7 +11,7 @@ import {BaseService} from '../../../shared/services/base.service';
 export class ReportdataApiService extends BaseService<ReportRequestEntity> {
   constructor(http: HttpClient) {
     super(http);
-    this.resourceEndpoint = 'requests';
+    this.resourceEndpoint = 'issue-reports';
   }
 
   getAllProviders(): Observable<any[]> {
@@ -24,16 +24,16 @@ export class ReportdataApiService extends BaseService<ReportRequestEntity> {
 
   getReportsByProviderId(providerId: number): Observable<ReportRequestEntity[]> {
 
-    return this.http.get<ReportRequestEntity[]>(`${this.basePath}requests/provider/${providerId}`, this.httpOptions)
+    return this.http.get<ReportRequestEntity[]>(`${this.basePath}issue-reports`, this.httpOptions)
   }
 
   getResidentById(residentId: number): Observable<any> {
-    return this.http.get<any>(`${this.basePath}residents/{id}?userId=${residentId}`, this.httpOptions);
+    return this.http.get<any>(`${this.basePath}residents/${residentId}?userId=${residentId}`, this.httpOptions);
   }
 
 
   getReportById(id: string): Observable<ReportRequestEntity> {
-   return this.http.get<any>(`${this.basePath}requests/${id}`, this.httpOptions);
+   return this.http.get<any>(`${this.basePath}issue-reports/${id}`, this.httpOptions);
   }
 
   getAllReports(): Observable<ReportRequestEntity[]> {
