@@ -1,20 +1,20 @@
 import { Routes } from '@angular/router';
-import { WaterRequestComponent } from './AquaConecta/requests/components/water-request/water-request.component';
 import { HomeComponent } from './public/pages/home/home.component';
-import { LoginComponent } from './AquaConecta/auth/presentation/pages/login/login.component';
-import { SignupComponent } from './AquaConecta/auth/presentation/pages/signup/signup.component';
-import { CreateResidentComponent } from './AquaConecta/residents/presentation/create-resident/create-resident.component';
-import { ScheduleDateComponent} from './AquaConecta/requests/components/schedule-date/schedule-date.component';
-import { ReportRequestComponent} from './AquaConecta/reports/components/report-request/report-request.component';
-import { ProviderDetailComponent} from './AquaConecta/providers/components/provider-detail/provider-detail.component';
-import { ProviderListComponent} from './AquaConecta/providers/components/provider-list/provider-list.component';
-import { ViewHistoryComponent } from './AquaConecta/residents/presentation/view-history/view-history.component';
-import { ReportDetailComponent } from './AquaConecta/reports/components/report-detail/report-detail/report-detail.component';
-import { AdminDashboardComponent } from './AquaConecta/admin/presentation/dashboard/admin-dashboard.component';
-import { ProviderProfileComponent } from './AquaConecta/providers/components/provider-profile/provider-profile.component';
-import {ResidentListComponent} from './AquaConecta/residents/presentation/resident-list/resident-list.component';
-import { SensorMonitoringComponent } from './AquaConecta/providers/components/sensor-monitoring/sensor-monitoring.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
+import {WaterRequestComponent} from './requests/components/water-request-item/water-request.component';
+import {ProviderListComponent} from './providers/components/provider-list/provider-list.component';
+import {ScheduleDateComponent} from './requests/components/schedule-date/schedule-date.component';
+import {ReportRequestComponent} from './reports/components/issue-report/report-request.component';
+import {CreateResidentComponent} from './residents/presentation/create-resident/create-resident.component';
+import {ResidentListComponent} from './residents/presentation/resident-list/resident-list.component';
+import {ViewHistoryComponent} from './residents/presentation/resident-summary/view-history.component';
+import {ProviderDetailComponent} from './providers/components/provider-summary/provider-detail.component';
+import {ProviderProfileComponent} from './providers/components/provider-item/provider-profile.component';
+import {SensorMonitoringComponent} from './providers/components/sensor-monitoring/sensor-monitoring.component';
+import {LoginComponent} from './iam/presentation/pages/login/login.component';
+import {SignupComponent} from './iam/presentation/pages/signup/signup.component';
+import {ReportDetailComponent} from './reports/components/issue-summary/report-detail.component';
+import {AdminDashboardComponent} from './analytics/presentation/dashboard/admin-dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },

@@ -4,16 +4,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderContentComponent } from '../../components/header-content/header-content.component';
 import { HttpClient } from '@angular/common/http';
-import {SensordataApiService} from '../../../AquaConecta/requests/services/sensordata-api.service';
-import {ResidentService} from '../../../AquaConecta/residents/services/resident.service';
-import {AuthService} from '../../../AquaConecta/auth/application/services/auth.service';
+import {SensordataApiService} from '../../../requests/services/sensordata-api.service';
+import {ResidentService} from '../../../residents/services/resident.service';
+import {AuthService} from '../../../iam/application/services/auth.service';
 import {catchError} from 'rxjs/operators';
 import {forkJoin, of} from 'rxjs';
-import {ReportdataApiService} from '../../../AquaConecta/reports/services/reportdata-api.service';
+import {ReportdataApiService} from '../../../reports/services/reportdata-api.service';
 import { LanguageService } from '../../../shared/services/language.service';
 import { TranslationService } from '../../../shared/services/translation.service';
 import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
-import { SensorDataService } from '../../../AquaConecta/providers/services/sensor-data.service';
+import { SensorDataService } from '../../../providers/services/sensor-data.service';
 
 @Component({
   selector: 'app-home',
@@ -61,13 +61,13 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.loadUsername();
     this.loadDashboardData();
-    
+
     // Load saved language
     const savedLanguage = localStorage.getItem('selected_language');
     if (savedLanguage) {
       this.selectedLanguage = savedLanguage;
     }
-    
+
     // Subscribe to language changes
     this.languageService.currentLanguage$.subscribe(language => {
       this.selectedLanguage = language;
@@ -288,7 +288,7 @@ export class HomeComponent implements OnInit {
 
         this.sensorEventsCount = totalEvents;
         this.lastSensorUpdate = totalEvents > 0 ? 'Live' : 'No data';
-        
+
         console.log(`Total sensor events: ${this.sensorEventsCount}`);
       },
       error: (error) => {
