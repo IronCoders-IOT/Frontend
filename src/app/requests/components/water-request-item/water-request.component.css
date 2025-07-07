@@ -255,6 +255,30 @@ tr:hover {
 }
 
 .schedule-link {
-  color: blue;
-  text-decoration: underline; /* Opcional, para que parezca un enlace */
+  color: #00a0ff;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.schedule-link:hover:not(.disabled) {
+  color: #0080cc;
+}
+
+/* Estilo para el link deshabilitado */
+.schedule-link.disabled {
+  color: #ccc !important;
+  text-decoration: none !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Estilo para filas deshabilitadas */
+.row-disabled {
+  opacity: 0.7;
+  background-color: #f8f9fa !important;
+}
+
+.row-disabled:hover {
+  background-color: #f8f9fa !important;
 }

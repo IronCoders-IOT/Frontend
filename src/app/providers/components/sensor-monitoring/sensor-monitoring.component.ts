@@ -16,9 +16,12 @@ import { TranslationService } from '../../../shared/services/translation.service
 export class SensorMonitoringComponent implements OnInit {
   residentSensorData: ResidentSensorData[] = [];
   selectedResident: ResidentSensorData | null = null;
+  selectedSensor: any = null;
   isLoading = false;
   loadError: string | null = null;
   isModalOpen = false;
+  isDetailModalOpen = false;
+  modalStep: 'sensors' | 'details' = 'sensors';
 
   constructor(
     private sensorDataService: SensorDataService,
@@ -44,7 +47,7 @@ export class SensorMonitoringComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading sensor data:', error);
-        this.loadError = 'Error al cargar los datos de sensores';
+        this.loadError = this.translate('error_loading_sensor_data');
         this.isLoading = false;
       }
     });
@@ -52,12 +55,26 @@ export class SensorMonitoringComponent implements OnInit {
 
   selectResident(residentData: ResidentSensorData): void {
     this.selectedResident = residentData;
+    this.selectedSensor = null;
+    this.modalStep = 'sensors';
     this.isModalOpen = true;
+  }
+
+  selectSensor(sensor: any): void {
+    this.selectedSensor = sensor;
+    this.modalStep = 'details';
+  }
+
+  backToSensorList(): void {
+    this.selectedSensor = null;
+    this.modalStep = 'sensors';
   }
 
   closeModal(): void {
     this.isModalOpen = false;
     this.selectedResident = null;
+    this.selectedSensor = null;
+    this.modalStep = 'sensors';
   }
 
   @HostListener('document:keydown.escape', ['$event'])
@@ -82,10 +99,10 @@ export class SensorMonitoringComponent implements OnInit {
 
   getStatusText(status: string): string {
     switch (status?.toLowerCase()) {
-      case 'active': return 'Activa';
-      case 'inactive': return 'Inactiva';
-      case 'suspended': return 'Suspendida';
-      default: return status || 'Sin estado';
+      case 'active': return this.translate('status_active');
+      case 'inactive': return this.translate('status_inactive');
+      case 'suspended': return this.translate('status_suspended');
+      default: return status || this.translate('status_unknown');
     }
   }
 
@@ -101,11 +118,11 @@ export class SensorMonitoringComponent implements OnInit {
 
   getEventTypeText(eventType: string): string {
     switch (eventType?.toLowerCase()) {
-      case 'normal': return 'Normal';
-      case 'warning': return 'Advertencia';
-      case 'critical': return 'Crítico';
-      case 'maintenance': return 'Mantenimiento';
-      default: return eventType || 'Desconocido';
+      case 'normal': return this.translate('event_normal');
+      case 'warning': return this.translate('event_warning');
+      case 'critical': return this.translate('event_critical');
+      case 'maintenance': return this.translate('event_maintenance');
+      default: return eventType || this.translate('event_unknown');
     }
   }
 
@@ -144,16 +161,30 @@ export class SensorMonitoringComponent implements OnInit {
   }
 
   hasActiveSensor(residentData: ResidentSensorData): boolean {
-    return residentData.subscription !== null && residentData.subscription.sensorId > 0;
+    return residentData.subscriptions && residentData.subscriptions.length > 0 && 
+           residentData.subscriptions.some(sub => sub.status.toLowerCase() === 'active');
   }
 
   getLatestEvent(events: SensorEvent[]): SensorEvent | null {
     return events.length > 0 ? events[events.length - 1] : null;
   }
 
+  // Método para obtener la primera suscripción activa (para compatibilidad con el template actual)
+  getActiveSubscription(residentData: ResidentSensorData): any {
+    return residentData.subscriptions?.find(sub => sub.status.toLowerCase() === 'active') || null;
+  }
+
+  // Método para obtener todas las suscripciones activas
+  getActiveSubscriptions(residentData: ResidentSensorData): any[] {
+    return residentData.subscriptions?.filter(sub => sub.status.toLowerCase() === 'active') || [];
+  }
+
   // Dashboard statistics methods
   getActiveSensorsCount(): number {
-    return this.residentSensorData.filter(resident => this.hasActiveSensor(resident)).length;
+    return this.residentSensorData.reduce((total, resident) => {
+      const activeSubscriptions = resident.subscriptions?.filter(sub => sub.status.toLowerCase() === 'active') || [];
+      return total + activeSubscriptions.length;
+    }, 0);
   }
 
   getTotalEventsCount(): number {
@@ -193,6 +224,244 @@ export class SensorMonitoringComponent implements OnInit {
       return firstName.charAt(0).toUpperCase();
     } else {
       return (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+    }
+  }
+
+  // Método para obtener eventos específicos de un sensor de un residente específico
+  getSensorEventsForResident(sensorId: number, residentData: ResidentSensorData): SensorEvent[] {
+    return residentData.sensorEvents.filter(event => event.sensorId === sensorId);
+  }
+
+  // Método para obtener el último evento de un sensor específico de un residente específico
+  getLatestEventForSensorOfResident(sensorId: number, residentData: ResidentSensorData): SensorEvent | null {
+    const events = this.getSensorEventsForResident(sensorId, residentData);
+    return events.length > 0 ? events[events.length - 1] : null;
+  }
+
+  // Método para obtener eventos específicos de un sensor
+  getSensorEvents(sensorId: number): SensorEvent[] {
+    if (!this.selectedResident) return [];
+    return this.selectedResident.sensorEvents.filter(event => event.sensorId === sensorId);
+  }
+
+  // Método para obtener el último evento de un sensor específico
+  getLatestEventForSensor(sensorId: number): SensorEvent | null {
+    const events = this.getSensorEvents(sensorId);
+    return events.length > 0 ? events[events.length - 1] : null;
+  }
+
+  // Método para verificar si un sensor tiene eventos recientes
+  hasSensorActivity(sensorId: number): boolean {
+    return this.getSensorEvents(sensorId).length > 0;
+  }
+
+  // Nuevas funciones para el resumen inteligente del card
+
+  // Obtener rango de calidad de todos los sensores activos
+  getQualityRange(residentData: ResidentSensorData): string {
+    const activeSubscriptions = this.getActiveSubscriptions(residentData);
+    if (activeSubscriptions.length === 0) return 'N/A';
+
+    const qualities: string[] = [];
+    activeSubscriptions.forEach(subscription => {
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      if (latestEvent) {
+        qualities.push(latestEvent.qualityValue);
+      }
+    });
+
+    if (qualities.length === 0) return 'N/A';
+
+    const uniqueQualities = [...new Set(qualities)];
+    
+    if (uniqueQualities.length === 1) {
+      return uniqueQualities[0];
+    }
+    
+    // Ordenar de mejor a peor: excelente, aceptable, no potable, y los críticos al final
+    const qualityOrder = ['excelente', 'aceptable', 'no potable', 'no hay agua', 'error tds', 'agua contaminada'];
+    const sortedQualities = uniqueQualities.sort((a, b) => {
+      const indexA = qualityOrder.indexOf(a.toLowerCase().trim());
+      const indexB = qualityOrder.indexOf(b.toLowerCase().trim());
+      return indexA - indexB;
+    });
+
+    return `${sortedQualities[0]} - ${sortedQualities[sortedQualities.length - 1]}`;
+  }
+
+  // Verificar si hay sensores críticos (calidad mala o nivel bajo)
+  hasCriticalSensors(residentData: ResidentSensorData): boolean {
+    const activeSubscriptions = this.getActiveSubscriptions(residentData);
+    
+    return activeSubscriptions.some(subscription => {
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      if (latestEvent) {
+        const levelValue = typeof latestEvent.levelValue === 'string' ? 
+          parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
+        const qualityLower = latestEvent.qualityValue.toLowerCase().trim();
+        const isBadQuality = ['no potable', 'no hay agua', 'error tds', 'agua contaminada'].includes(qualityLower);
+        return isBadQuality || levelValue < 30;
+      }
+      return false;
+    });
+  }
+
+  // Contar sensores críticos
+  getCriticalSensorsCount(residentData: ResidentSensorData): number {
+    const activeSubscriptions = this.getActiveSubscriptions(residentData);
+    
+    return activeSubscriptions.filter(subscription => {
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      if (latestEvent) {
+        const levelValue = typeof latestEvent.levelValue === 'string' ? 
+          parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
+        const qualityLower = latestEvent.qualityValue.toLowerCase().trim();
+        const isBadQuality = ['no potable', 'no hay agua', 'error tds', 'agua contaminada'].includes(qualityLower);
+        return isBadQuality || levelValue < 30;
+      }
+      return false;
+    }).length;
+  }
+
+  // Obtener estado general de los sensores
+  getSensorsStatusSummary(residentData: ResidentSensorData): string {
+    const activeSubscriptions = this.getActiveSubscriptions(residentData);
+    if (activeSubscriptions.length === 0) return this.translate('no_sensors');
+
+    const totalSensors = activeSubscriptions.length;
+    const criticalCount = this.getCriticalSensorsCount(residentData);
+    const goodCount = totalSensors - criticalCount;
+
+    if (totalSensors === 1) {
+      return criticalCount > 0 ? this.translate('critical_status') : this.translate('normal_status');
+    }
+
+    if (criticalCount === 0) {
+      return `${totalSensors} ${this.translate('sensors_normal')}`;
+    } else if (criticalCount === totalSensors) {
+      return `${totalSensors} ${this.translate('sensors_critical')}`;
+    } else {
+      return `${goodCount} ${this.translate('sensors_ok')}, ${criticalCount} ${this.translate('sensors_critical_short')}`;
+    }
+  }
+
+  // Obtener la calidad promedio
+  getAverageQualityForResident(residentData: ResidentSensorData): string {
+    const activeSubscriptions = this.getActiveSubscriptions(residentData);
+    if (activeSubscriptions.length === 0) return 'N/A';
+
+    const qualities: string[] = [];
+    activeSubscriptions.forEach(subscription => {
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      if (latestEvent) {
+        qualities.push(latestEvent.qualityValue);
+      }
+    });
+
+    if (qualities.length === 0) return 'N/A';
+
+    // Convertir calidades a números para calcular promedio
+    const qualityValues: number[] = qualities.map(q => {
+      const qualityLower = q.toLowerCase().trim();
+      switch(qualityLower) {
+        case 'excelente': return 4;
+        case 'aceptable': return 3;
+        case 'no potable': return 2;
+        case 'no hay agua':
+        case 'error tds':
+        case 'agua contaminada': return 1;
+        default: return 0;
+      }
+    });
+
+    const sum = qualityValues.reduce((accumulator, current) => accumulator + current, 0);
+    const average = sum / qualityValues.length;
+    
+    if (average >= 3.5) return 'excelente';
+    if (average >= 2.5) return 'aceptable';
+    if (average >= 1.5) return 'no potable';
+    return 'agua contaminada';
+  }
+
+  // Obtener calidad promedio actual de todos los sensores activos
+  getCurrentQualitySummary(residentData: ResidentSensorData): string {
+    const activeSubscriptions = this.getActiveSubscriptions(residentData);
+    if (activeSubscriptions.length === 0) return 'N/A';
+
+    const qualities: string[] = [];
+    activeSubscriptions.forEach(subscription => {
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      if (latestEvent) {
+        qualities.push(latestEvent.qualityValue);
+      }
+    });
+
+    if (qualities.length === 0) return 'N/A';
+    
+    if (activeSubscriptions.length === 1) {
+      return this.translateQualityValue(qualities[0]); // Si solo hay un sensor, mostrar su valor exacto traducido
+    }
+    // Para múltiples sensores, calcular promedio
+    return this.translateQualityValue(this.getAverageQualityForResident(residentData));
+  }
+
+  // Obtener nivel promedio actual de todos los sensores activos
+  getCurrentLevelSummary(residentData: ResidentSensorData): string {
+    const activeSubscriptions = this.getActiveSubscriptions(residentData);
+    if (activeSubscriptions.length === 0) return 'N/A';
+
+    const levels: number[] = [];
+    activeSubscriptions.forEach(subscription => {
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      if (latestEvent) {
+        const levelValue = typeof latestEvent.levelValue === 'string' ? 
+          parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
+        if (!isNaN(levelValue)) {
+          levels.push(levelValue);
+        }
+      }
+    });
+
+    if (levels.length === 0) return 'N/A';
+    
+    if (activeSubscriptions.length === 1) {
+      return `${levels[0]}%`; // Si solo hay un sensor, mostrar su valor exacto
+    }
+
+    // Para múltiples sensores, calcular promedio
+    const averageLevel = levels.reduce((sum, level) => sum + level, 0) / levels.length;
+    return `${Math.round(averageLevel)}%`;
+  }
+
+  // Obtener clase CSS para el nivel promedio
+  getAverageLevelClass(residentData: ResidentSensorData): string {
+    const levelSummary = this.getCurrentLevelSummary(residentData);
+    if (levelSummary === 'N/A') return '';
+    
+    const levelValue = parseFloat(levelSummary.replace('%', ''));
+    return this.getLevelClass(levelValue.toString());
+  }
+
+  // Traducir valores de calidad del agua
+  translateQualityValue(quality: string): string {
+    if (!quality) return 'N/A';
+    
+    const qualityLower = quality.toLowerCase().trim();
+    switch (qualityLower) {
+      case 'excelente':
+        return this.translate('quality_excellent');
+      case 'aceptable':
+        return this.translate('quality_acceptable');
+      case 'no potable':
+        return this.translate('quality_not_potable');
+      case 'no hay agua':
+        return this.translate('quality_no_water');
+      case 'error tds':
+        return this.translate('quality_tds_error');
+      case 'agua contaminada':
+        return this.translate('quality_contaminated_water');
+      default:
+        return quality; // Mantener valor original si no se reconoce
     }
   }
 }

@@ -63,32 +63,42 @@ export class SensorDataService extends BaseService<any> {
         const residentDataObservables = residents.map(resident =>
           this.getSubscriptionByResident(resident.id).pipe(
             switchMap(subscriptions => {
-              const activeSubscription = subscriptions.length > 0 ? subscriptions[0] : null;
+              if (subscriptions && subscriptions.length > 0) {
+                // Obtener eventos de todos los sensores del residente
+                const sensorEventObservables = subscriptions.map(subscription => 
+                  this.getSensorEvents(subscription.sensorId).pipe(
+                    catchError(() => of([]))
+                  )
+                );
 
-              if (activeSubscription && activeSubscription.sensorId) {
-                return this.getSensorEvents(activeSubscription.sensorId).pipe(
-                  map(events => ({
-                    resident,
-                    subscription: activeSubscription,
-                    sensorEvents: events
-                  } as ResidentSensorData)),
+                return forkJoin(sensorEventObservables).pipe(
+                  map(allSensorEvents => {
+                    // Combinar todos los eventos de todos los sensores
+                    const combinedEvents = allSensorEvents.flat();
+                    
+                    return {
+                      resident,
+                      subscriptions: subscriptions,
+                      sensorEvents: combinedEvents
+                    } as ResidentSensorData;
+                  }),
                   catchError(() => of({
                     resident,
-                    subscription: activeSubscription,
+                    subscriptions: subscriptions,
                     sensorEvents: []
                   } as ResidentSensorData))
                 );
               } else {
                 return of({
                   resident,
-                  subscription: activeSubscription,
+                  subscriptions: [],
                   sensorEvents: []
                 } as ResidentSensorData);
               }
             }),
             catchError(() => of({
               resident,
-              subscription: null,
+              subscriptions: [],
               sensorEvents: []
             } as ResidentSensorData))
           )

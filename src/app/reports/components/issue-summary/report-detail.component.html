@@ -6,9 +6,29 @@
       <h2>REPORT Nº {{ report.id }}</h2>
       <h1>{{ report.title }}</h1>
     </div>
-    <button  class="status-button">
-      {{ report.status || 'STATUS' }}
-    </button>
+    
+    <!-- Status dropdown button -->
+    <div class="status-dropdown">
+      <button 
+        class="status-button" 
+        [ngClass]="getStatusClass(report.status)"
+        (click)="toggleStatusOptions()">
+        {{ formatStatusForDisplay(report.status) }}
+        <i class="fa fa-chevron-down" [ngClass]="{'rotated': showStatusOptions}"></i>
+      </button>
+      
+      <!-- Dropdown options -->
+      <div class="status-options" *ngIf="showStatusOptions">
+        <button 
+          *ngFor="let status of statusOptions" 
+          class="status-option"
+          [ngClass]="getStatusClass(status)"
+          [class.current]="status === report.status"
+          (click)="updateReportStatus(status)">
+          {{ formatStatusForDisplay(status) }}
+        </button>
+      </div>
+    </div>
   </div>
 
   <hr />

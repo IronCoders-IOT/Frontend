@@ -38,6 +38,7 @@ export class TranslationService {
       'live_data': 'Live Data',
       'view_sensor_history': 'View sensor history',
       'active_sensors': 'Active Sensors',
+      'sensor_events_data': 'Real-time water quality and level monitoring data from all active sensors',
       
       // Admin Dashboard
       'admin_dashboard': 'Dashboard',
@@ -314,17 +315,60 @@ export class TranslationService {
       'events': 'Events',
       'current_quality': 'Current Quality',
       'current_level': 'Current Level',
-      'no_sensor_data': 'No sensor data available',
+      'select_sensor': 'Select Sensor',
+      'available_sensors': 'Available Sensors',
+      'latest_quality': 'Latest Quality',
+      'total_events': 'Total Events',
+      'view_details': 'View Details',
+      'no_sensors_available': 'No Sensors Available',
+      'no_sensors_message': 'This resident has no sensors assigned yet.',
+      'back_to_sensors': 'Back to Sensors',
       'sensor_details': 'Sensor Details',
       'resident_information': 'Resident Information',
       'full_name': 'Full Name',
       'subscription_status': 'Subscription Status',
+      'sensor_information': 'Sensor Information',
       'sensor_events': 'Sensor Events',
       'event_type': 'Event Type',
       'quality_value': 'Quality Value',
       'water_level': 'Water Level',
-      'no_events_recorded': 'No events recorded',
-      'no_events_available': 'No event data available for this sensor.'
+      'no_events_recorded': 'No Events Recorded',
+      'no_events_available_sensor': 'No event data available for this sensor.',
+      'quality_range': 'Quality Range',
+      'status_summary': 'Status Summary',
+      
+      // Status translations
+      'status_active': 'Active',
+      'status_inactive': 'Inactive',
+      'status_suspended': 'Suspended',
+      'status_unknown': 'Unknown Status',
+      
+      // Event types
+      'event_normal': 'Normal',
+      'event_warning': 'Warning',
+      'event_critical': 'Critical',
+      'event_maintenance': 'Maintenance',
+      'event_unknown': 'Unknown',
+      
+      // Water quality values
+      'quality_excellent': 'Excellent',
+      'quality_acceptable': 'Acceptable',
+      'quality_not_potable': 'Not Potable',
+      'quality_no_water': 'No Water',
+      'quality_tds_error': 'TDS Error',
+      'quality_contaminated_water': 'Contaminated Water',
+      
+      // Sensor status summary
+      'no_sensors': 'No sensors',
+      'critical_status': 'Critical',
+      'normal_status': 'Normal',
+      'sensors_normal': 'normal sensors',
+      'sensors_critical': 'critical sensors',
+      'sensors_ok': 'OK',
+      'sensors_critical_short': 'critical',
+      
+      // Error messages
+      'error_loading_sensor_data': 'Error loading sensor data'
     },
     es: {
       // Home page
@@ -358,6 +402,7 @@ export class TranslationService {
       'live_data': 'Datos en Vivo',
       'view_sensor_history': 'Ver historial de sensores',
       'active_sensors': 'Sensores Activos',
+      'sensor_events_data': 'Datos de monitoreo en tiempo real de calidad y nivel de agua de todos los sensores activos',
       
       // Admin Dashboard
       'admin_dashboard': 'Panel de Administración',
@@ -643,7 +688,51 @@ export class TranslationService {
       'quality_value': 'Valor de Calidad',
       'water_level': 'Nivel de Agua',
       'no_events_recorded': 'Sin Eventos Registrados',
-      'no_events_available': 'Aún no se han registrado eventos del sensor para este residente.'
+      'no_events_available_sensor': 'Aún no se han registrado eventos del sensor para este residente.',
+      'select_sensor': 'Seleccionar Sensor',
+      'available_sensors': 'Sensores Disponibles',
+      'latest_quality': 'Última Calidad',
+      'total_events': 'Total de Eventos',
+      'view_details': 'Ver Detalles',
+      'no_sensors_available': 'No Hay Sensores Disponibles',
+      'no_sensors_message': 'Este residente aún no tiene sensores asignados.',
+      'back_to_sensors': 'Volver a Sensores',
+      'sensor_information': 'Información del Sensor',
+      'quality_range': 'Rango de Calidad',
+      'status_summary': 'Resumen de Estado',
+      
+      // Status translations
+      'status_active': 'Activa',
+      'status_inactive': 'Inactiva',
+      'status_suspended': 'Suspendida',
+      'status_unknown': 'Estado Desconocido',
+      
+      // Event types
+      'event_normal': 'Normal',
+      'event_warning': 'Advertencia',
+      'event_critical': 'Crítico',
+      'event_maintenance': 'Mantenimiento',
+      'event_unknown': 'Desconocido',
+      
+      // Water quality values
+      'quality_excellent': 'Excelente',
+      'quality_acceptable': 'Aceptable',
+      'quality_not_potable': 'No Potable',
+      'quality_no_water': 'No Hay Agua',
+      'quality_tds_error': 'Error TDS',
+      'quality_contaminated_water': 'Agua Contaminada',
+      
+      // Sensor status summary
+      'no_sensors': 'Sin sensores',
+      'critical_status': 'Crítico',
+      'normal_status': 'Normal',
+      'sensors_normal': 'normales',
+      'sensors_critical': 'críticos',
+      'sensors_ok': 'OK',
+      'sensors_critical_short': 'críticos',
+      
+      // Error messages
+      'error_loading_sensor_data': 'Error al cargar los datos de sensores'
     }
   };
 

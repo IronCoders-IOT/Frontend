@@ -5,6 +5,8 @@
   padding: 20px;
   font-family: 'Inter', Arial, sans-serif;
   color: #333;
+  position: relative;
+  overflow: visible;
 }
 
 .report-header {
@@ -13,6 +15,8 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+  position: relative;
+  overflow: visible;
 }
 
 .report-titles h2 {
@@ -30,10 +34,74 @@
 .status-button {
   background-color: #00a0ff;
   color: white;
+  border: none;
   border-radius: 20px;
   font-weight: 500;
-  padding: 6px 16px;
+  padding: 8px 16px;
   font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+  box-shadow: 0 2px 8px rgba(0, 160, 255, 0.3);
+}
+
+.status-button:hover {
+  background-color: #0080cc;
+  box-shadow: 0 4px 12px rgba(0, 160, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.status-button .fa-chevron-down {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.status-button .fa-chevron-down.rotated {
+  transform: rotate(180deg);
+}
+
+/* Status color variants */
+.status-received {
+  background-color: #00a0ff;
+  box-shadow: 0 2px 8px rgba(0, 160, 255, 0.3);
+}
+
+.status-received:hover {
+  background-color: #0080cc;
+  box-shadow: 0 4px 12px rgba(0, 160, 255, 0.4);
+}
+
+.status-in-progress {
+  background-color: #ffa500;
+  box-shadow: 0 2px 8px rgba(255, 165, 0, 0.3);
+}
+
+.status-in-progress:hover {
+  background-color: #e69500;
+  box-shadow: 0 4px 12px rgba(255, 165, 0, 0.4);
+}
+
+.status-closed {
+  background-color: #28a745;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.status-closed:hover {
+  background-color: #1e7e34;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.status-unknown {
+  background-color: #6c757d;
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+}
+
+.status-unknown:hover {
+  background-color: #545b62;
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
 }
 
 hr {
@@ -104,6 +172,84 @@ textarea {
   border-color: #00a0ff;
   color: #00a0ff;
   font-weight: 500;
+  padding: 10px 25px;
+  background-color: white;
+  border: 2px solid #00a0ff;
+  border-radius: 25px;
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #00a0ff;
+  color: white;
+}
+
+/* Status dropdown container */
+.status-dropdown {
+  position: relative !important;
+  display: inline-block;
+  z-index: 10;
+}
+
+/* Dropdown options */
+.status-options {
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  left: 0 !important;
+  right: auto !important;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 150px;
+  overflow: hidden;
+  animation: fadeInDown 0.2s ease;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.status-option {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  background: white;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: #333;
+}
+
+.status-option:hover {
+  background-color: #f8f9fa;
+}
+
+.status-option.current {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  font-weight: 600;
+}
+
+.status-option.current::after {
+  content: ' ✓';
+  float: right;
+  color: #1976d2;
 }
 
 /* Responsive tweaks */
@@ -124,21 +270,15 @@ textarea {
   .status-button {
     align-self: flex-start;
   }
-}
-.back-button {
-  padding: 10px 25px;
-  background-color: white;
-  color: #00a0ff;
-  border: 2px solid #00a0ff;
-  border-radius: 25px;
-  font-size: 16px;
-  font-family: "Inter", sans-serif;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
 
-.back-button:hover {
-  background-color: #00a0ff;
-  color: white;
+  .status-dropdown {
+    width: 100%;
+  }
+
+  .status-options {
+    left: 0;
+    right: 0;
+    min-width: unset;
+    width: 100%;
+  }
 }

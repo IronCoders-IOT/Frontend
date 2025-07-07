@@ -30,6 +30,6 @@ export interface SensorEvent {
 
 export interface ResidentSensorData {
   resident: ResidentData;
-  subscription: SubscriptionData | null;
+  subscriptions: SubscriptionData[];
   sensorEvents: SensorEvent[];
 }

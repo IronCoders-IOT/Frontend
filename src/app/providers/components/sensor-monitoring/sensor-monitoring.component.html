@@ -108,22 +108,33 @@
                         </div>
                         
                         <div *ngIf="hasActiveSensor(residentData)" class="sensor-metrics">
-                            <div class="metric" *ngIf="getLatestEvent(residentData.sensorEvents) as latestEvent">
-                                <div class="metric-label">{{ translate('sensor_id') }}</div>
-                                <div class="metric-value">{{ residentData.subscription?.sensorId }}</div>
-                            </div>
-                            
-                            <div class="metric" *ngIf="getLatestEvent(residentData.sensorEvents) as latestEvent">
-                                <div class="metric-label">{{ translate('current_quality') }}</div>
-                                <div class="metric-value" [ngClass]="getQualityClass(latestEvent.qualityValue)">
-                                    {{ latestEvent.qualityValue }}
+                            <!-- Mostrar número de sensores activos si hay más de uno -->
+                            <div class="metric" *ngIf="getActiveSubscriptions(residentData).length > 1">
+                                <div class="metric-label">{{ translate('active_sensors') }}</div>
+                                <div class="metric-value sensor-count">
+                                    {{ getActiveSubscriptions(residentData).length }}
                                 </div>
                             </div>
                             
-                            <div class="metric" *ngIf="getLatestEvent(residentData.sensorEvents) as latestEvent">
+                            <!-- Mostrar sensor ID si solo hay uno -->
+                            <div class="metric" *ngIf="getActiveSubscriptions(residentData).length === 1">
+                                <div class="metric-label">{{ translate('sensor_id') }}</div>
+                                <div class="metric-value">{{ getActiveSubscription(residentData)?.sensorId }}</div>
+                            </div>
+                            
+                            <!-- Resumen de calidad actual -->
+                            <div class="metric">
+                                <div class="metric-label">{{ translate('current_quality') }}</div>
+                                <div class="metric-value" [ngClass]="getQualityClass(getCurrentQualitySummary(residentData))">
+                                    {{ getCurrentQualitySummary(residentData) }}
+                                </div>
+                            </div>
+                            
+                            <!-- Resumen de nivel actual -->
+                            <div class="metric">
                                 <div class="metric-label">{{ translate('current_level') }}</div>
-                                <div class="metric-value" [ngClass]="getLevelClass(latestEvent.levelValue)">
-                                    {{ latestEvent.levelValue }}%
+                                <div class="metric-value" [ngClass]="getAverageLevelClass(residentData)">
+                                    {{ getCurrentLevelSummary(residentData) }}
                                 </div>
                             </div>
                         </div>
@@ -138,8 +149,8 @@
                        
                         <div class="events-summary" *ngIf="hasActiveSensor(residentData)">
                             <span class="events-count">{{ residentData.sensorEvents.length }} {{ translate('events') }}</span>
-                            <span class="status-badge" [ngClass]="getStatusClass(residentData.subscription?.status || '')">
-                                {{ getStatusText(residentData.subscription?.status || '') }}
+                            <span class="status-badge" [ngClass]="getStatusClass(getActiveSubscription(residentData)?.status || '')">
+                                {{ getStatusText(getActiveSubscription(residentData)?.status || '') }}
                             </span>
                         </div>
 
@@ -154,96 +165,228 @@
     </div>
 </div>
 
-<!-- Modal para detalles del sensor -->
+<!-- Modal para selección de sensores y detalles -->
 <div *ngIf="isModalOpen" class="modal-overlay" (click)="closeModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
-        <div class="modal-header">
-            <h2 class="modal-title">
-                <i class="fa fa-chart-area"></i>
-                {{ translate('sensor_details') }}
-                <span *ngIf="selectedResident"> - {{ selectedResident.resident.firstName }} {{ selectedResident.resident.lastName }}</span>
-            </h2>
-            <button class="btn-close" (click)="closeModal()">
-                <i class="fa fa-times"></i>
-            </button>
+        <!-- Modal para lista de sensores -->
+        <div *ngIf="modalStep === 'sensors'" class="sensor-selection-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <i class="fa fa-microchip"></i>
+                    {{ translate('select_sensor') }}
+                    <span *ngIf="selectedResident"> - {{ selectedResident.resident.firstName }} {{ selectedResident.resident.lastName }}</span>
+                </h2>
+                <button class="btn-close" (click)="closeModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="resident-info-summary" *ngIf="selectedResident">
+                    <div class="resident-avatar-large">
+                        {{ getResidentInitials(selectedResident) }}
+                    </div>
+                    <div class="resident-summary">
+                        <h3>{{ selectedResident.resident.firstName }} {{ selectedResident.resident.lastName }}</h3>
+                        <p><i class="fa fa-id-card"></i> {{ selectedResident.resident.documentNumber }}</p>
+                        <p><i class="fa fa-map-marker-alt"></i> {{ selectedResident.resident.address }}</p>
+                    </div>
+                </div>
+
+                <div class="sensors-grid" *ngIf="selectedResident">
+                    <h4>{{ translate('available_sensors') }} ({{ selectedResident.subscriptions.length }})</h4>
+                    
+                    <div class="sensors-list">
+                        <div *ngFor="let subscription of selectedResident.subscriptions" 
+                             class="sensor-card"
+                             [ngClass]="subscription.status.toLowerCase()"
+                             (click)="selectSensor(subscription)">
+                            
+                            <div class="sensor-header">
+                                <div class="sensor-icon">
+                                    <i class="fa fa-tint"></i>
+                                </div>
+                                <div class="sensor-info">
+                                    <h5>{{ translate('sensor') }} #{{ subscription.sensorId }}</h5>
+                                    <span class="sensor-status" [ngClass]="getStatusClass(subscription.status)">
+                                        {{ getStatusText(subscription.status) }}
+                                    </span>
+                                </div>
+                                <div class="sensor-activity">
+                                    <span class="activity-indicator" 
+                                          [ngClass]="hasSensorActivity(subscription.sensorId) ? 'active' : 'inactive'">
+                                        <i [class]="hasSensorActivity(subscription.sensorId) ? 'fa fa-check-circle' : 'fa fa-exclamation-circle'"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="sensor-summary" *ngIf="subscription.status.toLowerCase() === 'active'">
+                                <div class="summary-item" *ngIf="getLatestEventForSensor(subscription.sensorId) as latestEvent">
+                                    <span class="summary-label">{{ translate('latest_quality') }}:</span>
+                                    <span class="summary-value" [ngClass]="getQualityClass(latestEvent.qualityValue)">
+                                        {{ translateQualityValue(latestEvent.qualityValue) }}
+                                    </span>
+                                </div>
+                                <div class="summary-item" *ngIf="getLatestEventForSensor(subscription.sensorId) as latestEvent">
+                                    <span class="summary-label">{{ translate('water_level') }}:</span>
+                                    <span class="summary-value" [ngClass]="getLevelClass(latestEvent.levelValue)">
+                                        {{ latestEvent.levelValue }}%
+                                    </span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">{{ translate('total_events') }}:</span>
+                                    <span class="summary-value events-count">
+                                        {{ getSensorEvents(subscription.sensorId).length }}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!--
+                            <div class="sensor-dates">
+                                <div class="date-item">
+                                    <i class="fa fa-calendar-plus"></i>
+                                    <span>{{ subscription.startDate }}</span>
+                                </div>
+                                <div class="date-item">
+                                    <i class="fa fa-calendar-minus"></i>
+                                    <span>{{ subscription.endDate }}</span>
+                                </div>
+                            </div>
+                            -->
+                            <div class="sensor-action">
+                                <i class="fa fa-arrow-right"></i>
+                                <span>{{ translate('view_details') }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="selectedResident.subscriptions.length === 0" class="no-sensors">
+                        <div class="no-sensors-icon">
+                            <i class="fa fa-microchip"></i>
+                        </div>
+                        <h4>{{ translate('no_sensors_available') }}</h4>
+                        <p>{{ translate('no_sensors_message') }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="modal-body">
-            <div class="resident-details" *ngIf="selectedResident">
-                <h3>{{ translate('resident_information') }}</h3>
-                <div class="detail-item">
-                    <span class="detail-label">{{ translate('full_name') }}</span>
-                    <span class="detail-value">{{ selectedResident.resident.firstName }} {{ selectedResident.resident.lastName }}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">{{ translate('document_number') }}</span>
-                    <span class="detail-value">{{ selectedResident.resident.documentNumber }}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">{{ translate('phone') }}</span>
-                    <span class="detail-value">{{ selectedResident.resident.phone }}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">{{ translate('address') }}</span>
-                    <span class="detail-value">{{ selectedResident.resident.address }}</span>
-                </div>
-                <div class="detail-item" *ngIf="selectedResident.subscription">
-                    <span class="detail-label">{{ translate('sensor_id') }}</span>
-                    <span class="detail-value">{{ selectedResident.subscription.sensorId }}</span>
-                </div>
-                <div class="detail-item" *ngIf="selectedResident.subscription">
-                    <span class="detail-label">{{ translate('subscription_status') }}</span>
-                    <span class="detail-value">
-                        <span class="status-badge" [ngClass]="getStatusClass(selectedResident.subscription.status)">
-                            {{ getStatusText(selectedResident.subscription.status) }}
-                        </span>
-                    </span>
-                </div>
+        <!-- Modal para detalles específicos del sensor -->
+        <div *ngIf="modalStep === 'details'" class="sensor-details-modal">
+            <div class="modal-header">
+                <button class="btn-back" (click)="backToSensorList()" title="{{ translate('back_to_sensors') }}">
+                    <i class="fa fa-arrow-left"></i>
+                    <span>{{ translate('back') }}</span>
+                </button>
+                <h2 class="modal-title">
+                    <i class="fa fa-chart-area"></i>
+                    {{ translate('sensor_details') }} #{{ selectedSensor?.sensorId }}
+                    <span *ngIf="selectedResident"> - {{ selectedResident.resident.firstName }} {{ selectedResident.resident.lastName }}</span>
+                </h2>
+                <button class="btn-close" (click)="closeModal()">
+                    <i class="fa fa-times"></i>
+                </button>
             </div>
 
-            <div class="sensor-events">
-                <h3>{{ translate('sensor_events') }} ({{ selectedResident?.sensorEvents?.length || 0 }})</h3>
-                <div class="events-table-container">
-                    <table class="events-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>{{ translate('event_type') }}</th>
-                                <th>{{ translate('quality_value') }}</th>
-                                <th>{{ translate('water_level') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let event of selectedResident?.sensorEvents; let i = index" 
-                                [class.latest-event]="i === (selectedResident?.sensorEvents?.length || 0) - 1">
-                                <td>{{ event.id }}</td>
-                                <td>
-                                    <span class="event-type" [ngClass]="getEventTypeClass(event.eventType)">
-                                        {{ getEventTypeText(event.eventType) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="quality-value" [ngClass]="getQualityClass(event.qualityValue)">
-                                        {{ event.qualityValue }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="level-value" [ngClass]="getLevelClass(event.levelValue)">
-                                        {{ event.levelValue }}%
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <div class="modal-body">
+                <div class="sensor-detail-info" *ngIf="selectedSensor && selectedResident">
+                    <!-- Información del residente -->
+                    <div class="detail-section">
+                        <h3>{{ translate('resident_information') }}</h3>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">{{ translate('full_name') }}</span>
+                                <span class="detail-value">{{ selectedResident.resident.firstName }} {{ selectedResident.resident.lastName }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{{ translate('document_number') }}</span>
+                                <span class="detail-value">{{ selectedResident.resident.documentNumber }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{{ translate('phone') }}</span>
+                                <span class="detail-value">{{ selectedResident.resident.phone }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{{ translate('address') }}</span>
+                                <span class="detail-value">{{ selectedResident.resident.address }}</span>
+                            </div>
+                        </div>
+                    </div>
 
-            <div *ngIf="selectedResident && selectedResident.sensorEvents.length === 0" class="no-events">
-                <div class="no-events-icon">
-                    <i class="fa fa-chart-line"></i>
+                    <!-- Información del sensor -->
+                    <div class="detail-section">
+                        <h3>{{ translate('sensor_information') }}</h3>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">{{ translate('sensor_id') }}</span>
+                                <span class="detail-value">{{ selectedSensor.sensorId }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{{ translate('subscription_status') }}</span>
+                                <span class="detail-value">
+                                    <span class="status-badge" [ngClass]="getStatusClass(selectedSensor.status)">
+                                        {{ getStatusText(selectedSensor.status) }}
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{{ translate('start_date') }}</span>
+                                <span class="detail-value">{{ selectedSensor.startDate }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">{{ translate('end_date') }}</span>
+                                <span class="detail-value">{{ selectedSensor.endDate }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
-                <h4>{{ translate('no_events_recorded') }}</h4>
-                <p>{{ translate('no_events_available') }}</p>
+                                    <!-- Eventos del sensor específico -->
+                    <div class="detail-section">
+                        <h3>{{ translate('sensor_events') }} ({{ getSensorEvents(selectedSensor.sensorId).length }})</h3>
+                        <div class="events-table-container">
+                            <table class="events-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>{{ translate('event_type') }}</th>
+                                        <th>{{ translate('quality_value') }}</th>
+                                        <th>{{ translate('water_level') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let event of getSensorEvents(selectedSensor.sensorId); let i = index" 
+                                        [class.latest-event]="i === getSensorEvents(selectedSensor.sensorId).length - 1">
+                                        <td>{{ event.id }}</td>
+                                        <td>
+                                            <span class="event-type" [ngClass]="getEventTypeClass(event.eventType)">
+                                                {{ getEventTypeText(event.eventType) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="quality-value" [ngClass]="getQualityClass(event.qualityValue)">
+                                                {{ translateQualityValue(event.qualityValue) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="level-value" [ngClass]="getLevelClass(event.levelValue)">
+                                                {{ event.levelValue }}%
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div *ngIf="getSensorEvents(selectedSensor.sensorId).length === 0" class="no-events">
+                            <div class="no-events-icon">
+                                <i class="fa fa-chart-line"></i>
+                            </div>
+                            <h4>{{ translate('no_events_recorded') }}</h4>
+                            <p>{{ translate('no_events_available_sensor') }}</p>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>

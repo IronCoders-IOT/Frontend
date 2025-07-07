@@ -78,7 +78,12 @@
                 {{ row.delivered_at | date }}
               </ng-container>
               <ng-template #scheduleLink>
-                <a (click)="openScheduleModal(row); $event.stopPropagation()" class="schedule-link" style="cursor: pointer;">
+                <a 
+                  (click)="!isRequestClosed(row.status) && openScheduleModal(row); $event.stopPropagation()" 
+                  class="schedule-link" 
+                  [class.disabled]="isRequestClosed(row.status)"
+                  [style.cursor]="isRequestClosed(row.status) ? 'not-allowed' : 'pointer'"
+                  [title]="isRequestClosed(row.status) ? ('request_closed' | translate) : ('schedule_date' | translate)">
                   {{ 'schedule_date' | translate }}
                 </a>
               </ng-template>
@@ -93,8 +98,9 @@
         <tr
           mat-row
           *matRowDef="let row; columns: displayedColumns;"
-          (click)="openScheduleModal(row)"
-          style="cursor: pointer;"
+          (click)="openScheduleModalIfAllowed(row)"
+          [style.cursor]="isRequestClosed(row.status) ? 'default' : 'pointer'"
+          [class.row-disabled]="isRequestClosed(row.status)"
         ></tr>
       </table>
     </div>

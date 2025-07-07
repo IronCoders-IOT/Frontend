@@ -294,6 +294,18 @@ export class WaterRequestComponent implements AfterViewInit {
     }
   }
 
+  // Verificar si el request está cerrado (para deshabilitar el botón schedule)
+  isRequestClosed(status: string): boolean {
+    return status === 'Closed';
+  }
+
+  // Función mejorada para abrir el modal solo si no está cerrado
+  openScheduleModalIfAllowed(row: WaterRequestEntity): void {
+    if (!this.isRequestClosed(row.status)) {
+      this.openScheduleModal(row);
+    }
+  }
+
   getTranslatedStatus(status: string): string {
     switch (status) {
       case 'Received': return this.translationService.translate('received');

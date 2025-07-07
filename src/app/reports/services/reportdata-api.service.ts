@@ -36,6 +36,10 @@ export class ReportdataApiService extends BaseService<ReportRequestEntity> {
    return this.http.get<any>(`${this.basePath}requests/${id}`, this.httpOptions);
   }
 
+  updateReport(report: ReportRequestEntity): Observable<ReportRequestEntity> {
+    return this.http.put<ReportRequestEntity>(`${this.basePath}requests/${report.id}`, report, this.httpOptions)
+  }
+
   getAllReports(): Observable<ReportRequestEntity[]> {
     return this.getAll();
   }
