@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {HeaderContentComponent} from '../../../public/components/header-content/header-content.component';
-import {WaterRequestEntity} from '../../model/water-request.entity';
+import {WaterRequestModel} from '../../model/water-request.model';
 import {SensordataApiService} from '../../services/sensordata-api.service';
 import {HttpClient} from '@angular/common/http';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
@@ -29,7 +29,7 @@ import { LanguageToggleComponent } from '../../../shared/components/language-tog
 })
 export class WaterRequestComponent implements AfterViewInit {
   tittle = 'Solicitud de Agua Potable';
-  requests: MatTableDataSource<WaterRequestEntity> = new MatTableDataSource<WaterRequestEntity>();
+  requests: MatTableDataSource<WaterRequestModel> = new MatTableDataSource<WaterRequestModel>();
   displayedColumns: string[] = [];
   resultsLength = 0;
   isLoadingResults = true;
@@ -53,7 +53,7 @@ export class WaterRequestComponent implements AfterViewInit {
     }
     this.getAllRequests();
 
-    this.requests.filterPredicate = (data: WaterRequestEntity, filter: string) => {
+    this.requests.filterPredicate = (data: WaterRequestModel, filter: string) => {
       if (!filter.trim()) {
         return true;
       }
@@ -79,7 +79,7 @@ export class WaterRequestComponent implements AfterViewInit {
     }
   }
 
-  openScheduleModal(row: WaterRequestEntity): void {
+  openScheduleModal(row: WaterRequestModel): void {
     const dialogRef = this.dialog.open(ScheduleDateComponent, {
       width: '550px',
       data: row,
@@ -300,7 +300,7 @@ export class WaterRequestComponent implements AfterViewInit {
   }
 
   // Función mejorada para abrir el modal solo si no está cerrado
-  openScheduleModalIfAllowed(row: WaterRequestEntity): void {
+  openScheduleModalIfAllowed(row: WaterRequestModel): void {
     if (!this.isRequestClosed(row.status)) {
       this.openScheduleModal(row);
     }

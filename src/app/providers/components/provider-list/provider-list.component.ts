@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {Provider} from '../../model/provider.entity';
+import {Provider} from '../../model/provider.model';
 import {ProviderApiServiceService} from '../../services/provider-api.service.service';
 
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';

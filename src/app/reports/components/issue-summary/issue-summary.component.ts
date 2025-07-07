@@ -1,4 +1,4 @@
-// report-detail.component.ts - FIXED VERSION
+// issue-summary.component.ts - FIXED VERSION
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ReportdataApiService } from '../../services/reportdata-api.service';
@@ -7,13 +7,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {ReportRequestEntity} from '../../model/report-request.entity';
+import {IssueReportModel} from '../../model/issue-report.model';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-report-detail',
-  templateUrl: './report-detail.component.html',
-  styleUrl: './report-detail.component.css',
+  templateUrl: './issue-summary.component.html',
+  styleUrl: './issue-summary.component.css',
   standalone: true,
   imports: [
     CommonModule,
@@ -24,8 +24,8 @@ import { switchMap } from 'rxjs/operators';
     MatIconModule
   ],
 })
-export class ReportDetailComponent implements OnInit {
-  report: ReportRequestEntity;
+export class IssueSummaryComponent implements OnInit {
+  report: IssueReportModel;
   showStatusOptions = false;
   statusOptions = ['RECEIVED', 'IN_PROGRESS', 'CLOSED'];
 
@@ -33,7 +33,7 @@ export class ReportDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private reportService: ReportdataApiService
   ) {
-    this.report = new ReportRequestEntity(); // Initialize report to avoid undefined errors
+    this.report = new IssueReportModel(); // Initialize report to avoid undefined errors
   }
 
   // Formatear status para mostrar al usuario
@@ -73,7 +73,14 @@ export class ReportDetailComponent implements OnInit {
   updateReportStatus(newStatus: string): void {
     if (this.report.id && newStatus !== this.report.status) {
       const originalStatus = this.report.status;
-      
+
+      const residentData = {
+        firtsName: this.report.firtsName,
+        lastName: this.report.lastName,
+        residentPhone: this.report.residentPhone,
+        residentAddress: this.report.residentAddress
+      };
+
       // Actualizar temporalmente el status en la UI
       this.report.status = newStatus;
       this.showStatusOptions = false;
@@ -82,7 +89,7 @@ export class ReportDetailComponent implements OnInit {
       this.reportService.updateReport(this.report).subscribe({
         next: (updatedReport) => {
           console.log('Report status updated successfully:', updatedReport);
-          this.report = updatedReport;
+          this.report = { ...updatedReport, ...residentData };
         },
         error: (error) => {
           console.error('Error updating report status:', error);
@@ -101,7 +108,7 @@ export class ReportDetailComponent implements OnInit {
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     const statusDropdown = target.closest('.status-dropdown');
-    
+
     if (!statusDropdown) {
       this.showStatusOptions = false;
     }

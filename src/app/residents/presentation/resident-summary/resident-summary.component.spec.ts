@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewHistoryComponent } from './view-history.component';
+import { ResidentSummaryComponent } from './resident-summary.component';
 
-describe('ViewHistoryComponent', () => {
-  let component: ViewHistoryComponent;
-  let fixture: ComponentFixture<ViewHistoryComponent>;
+describe('ResidentSummaryComponent', () => {
+  let component: ResidentSummaryComponent;
+  let fixture: ComponentFixture<ResidentSummaryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ViewHistoryComponent]
+      imports: [ResidentSummaryComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ViewHistoryComponent);
+    fixture = TestBed.createComponent(ResidentSummaryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

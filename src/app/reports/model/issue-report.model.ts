@@ -1,6 +1,6 @@
-import {ResidentEntity} from '../../requests/model/resident.entity';
+import {ResidentModel} from '../../requests/model/resident.model';
 
-export class ReportRequestEntity {
+export class IssueReportModel {
   id: number;
   emissionDate: string;
   residentId : number;
@@ -14,7 +14,7 @@ export class ReportRequestEntity {
 
   residentAddress: string;
   residentPhone: number;
-  resident: ResidentEntity | null;
+  resident: ResidentModel | null;
 
   constructor() {
     this.id = 0;

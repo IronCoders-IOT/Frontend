@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {BaseService} from '../../shared/services/base.service';
 import {HttpClient} from '@angular/common/http';
 import {catchError, Observable, Subscription, tap, throwError} from 'rxjs';
-import {Provider} from '../model/provider.entity';
-import {Resident} from '../model/resident.entity';
+import {Provider} from '../model/provider.model';
+import {Resident} from '../model/resident.model';
 
 @Injectable({
   providedIn: 'root'

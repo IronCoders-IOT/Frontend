@@ -17,9 +17,9 @@ import { ResidentApiServiceService } from '../../../providers/services/resident-
 import { SensordataApiService } from '../../../requests/services/sensordata-api.service';
 import { ReportdataApiService } from '../../../reports/services/reportdata-api.service';
 import { SensorDataService } from '../../../providers/services/sensor-data.service';
-import { Provider } from '../../../providers/model/provider.entity';
-import { WaterRequestEntity } from '../../../requests/model/water-request.entity';
-import { ReportRequestEntity } from '../../../reports/model/report-request.entity';
+import { Provider } from '../../../providers/model/provider.model';
+import { WaterRequestModel } from '../../../requests/model/water-request.model';
+import { IssueReportModel } from '../../../reports/model/issue-report.model';
 import { SensorEvent } from '../../../providers/model/sensor-data.model';
 import { AuthService } from '../../../iam/application/services/auth.service';
 import { AdminApiServices } from '../services/admin-api.services';
@@ -77,8 +77,8 @@ export class AdminDashboardComponent implements OnInit {
 
     // Recent activity data
     recentProviders: Provider[] = [];
-    recentRequests: WaterRequestEntity[] = [];
-    recentReports: ReportRequestEntity[] = [];
+    recentRequests: WaterRequestModel[] = [];
+    recentReports: IssueReportModel[] = [];
 
 
     // Table columns configuration

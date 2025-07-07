@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ReportRequestEntity } from '../model/report-request.entity';
+import { IssueReportModel } from '../model/issue-report.model';
 import {BaseService} from '../../shared/services/base.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ReportdataApiService extends BaseService<ReportRequestEntity> {
+export class ReportdataApiService extends BaseService<IssueReportModel> {
   constructor(http: HttpClient) {
     super(http);
     this.resourceEndpoint = 'requests';
@@ -22,9 +22,9 @@ export class ReportdataApiService extends BaseService<ReportRequestEntity> {
     return this.http.get<any>(`${this.basePath}providers/me`, this.httpOptions);
   }
 
-  getReportsByProviderId(providerId: number): Observable<ReportRequestEntity[]> {
+  getReportsByProviderId(providerId: number): Observable<IssueReportModel[]> {
 
-    return this.http.get<ReportRequestEntity[]>(`${this.basePath}requests/provider/${providerId}`, this.httpOptions)
+    return this.http.get<IssueReportModel[]>(`${this.basePath}requests/provider/${providerId}`, this.httpOptions)
   }
 
   getResidentById(residentId: number): Observable<any> {
@@ -32,15 +32,15 @@ export class ReportdataApiService extends BaseService<ReportRequestEntity> {
   }
 
 
-  getReportById(id: string): Observable<ReportRequestEntity> {
+  getReportById(id: string): Observable<IssueReportModel> {
    return this.http.get<any>(`${this.basePath}requests/${id}`, this.httpOptions);
   }
 
-  updateReport(report: ReportRequestEntity): Observable<ReportRequestEntity> {
-    return this.http.put<ReportRequestEntity>(`${this.basePath}requests/${report.id}`, report, this.httpOptions)
+  updateReport(report: IssueReportModel): Observable<IssueReportModel> {
+    return this.http.put<IssueReportModel>(`${this.basePath}requests/${report.id}`, report, this.httpOptions)
   }
 
-  getAllReports(): Observable<ReportRequestEntity[]> {
+  getAllReports(): Observable<IssueReportModel[]> {
     return this.getAll();
   }
 

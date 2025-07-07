@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import { Observable } from 'rxjs';
 import {BaseService} from '../../shared/services/base.service';
-import {WaterRequestEntity} from '../model/water-request.entity';
+import {WaterRequestModel} from '../model/water-request.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SensordataApiService extends BaseService<WaterRequestEntity> {
+export class SensordataApiService extends BaseService<WaterRequestModel> {
 
   constructor(http: HttpClient) {
     super(http);
@@ -18,8 +18,8 @@ export class SensordataApiService extends BaseService<WaterRequestEntity> {
     return this.http.get<any>(`${this.basePath}providers/me`, this.httpOptions);
   }
 
-  getAllRequests(): Observable<WaterRequestEntity[]> {
-    return this.http.get<WaterRequestEntity[]>(`${this.basePath}${this.resourceEndpoint}/admin`, this.httpOptions);
+  getAllRequests(): Observable<WaterRequestModel[]> {
+    return this.http.get<WaterRequestModel[]>(`${this.basePath}${this.resourceEndpoint}/admin`, this.httpOptions);
   }
   // se obtiene el los residentes con el providerId http://localhost:8080/api/v1/residents/by-provider/providerId, este te da el id del resident(id
   getResidentsByProviderId(providerId: number): Observable<any[]> {
@@ -30,8 +30,8 @@ export class SensordataApiService extends BaseService<WaterRequestEntity> {
     return this.http.get<any[]>(`${this.basePath}residents/admin`, this.httpOptions);
   }
 
-  getWaterRequestsByResidentId(residentId: number): Observable<WaterRequestEntity[]> {
-    return this.http.get<WaterRequestEntity[]>(`${this.basePath}water-request/resident/${residentId}`, this.httpOptions);
+  getWaterRequestsByResidentId(residentId: number): Observable<WaterRequestModel[]> {
+    return this.http.get<WaterRequestModel[]>(`${this.basePath}water-request/resident/${residentId}`, this.httpOptions);
   }
 
   // con la id del residente obtenido te devuelve todos los residentes con water request http://localhost:8080/api/v1/water-request/resident/residentId
@@ -40,7 +40,7 @@ export class SensordataApiService extends BaseService<WaterRequestEntity> {
     return this.http.get<any>(url, this.httpOptions);
   }
 
-  updateDeliveredAt(id: number, status:String, deliveredAt: Date): Observable<WaterRequestEntity> {
+  updateDeliveredAt(id: number, status:String, deliveredAt: Date): Observable<WaterRequestModel> {
     const url = `${this.resourcePath()}/${id}`;
     // Convertir la fecha al formato ISO 8601
     const isoDate = deliveredAt.toISOString();
@@ -52,7 +52,7 @@ export class SensordataApiService extends BaseService<WaterRequestEntity> {
     console.log('PUT URL:', url);
     console.log('PUT Body:', body);
 
-    return this.http.put<WaterRequestEntity>(url, body, this.httpOptions);
+    return this.http.put<WaterRequestModel>(url, body, this.httpOptions);
   }
 
 }

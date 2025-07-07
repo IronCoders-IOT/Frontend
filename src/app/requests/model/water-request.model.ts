@@ -1,13 +1,13 @@
-import {ResidentEntity} from './resident.entity';
+import {ResidentModel} from './resident.model';
 
-export class WaterRequestEntity {
+export class WaterRequestModel {
   id: number;
   residentId: number;
   providerId: number;
   requestedLiters: string;
   status: string;
   delivered_at: Date | null;
-  resident: ResidentEntity | null; // CAMBIO: De array a objeto individual
+  resident: ResidentModel | null; // CAMBIO: De array a objeto individual
   emissionDate: string | undefined;
 
   constructor() {

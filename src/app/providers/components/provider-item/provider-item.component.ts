@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderContentComponent } from '../../../public/components/header-content/header-content.component';
 import { ProviderApiServiceService } from '../../services/provider-api.service.service';
-import { Provider } from '../../model/provider.entity';
+import { Provider } from '../../model/provider.model';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {AuthService} from '../../../iam/application/services/auth.service';
@@ -14,8 +14,8 @@ import { LanguageToggleComponent } from '../../../shared/components/language-tog
 
 @Component({
     selector: 'app-provider-item',
-    templateUrl: './provider-profile.component.html',
-    styleUrls: ['./provider-profile.component.css'],
+    templateUrl: './provider-item.component.html',
+    styleUrls: ['./provider-item.component.css'],
     standalone: true,    imports: [
         CommonModule,
         ReactiveFormsModule,
@@ -25,7 +25,7 @@ import { LanguageToggleComponent } from '../../../shared/components/language-tog
         TranslatePipe
     ]
 })
-export class ProviderProfileComponent implements OnInit {
+export class ProviderItemComponent implements OnInit {
     profileForm!: FormGroup;
     provider!: Provider;
     providerId!: number;

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, inject, ViewChild} from '@angular/core';
 import {HeaderContentComponent} from '../../../public/components/header-content/header-content.component';
-import {ReportRequestEntity} from '../../model/report-request.entity';
+import {IssueReportModel} from '../../model/issue-report.model';
 
 import {HttpClient} from '@angular/common/http';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
@@ -28,14 +28,14 @@ interface Provider {
 }
 
 @Component({
-  selector: 'app-issue-report',
+  selector: 'app-issue-report-list',
   imports: [CommonModule, HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
     MatPaginatorModule, DatePipe, MatFormFieldModule, MatInputModule, MatSelectModule, TranslatePipe],
-  templateUrl: './report-request.component.html',
+  templateUrl: './issue-report-list.html',
   standalone: true,
-  styleUrl: './report-request.component.css'
+  styleUrl: './issue-report-list.component.css'
 })
-export class ReportRequestComponent implements AfterViewInit {
+export class IssueReportList implements AfterViewInit {
   username: string | null = null;
   userRole: string | null = null;
   isAdmin: boolean = false;
@@ -43,7 +43,7 @@ export class ReportRequestComponent implements AfterViewInit {
   // Variables para el filtro de proveedores
   providers: Provider[] = [];
   selectedProviderId: number | null = null;
-  allReports: ReportRequestEntity[] = []; // Guardamos todos los reportes originales
+  allReports: IssueReportModel[] = []; // Guardamos todos los reportes originales
 
   goToDetail(id: number): void {
     this.router.navigate(['/reports', id]);
@@ -51,7 +51,7 @@ export class ReportRequestComponent implements AfterViewInit {
 
   tittle = 'Lista de Reportes';
 
-  requests: MatTableDataSource<ReportRequestEntity> = new MatTableDataSource<ReportRequestEntity>();
+  requests: MatTableDataSource<IssueReportModel> = new MatTableDataSource<IssueReportModel>();
 
   displayedColumns: string[] = ['id', 'resident_name', 'title', 'emissionDate', 'status'];
   resultsLength = 0;
@@ -69,7 +69,7 @@ export class ReportRequestComponent implements AfterViewInit {
   ngOnInit(): void {
     this.loadUsername();
     this.getAllRequests();
-    this.requests.filterPredicate = (data: ReportRequestEntity, filter: string) => {
+    this.requests.filterPredicate = (data: IssueReportModel, filter: string) => {
       return data.id.toString().toLowerCase().includes(filter);
     };
 
@@ -172,7 +172,7 @@ export class ReportRequestComponent implements AfterViewInit {
           console.log('ProveedorID autenticado:', providerProfile.id);
 
           this.reportdataApiService.getReportsByProviderId(authenticatedProviderId).subscribe(
-            (response: ReportRequestEntity[]) => {
+            (response: IssueReportModel[]) => {
               console.log('Reports for provider:', response);
 
               response.forEach((report) => {

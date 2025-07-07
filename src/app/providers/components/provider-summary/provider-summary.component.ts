@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {HeaderContentComponent} from '../../../public/components/header-content/header-content.component';
-import {Subscription} from '../../model/subscription.entity';
+import {Subscription} from '../../model/subscription.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProviderApiServiceService} from '../../services/provider-api.service.service';
-import {Resident} from '../../model/resident.entity';
+import {Resident} from '../../model/resident.model';
 import {ResidentApiServiceService} from '../../services/resident-api.service.service';
 import {NgForOf} from '@angular/common';
 import {SubscriptionApiServiceService} from '../../services/subscription-api.service.service';
-import {Provider} from '../../model/provider.entity';
+import {Provider} from '../../model/provider.model';
 
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
@@ -25,12 +25,12 @@ import {MatDialog} from '@angular/material/dialog';
     CommonModule, HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
     MatPaginatorModule, MatFormFieldModule, MatInputModule
 ],
-  templateUrl: './provider-detail.component.html',
+  templateUrl: './provider-summary.component.html',
   standalone: true,
-  styleUrl: './provider-detail.component.css'
+  styleUrl: './provider-summary.component.css'
 })
 
-export class ProviderDetailComponent implements OnInit{
+export class ProviderSummaryComponent implements OnInit{
   resident: Resident[] = []; // Array to hold residents
 
   subscriptionsDataSource = new MatTableDataSource<Resident>();

@@ -1,4 +1,4 @@
-export class ResidentEntity {
+export class ResidentModel {
   id: number;
   firstName: String;
   lastName: String;

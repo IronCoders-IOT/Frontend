@@ -30,10 +30,10 @@ import { SubscriptionService } from '../../services/subscription.service';
     MatFormFieldModule,
     MatInputModule,
     TranslatePipe],
-  templateUrl: './view-history.component.html',
-  styleUrl: './view-history.component.css'
+  templateUrl: './resident-summary.component.html',
+  styleUrl: './resident-summary.component.css'
 })
-export class ViewHistoryComponent implements OnInit {
+export class ResidentSummaryComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
