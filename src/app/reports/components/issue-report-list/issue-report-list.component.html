@@ -41,15 +41,15 @@
   </div>
 
   <!-- Tabla de solicitudes -->
-  <div class="example-container mat-elevation-z8">
+  <div class="reports-data-container mat-elevation-z8">
 
     <!-- Loading y errores -->
     @if (isLoadingResults || isRateLimitReached) {
-      <div class="example-loading-shade">
+      <div class="reports-loading-shade">
         @if (isLoadingResults) {
           <mat-spinner></mat-spinner>
         }        @if (isRateLimitReached) {
-          <div class="example-rate-limit-reached">
+          <div class="reports-rate-limit-reached">
             {{ 'github_rate_limit' | translate }}
           </div>
         }
@@ -57,8 +57,8 @@
     }
 
     <!-- Tabla -->
-    <div class="example-table-container">
-      <table mat-table [dataSource]="requests" class="example-table" matSort>
+    <div class="reports-table-container">
+      <table mat-table [dataSource]="requests" class="reports-table" matSort>
 
         <!-- ID -->
         <ng-container matColumnDef="id">

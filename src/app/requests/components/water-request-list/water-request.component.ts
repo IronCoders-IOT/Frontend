@@ -20,7 +20,7 @@ import { TranslationService } from '../../../shared/services/translation.service
 import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
 
 @Component({
-  selector: 'app-water-request-item',
+  selector: 'app-water-request-list',
   imports: [CommonModule,HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
     MatPaginatorModule, DatePipe, MatFormFieldModule,MatInputModule, TranslatePipe],
   templateUrl: './water-request.component.html',

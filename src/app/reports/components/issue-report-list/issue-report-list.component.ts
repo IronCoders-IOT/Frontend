@@ -31,11 +31,11 @@ interface Provider {
   selector: 'app-issue-report-list',
   imports: [CommonModule, HeaderContentComponent, MatProgressSpinnerModule, MatTableModule, MatSortModule,
     MatPaginatorModule, DatePipe, MatFormFieldModule, MatInputModule, MatSelectModule, TranslatePipe],
-  templateUrl: './issue-report-list.html',
+  templateUrl: './issue-report-list.component.html',
   standalone: true,
   styleUrl: './issue-report-list.component.css'
 })
-export class IssueReportList implements AfterViewInit {
+export class IssueReportListComponent implements AfterViewInit {
   username: string | null = null;
   userRole: string | null = null;
   isAdmin: boolean = false;

@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './public/pages/home/home.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
-import {WaterRequestComponent} from './requests/components/water-request-item/water-request.component';
+import {WaterRequestComponent} from './requests/components/water-request-list/water-request.component';
 import {ProviderListComponent} from './providers/components/provider-list/provider-list.component';
 import {ScheduleDateComponent} from './requests/components/schedule-date/schedule-date.component';
-import {IssueReportList} from './reports/components/issue-report-list/issue-report-list';
+import {IssueReportListComponent} from './reports/components/issue-report-list/issue-report-list.component';
 import {CreateResidentComponent} from './residents/presentation/create-resident/create-resident.component';
 import {ResidentListComponent} from './residents/presentation/resident-list/resident-list.component';
 import {ResidentSummaryComponent} from './residents/presentation/resident-summary/resident-summary.component';
@@ -23,7 +23,7 @@ export const routes: Routes = [
   { path: 'requests', component: WaterRequestComponent },
   { path: 'schedule', component: ScheduleDateComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'reports', component: IssueReportList},
+  { path: 'reports', component: IssueReportListComponent},
   { path: 'signup', component: SignupComponent },
   { path: 'residents/create', component: CreateResidentComponent },
   {path: 'residents', component: ResidentListComponent},

@@ -36,9 +36,9 @@
     <button class="retry-button" (click)="loadResidents()">{{ translate('retry') || 'Reintentar' }}</button>
   </div>
 
-  <div class="example-container mat-elevation-z8" *ngIf="!loading && !error">
-    <div class="example-table-container">
-      <table mat-table [dataSource]="residents" class="example-table" matSort>
+  <div class="residents-data-container mat-elevation-z8" *ngIf="!loading && !error">
+    <div class="residents-table-container">
+      <table mat-table [dataSource]="residents" class="residents-table" matSort>
 
         <!-- ID -->
         <ng-container matColumnDef="id">

@@ -93,7 +93,7 @@ input:focus {
 /*----------------------------------------------*/
 
 /* Structure */
-.example-container {
+.water-requests-data-container {
   position: relative;
   width: 92.5%;
   margin: 0 auto;
@@ -101,7 +101,7 @@ input:focus {
 
 }
 
-.example-table-container {
+.water-requests-table-container {
   position: relative;
   min-height: 200px;
   overflow: auto;
@@ -135,7 +135,7 @@ tr:hover {
   background-color: whitesmoke;
 }
 
-.example-loading-shade {
+.water-requests-loading-shade {
   position: absolute;
   top: 0;
   left: 0;
@@ -148,7 +148,7 @@ tr:hover {
   justify-content: center;
 }
 
-.example-rate-limit-reached {
+.water-requests-rate-limit-reached {
   max-width: 360px;
   text-align: center;
 
@@ -247,8 +247,8 @@ tr:hover {
     margin: 0; /* elimina margin-left: auto si estaba antes */
   }
 
-  .example-container,
-  .example-table-container,
+  .water-requests-data-container,
+  .water-requests-table-container,
   table {
     width: 100%;
   }

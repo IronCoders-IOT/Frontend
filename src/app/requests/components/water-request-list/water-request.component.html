@@ -17,22 +17,22 @@
     </div>
   </div>
 
-  <div class="example-container mat-elevation-z8">
+  <div class="water-requests-data-container mat-elevation-z8">
     @if (isLoadingResults || isRateLimitReached) {
-      <div class="example-loading-shade">
+      <div class="water-requests-loading-shade">
         @if (isLoadingResults) {
           <mat-spinner></mat-spinner>
         }
         @if (isRateLimitReached) {
-          <div class="example-rate-limit-reached">
+          <div class="water-requests-rate-limit-reached">
             {{ 'github_rate_limit' | translate }}
           </div>
         }
       </div>
     }
 
-    <div class="example-table-container">
-      <table mat-table [dataSource]="requests" class="example-table" matSort>
+    <div class="water-requests-table-container">
+      <table mat-table [dataSource]="requests" class="water-requests-table" matSort>
 
         <!-- ID -->
         <ng-container matColumnDef="id">

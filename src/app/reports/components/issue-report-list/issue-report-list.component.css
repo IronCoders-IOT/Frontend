@@ -85,13 +85,13 @@
 /*===============================
 =            Tabla              =
 ===============================*/
-.example-container {
+.reports-data-container {
   position: relative;
   width: 92.5%;
   margin: 1% auto 0 auto;
 }
 
-.example-table-container {
+.reports-table-container {
   position: relative;
   min-height: 200px;
   overflow: auto;
@@ -131,7 +131,7 @@ tr:hover {
 /*===============================
 =           Loading             =
 ===============================*/
-.example-loading-shade {
+.reports-loading-shade {
   position: absolute;
   top: 0;
   left: 0;
@@ -144,7 +144,7 @@ tr:hover {
   justify-content: center;
 }
 
-.example-rate-limit-reached {
+.reports-rate-limit-reached {
   max-width: 360px;
   text-align: center;
 }
@@ -414,8 +414,8 @@ tr:hover {
     margin: 0;
   }
 
-  .example-container,
-  .example-table-container,
+  .reports-data-container,
+  .reports-table-container,
   table {
     width: 100%;
   }

@@ -90,12 +90,12 @@
 
     <!-- Sección de pago -->
     <div class="payment-container">
-      <div class="payment-section" [ngClass]="{'disabled': !isFormComplete}">        <h3 class="payment-title">{{ translate('payment_for_registration') }}</h3>
-
-        <!-- Mensaje cuando el formulario no está completo -->
-        <div *ngIf="!isFormComplete" class="payment-disabled-message">
-          {{ translate('complete_fields_message') }}
-        </div>
+      <h3 class="payment-title">{{ translate('payment_for_registration') }}</h3>
+      <!-- Mensaje cuando el formulario no está completo -->
+      <div *ngIf="!isFormComplete" class="payment-disabled-message">
+        {{ translate('complete_fields_message') }}
+      </div>
+      <div class="payment-section" [ngClass]="{'disabled': !isFormComplete}">
 
         <div class="payment-amount">
           <span class="amount-label">{{ translate('amount_to_pay') }}</span>
