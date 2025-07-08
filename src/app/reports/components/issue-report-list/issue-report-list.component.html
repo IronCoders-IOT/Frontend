@@ -99,8 +99,10 @@
         <!-- Filas -->
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-            (click)="goToDetail(row.id)"
-            class="clickable-row">
+            (click)="isRowClickable() && goToDetail(row.id)"
+            [class.clickable-row]="isRowClickable()"
+            [class.non-clickable-row]="!isRowClickable()"
+            [style.cursor]="isRowClickable() ? 'pointer' : 'default'">
         </tr>
 
       </table>

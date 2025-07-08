@@ -316,4 +316,17 @@ export class WaterRequestComponent implements AfterViewInit {
       default: return status;
     }
   }
+
+  // Función para determinar si debe mostrar la deliveredAt en lugar del botón
+  shouldShowEmissionDate(row: WaterRequestModel): boolean {
+    return row.status === 'In Progress' || row.status === 'Closed';
+  }
+
+  // Función para obtener la fecha a mostrar (delivered_at o deliveredAt de la API)
+  getDisplayDate(row: WaterRequestModel): Date | string | null {
+    if (this.shouldShowEmissionDate(row)) {
+      return (row as any).deliveredAt || null;
+    }
+    return row.delivered_at;
+  }
 }

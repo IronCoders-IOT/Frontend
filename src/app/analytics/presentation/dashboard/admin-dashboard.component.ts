@@ -388,21 +388,25 @@ export class AdminDashboardComponent implements OnInit {
           return;
         }
 
-        // Map text quality to numeric values
+        // Nuevo mapeo de calidad del agua según los nuevos atributos
         const qualityTextToNumber: { [key: string]: number } = {
-          'Excelente': 95, 'Muy Buena': 85, 'Buena': 75,
-          'Regular': 50, 'Mala': 25, 'Muy Mala': 10
+          'excelente': 95,
+          'aceptable': 75,
+          'no potable': 40,
+          'no hay agua': 10,
+          'error tds': 10,
+          'agua contaminada': 10
         };
 
-        // Calculate average water quality
+        // Calcular promedio de calidad del agua
         const qualityValues = events
-          .filter(event => event.qualityValue && qualityTextToNumber.hasOwnProperty(event.qualityValue))
-          .map(event => qualityTextToNumber[event.qualityValue]);
+          .filter(event => event.qualityValue && qualityTextToNumber.hasOwnProperty(event.qualityValue.toLowerCase()))
+          .map(event => qualityTextToNumber[event.qualityValue.toLowerCase()]);
 
         this.averageWaterQuality = qualityValues.length > 0
           ? qualityValues.reduce((sum, val) => sum + val, 0) / qualityValues.length : 0;
 
-        // Calculate average water level
+        // Calcular promedio de nivel de agua
         const levelValues = events
           .filter(event => event.levelValue && !isNaN(parseFloat(event.levelValue)))
           .map(event => parseFloat(event.levelValue));
@@ -410,10 +414,16 @@ export class AdminDashboardComponent implements OnInit {
         this.averageWaterLevel = levelValues.length > 0
           ? levelValues.reduce((sum, val) => sum + val, 0) / levelValues.length : 0;
 
-        // Count recent and critical events
+        // Contar eventos recientes y críticos
         this.recentEventsCount = events.length;
         this.criticalEventsCount = events.filter(event => {
-          const qualityIsCritical = ['Regular', 'Mala', 'Muy Mala'].includes(event.qualityValue);
+          const quality = event.qualityValue ? event.qualityValue.toLowerCase() : '';
+          const qualityIsCritical = [
+            'no potable',
+            'no hay agua',
+            'error tds',
+            'agua contaminada'
+          ].includes(quality);
           const level = parseFloat(event.levelValue || '100');
           const levelIsCritical = level < 30;
           return qualityIsCritical || levelIsCritical;

@@ -114,8 +114,21 @@ td, th {
   font-family: "Inter-Regular", sans-serif;
 }
 
-tr:hover {
+/* Estilos para filas clickeables y no clickeables */
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
   background-color: whitesmoke;
+}
+
+.non-clickable-row {
+  cursor: default;
+}
+
+.non-clickable-row:hover {
+  background-color: transparent;
 }
 
 /* Column Widths */

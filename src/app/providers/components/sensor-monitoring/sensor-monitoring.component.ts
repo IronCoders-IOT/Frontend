@@ -405,6 +405,28 @@ export class SensorMonitoringComponent implements OnInit {
     return this.translateQualityValue(this.getAverageQualityForResident(residentData));
   }
 
+  // Obtener el valor original de calidad para aplicar clases CSS (SIN traducir)
+  getCurrentQualityForClass(residentData: ResidentSensorData): string {
+    const activeSubscriptions = this.getActiveSubscriptions(residentData);
+    if (activeSubscriptions.length === 0) return 'N/A';
+
+    const qualities: string[] = [];
+    activeSubscriptions.forEach(subscription => {
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      if (latestEvent) {
+        qualities.push(latestEvent.qualityValue);
+      }
+    });
+
+    if (qualities.length === 0) return 'N/A';
+    
+    if (activeSubscriptions.length === 1) {
+      return qualities[0]; // Valor original sin traducir
+    }
+    // Para múltiples sensores, calcular promedio y retornar valor original
+    return this.getAverageQualityForResident(residentData);
+  }
+
   // Obtener nivel promedio actual de todos los sensores activos
   getCurrentLevelSummary(residentData: ResidentSensorData): string {
     const activeSubscriptions = this.getActiveSubscriptions(residentData);

@@ -471,6 +471,23 @@
   color: #dc2626 !important;
 }
 
+/* Estilos de colores para calidad del agua */
+.quality-excellent {
+  color: #16a34a !important; /* Verde oscuro para excelente */
+}
+
+.quality-good {
+  color: #22c55e !important; /* Verde claro para aceptable */
+}
+
+.quality-fair {
+  color: #f59e0b !important; /* Amarillo/Naranja para no potable */
+}
+
+.quality-poor {
+  color: #dc2626 !important; /* Rojo para crítico (no hay agua, error tds, agua contaminada) */
+}
+
 /* Modal styles */
 .modal-overlay {
   position: fixed;

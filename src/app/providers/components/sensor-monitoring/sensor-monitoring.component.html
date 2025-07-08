@@ -125,7 +125,7 @@
                             <!-- Resumen de calidad actual -->
                             <div class="metric">
                                 <div class="metric-label">{{ translate('current_quality') }}</div>
-                                <div class="metric-value" [ngClass]="getQualityClass(getCurrentQualitySummary(residentData))">
+                                <div class="metric-value" [ngClass]="getQualityClass(getCurrentQualityForClass(residentData))">
                                     {{ getCurrentQualitySummary(residentData) }}
                                 </div>
                             </div>
