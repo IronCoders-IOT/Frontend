@@ -1,5 +1,5 @@
 export const environment = {
-
     production: false,
-    serverBasePath: 'https://aquaconecta-gch4brewcpb5ewhc.centralus-01.azurewebsites.net/api/v1/'
+    serverBasePath: import.meta.env['VITE_API_BASE_URL_DEV'],
+    appName: import.meta.env['VITE_APP_NAME']
   };
