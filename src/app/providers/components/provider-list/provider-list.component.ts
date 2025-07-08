@@ -47,7 +47,7 @@ export class ProviderListComponent implements AfterViewInit {
 
     this.providerService.getAllProviders().subscribe(
       (response: Provider[]) => {
-        //this.requests = response;
+        //this.water-requests = response;
         this.providers.data= response;
 
         this.isLoadingResults = false;

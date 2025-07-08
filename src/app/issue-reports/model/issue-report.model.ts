@@ -1,4 +1,4 @@
-import {ResidentModel} from '../../requests/model/resident.model';
+import {ResidentModel} from '../../water-requests/model/resident.model';
 
 export class IssueReportModel {
   id: number;

@@ -4,12 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderContentComponent } from '../../components/header-content/header-content.component';
 import { HttpClient } from '@angular/common/http';
-import {SensordataApiService} from '../../../requests/services/sensordata-api.service';
+import {SensordataApiService} from '../../../water-requests/services/sensordata-api.service';
 import {ResidentService} from '../../../residents/services/resident.service';
 import {AuthService} from '../../../iam/application/services/auth.service';
 import {catchError} from 'rxjs/operators';
 import {forkJoin, of} from 'rxjs';
-import {ReportdataApiService} from '../../../reports/services/reportdata-api.service';
+import {ReportdataApiService} from '../../../issue-reports/services/reportdata-api.service';
 import { LanguageService } from '../../../shared/services/language.service';
 import { TranslationService } from '../../../shared/services/translation.service';
 import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
   private apiUrl = 'http://localhost:3000/api';
 
   options = [
-    { path: '/requests', name: 'Solicitud de Agua Potable' },
+    { path: '/water-requests', name: 'Solicitud de Agua Potable' },
     { path: '/login', name: 'Iniciar Sesión' },
     { path: '/signup', name: 'Registrarse' },
     { path: '/report', name: 'Lista de Reportes' },
@@ -190,7 +190,7 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    // Obtener water requests de todos los residentes
+    // Obtener water water-requests de todos los residentes
     const waterRequestObservables = residents.map(resident =>
       this.sensordataApiService.getWaterRequestsByResidentId(resident.id).pipe(
         catchError(error => {
@@ -208,7 +208,7 @@ export class HomeComponent implements OnInit {
         console.log(`Total requests: ${this.waterRequestsCount}, Pending: ${this.waterRequestsPending}`);
       },
       error: (error) => {
-        console.error('Error loading water requests stats:', error);
+        console.error('Error loading water water-requests stats:', error);
         this.waterRequestsCount = 0;
         this.waterRequestsPending = 0;
       }
@@ -240,7 +240,7 @@ export class HomeComponent implements OnInit {
           console.log(`📈 Estadísticas - Total: ${this.reportsCount}, Activos: ${this.reportsActive}`);
         },
         error: (error) => {
-          console.error('❌ Error loading reports for provider:', error);
+          console.error('❌ Error loading issue-reports for provider:', error);
           // Datos de ejemplo en caso de error
           this.reportsCount = 0;
           this.reportsActive = 0;

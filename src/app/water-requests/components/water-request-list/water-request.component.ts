@@ -159,7 +159,7 @@ export class WaterRequestComponent implements AfterViewInit {
       return;
     }
 
-    // Crear observables para obtener water requests de cada residente
+    // Crear observables para obtener water water-requests de cada residente
     const waterRequestObservables = residents.map(resident =>
       this.sensordataApiService.getWaterRequestsByResidentId(resident.id).pipe(
         map(requests => {
@@ -189,13 +189,13 @@ export class WaterRequestComponent implements AfterViewInit {
         // Aplanar el array de arrays
         const allRequests = requestArrays.flat();
 
-        console.log('Todas las water requests del proveedor:', allRequests);
+        console.log('Todas las water water-requests del proveedor:', allRequests);
         this.requests.data = allRequests;
         this.isLoadingResults = false;
         this.resultsLength = this.requests.data.length;
       },
       (error) => {
-        console.error('Error al obtener water requests:', error);
+        console.error('Error al obtener water water-requests:', error);
         this.requests.data = [];
         this.isLoadingResults = false;
         this.resultsLength = 0;
@@ -204,7 +204,7 @@ export class WaterRequestComponent implements AfterViewInit {
   }
 
   private loadWaterRequestsForAdmin(): void {
-    // Obtener todas las water requests y todos los residentes en paralelo
+    // Obtener todas las water water-requests y todos los residentes en paralelo
     forkJoin({
       waterRequests: this.sensordataApiService.getAllRequests(),
       residents: this.sensordataApiService.getResidentsByAdmin() // o el método que tengas para admin

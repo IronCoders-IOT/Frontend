@@ -14,12 +14,12 @@ import { LanguageToggleComponent } from '../../../shared/components/language-tog
 import { ProviderApiServiceService } from '../../../providers/services/provider-api.service.service';
 import { ResidentService } from '../../../residents/services/resident.service';
 import { ResidentApiServiceService } from '../../../providers/services/resident-api.service.service';
-import { SensordataApiService } from '../../../requests/services/sensordata-api.service';
-import { ReportdataApiService } from '../../../reports/services/reportdata-api.service';
+import { SensordataApiService } from '../../../water-requests/services/sensordata-api.service';
+import { ReportdataApiService } from '../../../issue-reports/services/reportdata-api.service';
 import { SensorDataService } from '../../../providers/services/sensor-data.service';
 import { Provider } from '../../../providers/model/provider.model';
-import { WaterRequestModel } from '../../../requests/model/water-request.model';
-import { IssueReportModel } from '../../../reports/model/issue-report.model';
+import { WaterRequestModel } from '../../../water-requests/model/water-request.model';
+import { IssueReportModel } from '../../../issue-reports/model/issue-report.model';
 import { SensorEvent } from '../../../providers/model/sensor-data.model';
 import { AuthService } from '../../../iam/application/services/auth.service';
 import { AdminApiServices } from '../services/admin-api.services';
@@ -203,7 +203,7 @@ export class AdminDashboardComponent implements OnInit {
         }
       });
 
-      // Load recent requests for the table
+      // Load recent water-requests for the table
       this.requestService.getAllRequests().subscribe({
         next: (requests) => {
           this.totalRequests = requests.length;
@@ -216,13 +216,13 @@ export class AdminDashboardComponent implements OnInit {
           this.loadResidentNamesForRecentRequests();
         },
         error: (error) => {
-          console.error('Error loading requests:', error);
+          console.error('Error loading water-requests:', error);
           this.totalRequests = 0;
           this.recentRequests = [];
         }
       });
 
-      // Load recent reports for the table
+      // Load recent issue-reports for the table
       this.reportService.getAllReports().subscribe({
         next: (reports) => {
           this.totalReports = reports.length;
@@ -234,7 +234,7 @@ export class AdminDashboardComponent implements OnInit {
           }));
         },
         error: (error) => {
-          console.error('Error loading reports:', error);
+          console.error('Error loading issue-reports:', error);
           this.totalReports = 0;
           this.recentReports = [];
         }
@@ -242,7 +242,7 @@ export class AdminDashboardComponent implements OnInit {
     }
 
   private loadResidentNamesForRecentRequests(): void {
-    // Obtener IDs únicos de los requests recientes
+    // Obtener IDs únicos de los water-requests recientes
     const recentResidentIds = [...new Set(this.recentRequests.map(req => req.residentId))];
 
     // Cargar datos de cada residente

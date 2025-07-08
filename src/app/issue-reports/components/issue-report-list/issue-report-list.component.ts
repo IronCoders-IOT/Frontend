@@ -139,7 +139,7 @@ export class IssueReportListComponent implements AfterViewInit {
     if (this.isAdmin) {
       this.reportdataApiService.getAllReports().subscribe(
         (response) => {
-          console.log('All reports:', response);
+          console.log('All issue-reports:', response);
 
           response.forEach((report) => {
             // Formatear el status de cada reporte
@@ -169,7 +169,7 @@ export class IssueReportListComponent implements AfterViewInit {
           console.log('Reports loaded:', this.requests.data);
         },
         error => {
-          console.error('Error loading reports:', error);
+          console.error('Error loading issue-reports:', error);
           this.isLoadingResults = false;
         }
       );
@@ -208,13 +208,13 @@ export class IssueReportListComponent implements AfterViewInit {
               console.log('Reports loaded:', this.requests.data);
             },
             error => {
-              console.error('Error loading reports for provider:', error);
+              console.error('Error loading issue-reports for provider:', error);
               this.isLoadingResults = false;
             }
           );
         },
         error => {
-          console.error('Error loading reports:', error);
+          console.error('Error loading issue-reports:', error);
           this.isLoadingResults = false;
         }
       );

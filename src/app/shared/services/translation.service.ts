@@ -13,33 +13,33 @@ export class TranslationService {
       'view_profile': 'View Profile',
       'sign_out': 'Sign Out',
       'language': 'Language',
-      
+
       // Dashboard cards
       'water_requests': 'Water Requests',
-      'active_water_requests': 'Active water supply requests awaiting approval and processing',
+      'active_water_requests': 'Active water supply water-requests awaiting approval and processing',
       'pending': 'Pending',
       'total_requests': 'Total Requests',
-      'view_all_requests': 'View all requests',
-      
+      'view_all_requests': 'View all water-requests',
+
       'service_reports': 'Service Reports',
-      'maintenance_reports': 'Maintenance reports and service issues from residents',
+      'maintenance_reports': 'Maintenance issue-reports and service issues from residents',
       'active': 'Active',
       'total_reports': 'Total Reports',
-      'view_all_reports': 'View all reports',
-      
+      'view_all_reports': 'View all issue-reports',
+
       'residents': 'Residents',
       'total_residents': 'Total number of residents registered in the system',
       'active_community': 'Active Community',
       'view_residents_list': 'View residents list',
       'registered': 'Registered',
-      
+
       'sensor_monitoring': 'Sensor Monitoring',
       'realtime_monitoring': 'Real-time monitoring of water quality and flow sensors',
       'live_data': 'Live Data',
       'view_sensor_history': 'View sensor history',
       'active_sensors': 'Active Sensors',
       'sensor_events_data': 'Real-time water quality and level monitoring data from all active sensors',
-      
+
       // Admin Dashboard
       'admin_dashboard': 'Dashboard',
       'system_overview': 'System Overview',
@@ -49,7 +49,7 @@ export class TranslationService {
       'users': 'Users',
       'system_settings': 'System Settings',
       'configure_system': 'Configure system parameters and settings',
-      
+
       // Auth - Login
       'welcome_back': 'Welcome back! Please enter your details',
       'username': 'Username',
@@ -63,7 +63,7 @@ export class TranslationService {
       'sign_in': 'Sign in',
       'dont_have_account': "Don't have an account?",
       'sign_up_here': 'Sign up here',
-      
+
       // Auth - Signup
       'lets_get_started': "Let's get started",
       'first_name': 'First Name',
@@ -111,7 +111,7 @@ export class TranslationService {
       'create_account': 'Create Account',
       'already_have_account': 'Already have an account?',
       'sign_in_here': 'Sign in here',
-      
+
       // Admin Dashboard - Additional sections
       'reports_requests': 'Reports & Requests',
       'financial_overview': 'Financial Overview',
@@ -123,7 +123,7 @@ export class TranslationService {
       'metrics_estimated_note': 'Metrics based on real sensor data and system activity',
       'average_water_quality': 'Average Water Quality',
       'average_water_quality_description': 'Average water quality measured across all active sensors',
-      'average_water_level': 'Average Water Level', 
+      'average_water_level': 'Average Water Level',
       'average_water_level_description': 'Average water level measured across all active sensors',
       'active_subscriptions': 'Active Subscriptions',
       'active_subscriptions_description': 'Number of active sensor subscriptions in the system',
@@ -153,16 +153,16 @@ export class TranslationService {
       'received': 'Received',
       'in_progress': 'In Progress',
       'closed': 'Closed',
-      
+
       // Header Navigation
       'residents_nav': 'Residents',
-      'reports_nav': 'Reports', 
+      'reports_nav': 'Reports',
       'requests_nav': 'Requests',
       'sensor_monitoring_nav': 'Sensor Monitoring',
       'providers_nav': 'Providers',
       'admin_dashboard_nav': 'Admin Dashboard',
       'home_nav': 'Home',
-      
+
       // Page Titles
       'providers_title': 'Providers',
       'report_requests_title': 'Report Requests',
@@ -172,7 +172,7 @@ export class TranslationService {
       'search_button': 'Search',
       'filter_by_provider': 'Filter by Provider',
       'all_providers': 'All Providers',
-      
+
       // Residents - Create Resident
       'new_resident': 'New Resident',
       'first_name_resident': 'First Name',
@@ -205,7 +205,7 @@ export class TranslationService {
       'amount_to_pay': 'Amount to pay:',
       'payment_successful_creating': 'Payment Successful! Creating Resident...',
       'please_wait_message': 'Please wait, this may take a few moments.',
-      
+
       // Residents - List
       'residents_list_title': 'Residents',
       'new_resident_link': 'New Resident',
@@ -215,14 +215,14 @@ export class TranslationService {
       'address_column': 'Address',
       'action_column': 'Action',
       'view_more': 'View more',
-      
+
       // View History - Residents
       'doc_number': 'Doc. Number',
       'subscriptions': 'Subscriptions',
       'sensor': 'Sensor',
       'start_date': 'Start Date',
       'end_date': 'End Date',
-      
+
       // Water Requests
       'supply_requests': 'Supply Requests',
       'emission_date': 'Emission Date',
@@ -230,26 +230,26 @@ export class TranslationService {
       'delivered_at': 'Delivered At',
       'schedule_date': 'Schedule a date',
       'github_rate_limit': 'GitHub\'s API rate limit has been reached. It will be reset in one minute.',
-      
+
       // Providers
       'tax': 'Tax',
       'ruc_column': 'Ruc',
       'email_column': 'Email',
-      
+
       // Report Requests
       'report_requests': 'Report Requests',
-      
+
       // Provider Detail - Active Residents
       'active_residents': 'Active Residents',
       'first_name_header': 'First name',
       'last_name_header': 'Last name',
-      
+
       // Time formatters
       'live': 'Live',
       'min_ago': 'min ago',
       'h_ago': 'h ago',
       'd_ago': 'd ago',
-      
+
       // Menu options
       'water_request_option': 'Water Request',
       'login_option': 'Login',
@@ -257,7 +257,7 @@ export class TranslationService {
       'reports_list_option': 'Reports List',
       'providers_list_option': 'Providers List',
       'provider_details_option': 'Provider Details',
-      
+
       // Schedule Date Component
       'resident_info': 'Resident',
       'water_quantity_request': 'Water Quantity Request (Liters)',
@@ -268,7 +268,7 @@ export class TranslationService {
       'delivered_date_label': 'Delivered Date:',
       'cancel_button': 'Cancel',
       'save_button': 'Save',
-      
+
       // Provider Components
       'provider_profile': 'Provider Profile',
       'provider_details': 'Provider Details',
@@ -302,7 +302,7 @@ export class TranslationService {
       'phone_pattern_error': 'Phone must be 9 digits',
       'address_required_error': 'Address is required',
       'view_active_plans': 'View Active Plans',
-      
+
       // Sensor Monitoring
       'sensor_monitoring_title': 'Water Sensor Monitoring',
       'updating': 'Updating...',
@@ -336,20 +336,20 @@ export class TranslationService {
       'no_events_available_sensor': 'No event data available for this sensor.',
       'quality_range': 'Quality Range',
       'status_summary': 'Status Summary',
-      
+
       // Status translations
       'status_active': 'Active',
       'status_inactive': 'Inactive',
       'status_suspended': 'Suspended',
       'status_unknown': 'Unknown Status',
-      
+
       // Event types
       'event_normal': 'Normal',
       'event_warning': 'Warning',
       'event_critical': 'Critical',
       'event_maintenance': 'Maintenance',
       'event_unknown': 'Unknown',
-      
+
       // Water quality values
       'quality_excellent': 'Excellent',
       'quality_acceptable': 'Acceptable',
@@ -357,7 +357,7 @@ export class TranslationService {
       'quality_no_water': 'No Water',
       'quality_tds_error': 'TDS Error',
       'quality_contaminated_water': 'Contaminated Water',
-      
+
       // Sensor status summary
       'no_sensors': 'No sensors',
       'critical_status': 'Critical',
@@ -366,7 +366,7 @@ export class TranslationService {
       'sensors_critical': 'critical sensors',
       'sensors_ok': 'OK',
       'sensors_critical_short': 'critical',
-      
+
       // Error messages
       'error_loading_sensor_data': 'Error loading sensor data'
     },
@@ -377,33 +377,33 @@ export class TranslationService {
       'view_profile': 'Ver Perfil',
       'sign_out': 'Cerrar Sesión',
       'language': 'Idioma',
-      
+
       // Dashboard cards
       'water_requests': 'Solicitudes de Agua',
       'active_water_requests': 'Solicitudes activas de suministro de agua pendientes de aprobación y procesamiento',
       'pending': 'Pendiente',
       'total_requests': 'Total de Solicitudes',
       'view_all_requests': 'Ver todas las solicitudes',
-      
+
       'service_reports': 'Reportes de Servicio',
       'maintenance_reports': 'Reportes de mantenimiento y problemas de servicio de los residentes',
       'active': 'Activo',
       'total_reports': 'Total de Reportes',
       'view_all_reports': 'Ver todos los reportes',
-      
+
       'residents': 'Residentes',
       'total_residents': 'Número total de residentes registrados en el sistema',
       'active_community': 'Comunidad Activa',
       'view_residents_list': 'Ver lista de residentes',
       'registered': 'Registrados',
-      
+
       'sensor_monitoring': 'Monitoreo de Sensores',
       'realtime_monitoring': 'Monitoreo en tiempo real de sensores de calidad y flujo de agua',
       'live_data': 'Datos en Vivo',
       'view_sensor_history': 'Ver historial de sensores',
       'active_sensors': 'Sensores Activos',
       'sensor_events_data': 'Datos de monitoreo en tiempo real de calidad y nivel de agua de todos los sensores activos',
-      
+
       // Admin Dashboard
       'admin_dashboard': 'Panel de Administración',
       'system_overview': 'Vista General del Sistema',
@@ -413,7 +413,7 @@ export class TranslationService {
       'users': 'Usuarios',
       'system_settings': 'Configuración del Sistema',
       'configure_system': 'Configurar parámetros y ajustes del sistema',
-      
+
       // Auth - Login
       'welcome_back': '¡Bienvenido de vuelta! Por favor, ingresa tus datos',
       'username': 'Nombre de Usuario',
@@ -427,7 +427,7 @@ export class TranslationService {
       'sign_in': 'Iniciar Sesión',
       'dont_have_account': '¿No tienes una cuenta?',
       'sign_up_here': 'Regístrate aquí',
-      
+
       // Auth - Signup
       'lets_get_started': 'Empecemos',
       'first_name': 'Nombre',
@@ -475,7 +475,7 @@ export class TranslationService {
       'create_account': 'Crear Cuenta',
       'already_have_account': '¿Ya tienes una cuenta?',
       'sign_in_here': 'Inicia sesión aquí',
-      
+
       // Admin Dashboard - Additional sections
       'reports_requests': 'Reportes y Solicitudes',
       'financial_overview': 'Resumen Financiero',
@@ -517,16 +517,16 @@ export class TranslationService {
       'received': 'Recibido',
       'in_progress': 'En Progreso',
       'closed': 'Cerrado',
-      
+
       // Header Navigation
       'residents_nav': 'Residentes',
       'reports_nav': 'Reportes',
-      'requests_nav': 'Solicitudes', 
+      'requests_nav': 'Solicitudes',
       'sensor_monitoring_nav': 'Monitoreo de Sensores',
       'providers_nav': 'Proveedores',
       'admin_dashboard_nav': 'Panel de Administración',
       'home_nav': 'Inicio',
-      
+
       // Page Titles
       'providers_title': 'Proveedores',
       'report_requests_title': 'Solicitudes de Reporte',
@@ -536,14 +536,14 @@ export class TranslationService {
       'search_button': 'Buscar',
       'filter_by_provider': 'Filtrar por Proveedor',
       'all_providers': 'Todos los Proveedores',
-      
+
       // Residents - Create Resident
       'new_resident': 'Nuevo Residente',
       'first_name_resident': 'Nombre',
       'first_name_placeholder_resident': 'ej. Italo',
       'first_name_required_resident': 'El nombre es requerido.',
       'last_name_resident': 'Apellido',
-      'last_name_placeholder_resident': 'ej. Kunimoto', 
+      'last_name_placeholder_resident': 'ej. Kunimoto',
       'last_name_required_resident': 'El apellido es requerido.',
       'document_type_resident': 'Tipo de Documento',
       'select_document_type': 'Seleccione un tipo de documento',
@@ -569,7 +569,7 @@ export class TranslationService {
       'amount_to_pay': 'Monto a pagar:',
       'payment_successful_creating': '¡Pago Exitoso! Creando Residente...',
       'please_wait_message': 'Por favor espere, esto puede tomar unos momentos.',
-      
+
       // Residents - List
       'residents_list_title': 'Residentes',
       'new_resident_link': 'Nuevo Residente',
@@ -579,14 +579,14 @@ export class TranslationService {
       'address_column': 'Dirección',
       'action_column': 'Acción',
       'view_more': 'Ver más',
-      
+
       // View History - Residents
       'doc_number': 'Núm. Doc.',
       'subscriptions': 'Suscripciones',
       'sensor': 'Sensor',
       'start_date': 'Fecha de Inicio',
       'end_date': 'Fecha de Fin',
-      
+
       // Water Requests
       'supply_requests': 'Solicitudes de Suministro',
       'emission_date': 'Fecha de Emisión',
@@ -594,26 +594,26 @@ export class TranslationService {
       'delivered_at': 'Entregado en',
       'schedule_date': 'Programar una fecha',
       'github_rate_limit': 'Se ha alcanzado el límite de velocidad de la API de GitHub. Se restablecerá en un minuto.',
-      
+
       // Providers
       'tax': 'Impuesto',
       'ruc_column': 'Ruc',
       'email_column': 'Correo',
-      
+
       // Report Requests
       'report_requests': 'Solicitudes de Reporte',
-      
+
       // Provider Detail - Active Residents
       'active_residents': 'Residentes Activos',
       'first_name_header': 'Nombre',
       'last_name_header': 'Apellido',
-      
+
       // Time formatters
       'live': 'En Vivo',
       'min_ago': 'min atrás',
       'h_ago': 'h atrás',
       'd_ago': 'd atrás',
-      
+
       // Menu options
       'water_request_option': 'Solicitud de Agua Potable',
       'login_option': 'Iniciar Sesión',
@@ -621,7 +621,7 @@ export class TranslationService {
       'reports_list_option': 'Lista de Reportes',
       'providers_list_option': 'Lista de proveedores',
       'provider_details_option': 'Detalles del proveedor',
-      
+
       // Schedule Date Component
       'resident_info': 'Residente',
       'water_quantity_request': 'Cantidad de Agua Solicitada (Litros)',
@@ -632,7 +632,7 @@ export class TranslationService {
       'delivered_date_label': 'Fecha de Entrega:',
       'cancel_button': 'Cancelar',
       'save_button': 'Guardar',
-      
+
       // Provider Components
       'provider_profile': 'Perfil del Proveedor',
       'provider_details': 'Detalles del Proveedor',
@@ -666,7 +666,7 @@ export class TranslationService {
       'phone_pattern_error': 'El teléfono debe tener 9 dígitos',
       'address_required_error': 'La dirección es requerida',
       'view_active_plans': 'Ver Planes Activos',
-      
+
       // Sensor monitoring dashboard - Spanish
       'sensor_monitoring_title': 'Panel de Monitoreo de Sensores',
       'updating': 'Actualizando...',
@@ -700,20 +700,20 @@ export class TranslationService {
       'sensor_information': 'Información del Sensor',
       'quality_range': 'Rango de Calidad',
       'status_summary': 'Resumen de Estado',
-      
+
       // Status translations
       'status_active': 'Activa',
       'status_inactive': 'Inactiva',
       'status_suspended': 'Suspendida',
       'status_unknown': 'Estado Desconocido',
-      
+
       // Event types
       'event_normal': 'Normal',
       'event_warning': 'Advertencia',
       'event_critical': 'Crítico',
       'event_maintenance': 'Mantenimiento',
       'event_unknown': 'Desconocido',
-      
+
       // Water quality values
       'quality_excellent': 'Excelente',
       'quality_acceptable': 'Aceptable',
@@ -721,7 +721,7 @@ export class TranslationService {
       'quality_no_water': 'No Hay Agua',
       'quality_tds_error': 'Error TDS',
       'quality_contaminated_water': 'Agua Contaminada',
-      
+
       // Sensor status summary
       'no_sensors': 'Sin sensores',
       'critical_status': 'Crítico',
@@ -730,7 +730,7 @@ export class TranslationService {
       'sensors_critical': 'críticos',
       'sensors_ok': 'OK',
       'sensors_critical_short': 'críticos',
-      
+
       // Error messages
       'error_loading_sensor_data': 'Error al cargar los datos de sensores'
     }
