@@ -6,21 +6,21 @@
       <h2>REPORT Nº {{ report.id }}</h2>
       <h1>{{ report.title }}</h1>
     </div>
-    
+
     <!-- Status dropdown button -->
     <div class="status-dropdown">
-      <button 
-        class="status-button" 
+      <button
+        class="status-button"
         [ngClass]="getStatusClass(report.status)"
         (click)="toggleStatusOptions()">
         {{ formatStatusForDisplay(report.status) }}
         <i class="fa fa-chevron-down" [ngClass]="{'rotated': showStatusOptions}"></i>
       </button>
-      
+
       <!-- Dropdown options -->
       <div class="status-options" *ngIf="showStatusOptions">
-        <button 
-          *ngFor="let status of statusOptions" 
+        <button
+          *ngFor="let status of statusOptions"
           class="status-option"
           [ngClass]="getStatusClass(status)"
           [class.current]="status === report.status"
@@ -48,5 +48,5 @@
     <div class="description-display">{{ report.description }}</div>
   </div>
 
-  <button class="back-button" routerLink="/reports">BACK</button>
+  <button class="back-button" routerLink="/issue-reports">BACK</button>
 </div>

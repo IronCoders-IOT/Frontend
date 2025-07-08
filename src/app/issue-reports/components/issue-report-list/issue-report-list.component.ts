@@ -48,7 +48,7 @@ export class IssueReportListComponent implements AfterViewInit {
   goToDetail(id: number): void {
     // Solo permitir navegación si no es admin
     if (!this.isAdmin) {
-      this.router.navigate(['/reports', id]);
+      this.router.navigate(['/issue-reports', id]);
     }
   }
 
