@@ -23,7 +23,7 @@ export class ProviderApiServiceService extends BaseService<Provider> {
     }
     const user = JSON.parse(storedUser);
     console.log('Getting profile for user:', user);
-    return this.http.get<any>(`${this.basePath}${this.resourceEndpoint}/providers/{providerId}/profiles`, this.httpOptions);
+    return this.http.get<any>(`${this.basePath}${this.resourceEndpoint}/{providerId}/profiles`, this.httpOptions);
   }
 
   UpdateProvider(provider: Partial<Provider>): Observable<any> {
@@ -33,7 +33,7 @@ export class ProviderApiServiceService extends BaseService<Provider> {
     }
     const user = JSON.parse(storedUser);
     console.log('Updating provider for user:', user);
-    return this.http.put<any>(`${this.basePath}${this.resourceEndpoint}/edit`, provider, this.httpOptions);
+    return this.http.put<any>(`${this.basePath}${this.resourceEndpoint}/{providerId}/profiles`, provider, this.httpOptions);
   }
 
   getAllProviders(): Observable<Provider[]> {
@@ -42,6 +42,6 @@ export class ProviderApiServiceService extends BaseService<Provider> {
 
   getProviderById(id: number): Observable<Provider> {
     console.log('Getting provider with ID:', id);
-    return this.http.get<Provider>(`${this.basePath}${this.resourceEndpoint}/${id}/detail`, this.httpOptions);
+    return this.http.get<Provider>(`${this.basePath}${this.resourceEndpoint}/${id}/profiles`, this.httpOptions);
   }
 }

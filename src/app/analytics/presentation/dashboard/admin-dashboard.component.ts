@@ -162,11 +162,11 @@ export class AdminDashboardComponent implements OnInit {
       this.adminService.getAdminSummary().subscribe({
         next: (summary) => {
           // Load all data from the summary endpoint
-          this.totalProviders = summary.totalProveedores || 0;
-          this.totalResidents = summary.totalResidentes || 0;
-          this.totalSensors = summary.suscripcionesActivas || 0; // Active subscriptions = active sensors
-          this.currentMonthRevenue = summary.ingresosMensual || 0;
-          this.totalRevenue = summary.ingresosTotales || 0;
+          this.totalProviders = summary.totalProviders || 0;
+          this.totalResidents = summary.totalResidents || 0;
+          this.totalSensors = summary.activeSubscriptions || 0; // Active subscriptions = active sensors
+          this.currentMonthRevenue = summary.totalIncome || 0;
+          this.totalRevenue = summary.monthlyIncome || 0;
 
           console.log('Dashboard summary loaded:', {
             totalProviders: this.totalProviders,
