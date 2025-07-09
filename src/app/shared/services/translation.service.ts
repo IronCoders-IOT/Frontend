@@ -358,10 +358,10 @@ export class TranslationService {
 
       // Water quality values
       'quality_excellent': 'Excellent',
+      'quality_good': 'Good',
       'quality_acceptable': 'Acceptable',
-      'quality_not_potable': 'Not Potable',
-      'quality_no_water': 'No Water',
-      'quality_tds_error': 'TDS Error',
+      'quality_bad': 'Bad',
+      'quality_non_potable': 'Non-potable',
       'quality_contaminated_water': 'Contaminated Water',
 
       // Sensor status summary
@@ -728,10 +728,10 @@ export class TranslationService {
 
       // Water quality values
       'quality_excellent': 'Excelente',
+      'quality_good': 'Bueno',
       'quality_acceptable': 'Aceptable',
-      'quality_not_potable': 'No Potable',
-      'quality_no_water': 'No Hay Agua',
-      'quality_tds_error': 'Error TDS',
+      'quality_bad': 'Malo',
+      'quality_non_potable': 'No Potable',
       'quality_contaminated_water': 'Agua Contaminada',
 
       // Sensor status summary

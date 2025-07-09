@@ -390,12 +390,12 @@ export class AdminDashboardComponent implements OnInit {
 
         // Nuevo mapeo de calidad del agua según los nuevos atributos
         const qualityTextToNumber: { [key: string]: number } = {
-          'excelente': 95,
-          'aceptable': 75,
-          'no potable': 40,
-          'no hay agua': 10,
-          'error tds': 10,
-          'agua contaminada': 10
+          'excellent': 95,
+          'good': 85,
+          'acceptable': 70,
+          'bad': 45,
+          'non-potable': 25,
+          'contaminated water': 10
         };
 
         // Calcular promedio de calidad del agua
@@ -419,10 +419,9 @@ export class AdminDashboardComponent implements OnInit {
         this.criticalEventsCount = events.filter(event => {
           const quality = event.qualityValue ? event.qualityValue.toLowerCase() : '';
           const qualityIsCritical = [
-            'no potable',
-            'no hay agua',
-            'error tds',
-            'agua contaminada'
+            'bad',
+            'non-potable',
+            'contaminated water'
           ].includes(quality);
           const level = parseFloat(event.levelValue || '100');
           const levelIsCritical = level < 30;

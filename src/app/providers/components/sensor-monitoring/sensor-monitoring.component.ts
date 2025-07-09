@@ -127,28 +127,30 @@ export class SensorMonitoringComponent implements OnInit {
   }
 
   getQualityClass(quality: string): string {
-    // Mapeo de los nuevos valores de calidad del agua
+    // Mapeo de los nuevos valores de calidad del agua en inglés
     switch (quality.toLowerCase().trim()) {
-      case 'excelente':
+      case 'excellent':
         return 'quality-excellent';
-      case 'aceptable':
+      case 'good':
         return 'quality-good';
-      case 'no potable':
-        return 'quality-fair';
-      case 'no hay agua':
-      case 'error tds':
-      case 'agua contaminada':
-        return 'quality-poor';
+      case 'acceptable':
+        return 'quality-acceptable';
+      case 'bad':
+        return 'quality-bad';
+      case 'non-potable':
+        return 'quality-non-potable';
+      case 'contaminated water':
+        return 'quality-contaminated';
       default:
         // Fallback para valores numéricos o desconocidos
         const qualityNum = parseFloat(quality);
         if (!isNaN(qualityNum)) {
           if (qualityNum >= 8) return 'quality-excellent';
           if (qualityNum >= 6) return 'quality-good';
-          if (qualityNum >= 4) return 'quality-fair';
-          return 'quality-poor';
+          if (qualityNum >= 4) return 'quality-acceptable';
+          return 'quality-bad';
         }
-        return 'quality-poor';
+        return 'quality-bad';
     }
   }
 
@@ -228,31 +230,31 @@ export class SensorMonitoringComponent implements OnInit {
   }
 
   // Método para obtener eventos específicos de un sensor de un residente específico
-  getSensorEventsForResident(sensorId: number, residentData: ResidentSensorData): SensorEvent[] {
-    return residentData.sensorEvents.filter(event => event.sensorId === sensorId);
+  getSensorEventsForResident(deviceId: number, residentData: ResidentSensorData): SensorEvent[] {
+    return residentData.sensorEvents.filter(event => event.deviceId === deviceId);
   }
 
   // Método para obtener el último evento de un sensor específico de un residente específico
-  getLatestEventForSensorOfResident(sensorId: number, residentData: ResidentSensorData): SensorEvent | null {
-    const events = this.getSensorEventsForResident(sensorId, residentData);
+  getLatestEventForSensorOfResident(deviceId: number, residentData: ResidentSensorData): SensorEvent | null {
+    const events = this.getSensorEventsForResident(deviceId, residentData);
     return events.length > 0 ? events[events.length - 1] : null;
   }
 
   // Método para obtener eventos específicos de un sensor
-  getSensorEvents(sensorId: number): SensorEvent[] {
+  getSensorEvents(deviceId: number): SensorEvent[] {
     if (!this.selectedResident) return [];
-    return this.selectedResident.sensorEvents.filter(event => event.sensorId === sensorId);
+    return this.selectedResident.sensorEvents.filter(event => event.deviceId === deviceId);
   }
 
   // Método para obtener el último evento de un sensor específico
-  getLatestEventForSensor(sensorId: number): SensorEvent | null {
-    const events = this.getSensorEvents(sensorId);
+  getLatestEventForSensor(deviceId: number): SensorEvent | null {
+    const events = this.getSensorEvents(deviceId);
     return events.length > 0 ? events[events.length - 1] : null;
   }
 
   // Método para verificar si un sensor tiene eventos recientes
-  hasSensorActivity(sensorId: number): boolean {
-    return this.getSensorEvents(sensorId).length > 0;
+  hasSensorActivity(deviceId: number): boolean {
+    return this.getSensorEvents(deviceId).length > 0;
   }
 
   // Nuevas funciones para el resumen inteligente del card
@@ -264,7 +266,7 @@ export class SensorMonitoringComponent implements OnInit {
 
     const qualities: string[] = [];
     activeSubscriptions.forEach(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         qualities.push(latestEvent.qualityValue);
       }
@@ -278,8 +280,8 @@ export class SensorMonitoringComponent implements OnInit {
       return uniqueQualities[0];
     }
     
-    // Ordenar de mejor a peor: excelente, aceptable, no potable, y los críticos al final
-    const qualityOrder = ['excelente', 'aceptable', 'no potable', 'no hay agua', 'error tds', 'agua contaminada'];
+    // Ordenar de mejor a peor: excellent, good, acceptable, bad, non-potable, contaminated water
+    const qualityOrder = ['excellent', 'good', 'acceptable', 'bad', 'non-potable', 'contaminated water'];
     const sortedQualities = uniqueQualities.sort((a, b) => {
       const indexA = qualityOrder.indexOf(a.toLowerCase().trim());
       const indexB = qualityOrder.indexOf(b.toLowerCase().trim());
@@ -294,12 +296,12 @@ export class SensorMonitoringComponent implements OnInit {
     const activeSubscriptions = this.getActiveSubscriptions(residentData);
     
     return activeSubscriptions.some(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         const levelValue = typeof latestEvent.levelValue === 'string' ? 
           parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
         const qualityLower = latestEvent.qualityValue.toLowerCase().trim();
-        const isBadQuality = ['no potable', 'no hay agua', 'error tds', 'agua contaminada'].includes(qualityLower);
+        const isBadQuality = ['bad', 'non-potable', 'contaminated water'].includes(qualityLower);
         return isBadQuality || levelValue < 30;
       }
       return false;
@@ -311,12 +313,12 @@ export class SensorMonitoringComponent implements OnInit {
     const activeSubscriptions = this.getActiveSubscriptions(residentData);
     
     return activeSubscriptions.filter(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         const levelValue = typeof latestEvent.levelValue === 'string' ? 
           parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
         const qualityLower = latestEvent.qualityValue.toLowerCase().trim();
-        const isBadQuality = ['no potable', 'no hay agua', 'error tds', 'agua contaminada'].includes(qualityLower);
+        const isBadQuality = ['bad', 'non-potable', 'contaminated water'].includes(qualityLower);
         return isBadQuality || levelValue < 30;
       }
       return false;
@@ -352,7 +354,7 @@ export class SensorMonitoringComponent implements OnInit {
 
     const qualities: string[] = [];
     activeSubscriptions.forEach(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         qualities.push(latestEvent.qualityValue);
       }
@@ -364,12 +366,12 @@ export class SensorMonitoringComponent implements OnInit {
     const qualityValues: number[] = qualities.map(q => {
       const qualityLower = q.toLowerCase().trim();
       switch(qualityLower) {
-        case 'excelente': return 4;
-        case 'aceptable': return 3;
-        case 'no potable': return 2;
-        case 'no hay agua':
-        case 'error tds':
-        case 'agua contaminada': return 1;
+        case 'excellent': return 6;
+        case 'good': return 5;
+        case 'acceptable': return 4;
+        case 'bad': return 3;
+        case 'non-potable': return 2;
+        case 'contaminated water': return 1;
         default: return 0;
       }
     });
@@ -377,10 +379,12 @@ export class SensorMonitoringComponent implements OnInit {
     const sum = qualityValues.reduce((accumulator, current) => accumulator + current, 0);
     const average = sum / qualityValues.length;
     
-    if (average >= 3.5) return 'excelente';
-    if (average >= 2.5) return 'aceptable';
-    if (average >= 1.5) return 'no potable';
-    return 'agua contaminada';
+    if (average >= 5.5) return 'excellent';
+    if (average >= 4.5) return 'good';
+    if (average >= 3.5) return 'acceptable';
+    if (average >= 2.5) return 'bad';
+    if (average >= 1.5) return 'non-potable';
+    return 'contaminated water';
   }
 
   // Obtener calidad promedio actual de todos los sensores activos
@@ -390,7 +394,7 @@ export class SensorMonitoringComponent implements OnInit {
 
     const qualities: string[] = [];
     activeSubscriptions.forEach(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         qualities.push(latestEvent.qualityValue);
       }
@@ -412,7 +416,7 @@ export class SensorMonitoringComponent implements OnInit {
 
     const qualities: string[] = [];
     activeSubscriptions.forEach(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         qualities.push(latestEvent.qualityValue);
       }
@@ -434,7 +438,7 @@ export class SensorMonitoringComponent implements OnInit {
 
     const levels: number[] = [];
     activeSubscriptions.forEach(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.sensorId, residentData);
+      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         const levelValue = typeof latestEvent.levelValue === 'string' ? 
           parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
@@ -470,17 +474,17 @@ export class SensorMonitoringComponent implements OnInit {
     
     const qualityLower = quality.toLowerCase().trim();
     switch (qualityLower) {
-      case 'excelente':
+      case 'excellent':
         return this.translate('quality_excellent');
-      case 'aceptable':
+      case 'good':
+        return this.translate('quality_good');
+      case 'acceptable':
         return this.translate('quality_acceptable');
-      case 'no potable':
-        return this.translate('quality_not_potable');
-      case 'no hay agua':
-        return this.translate('quality_no_water');
-      case 'error tds':
-        return this.translate('quality_tds_error');
-      case 'agua contaminada':
+      case 'bad':
+        return this.translate('quality_bad');
+      case 'non-potable':
+        return this.translate('quality_non_potable');
+      case 'contaminated water':
         return this.translate('quality_contaminated_water');
       default:
         return quality; // Mantener valor original si no se reconoce

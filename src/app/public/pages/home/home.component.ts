@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
   residentsCount: number = 0;
   sensorEventsCount: number = 0;
   lastSensorUpdate: string = 'Live';
+  isAdmin: boolean = false;
 
   private apiUrl = 'http://localhost:3000/api';
 
@@ -92,16 +93,18 @@ export class HomeComponent implements OnInit {
       try {
         const user = JSON.parse(storedUser);
         this.username = user?.username || null;
-        if(user?.username === "admin") {
+        this.isAdmin = this.username === "admin";
+        if(this.isAdmin) {
           this.userRole = user?.role || 'Administrator';
-        }else {
+        } else {
           this.userRole = user?.role || 'Provider';
         }
-        console.log(this.userRole);
+        console.log('User role:', this.userRole, 'Is admin:', this.isAdmin);
       } catch (error) {
         console.error('Error parsing user from localStorage:', error);
         this.username = null;
         this.userRole = 'Provider';
+        this.isAdmin = false;
       }
     }
   }
@@ -158,61 +161,53 @@ export class HomeComponent implements OnInit {
   }
 
   private loadWaterRequests(): void {
-    // Obtener perfil del proveedor autenticado
-    this.sensordataApiService.getProviderProfile().subscribe({
-      next: (providerProfile) => {
-        const authenticatedProviderId = providerProfile.id;
-
-        // Obtener residentes del proveedor
-        this.sensordataApiService.getResidentsByProviderId(authenticatedProviderId).subscribe({
-          next: (residents) => {
-            this.loadWaterRequestsStats(residents);
-          },
-          error: (error) => {
-            console.error('Error loading residents:', error);
-            this.waterRequestsCount = 0;
-            this.waterRequestsPending = 0;
-          }
-        });
-      },
-      error: (error) => {
-        console.error('Error loading provider profile:', error);
-        this.waterRequestsCount = 0;
-        this.waterRequestsPending = 0;
-      }
-    });
-  }
-
-  private loadWaterRequestsStats(residents: any[]): void {
-    if (residents.length === 0) {
-      this.waterRequestsCount = 0;
-      this.waterRequestsPending = 0;
-      return;
+    // Si es admin, obtener todas las requests directamente
+    if (this.isAdmin) {
+      this.sensordataApiService.getAllRequests().subscribe({
+        next: (allRequests) => {
+          this.waterRequestsCount = allRequests.length;
+          this.waterRequestsPending = allRequests.filter(req => req.status === 'RECEIVED').length;
+          console.log(`Admin - Total requests: ${this.waterRequestsCount}, Pending: ${this.waterRequestsPending}`);
+        },
+        error: (error) => {
+          console.error('Error loading all water requests for admin:', error);
+          this.waterRequestsCount = 0;
+          this.waterRequestsPending = 0;
+        }
+      });
+    } else {
+      // Si es proveedor, obtener solo las requests de sus residentes
+      this.sensordataApiService.getProviderProfile().subscribe({
+        next: (providerProfile) => {
+          const authenticatedProviderId = providerProfile.id;
+          
+          // Obtener todas las requests y filtrar por providerId
+          this.sensordataApiService.getAllRequests().subscribe({
+            next: (allRequests) => {
+              // Filtrar requests que pertenecen a residentes del proveedor
+              const providerRequests = allRequests.filter(request => {
+                // Asumiendo que el request tiene providerId o podemos obtenerlo del residentId
+                return request.providerId === authenticatedProviderId;
+              });
+              
+              this.waterRequestsCount = providerRequests.length;
+              this.waterRequestsPending = providerRequests.filter(req => req.status === 'RECEIVED').length;
+              console.log(`Provider - Total requests: ${this.waterRequestsCount}, Pending: ${this.waterRequestsPending}`);
+            },
+            error: (error) => {
+              console.error('Error loading water requests for provider:', error);
+              this.waterRequestsCount = 0;
+              this.waterRequestsPending = 0;
+            }
+          });
+        },
+        error: (error) => {
+          console.error('Error loading provider profile:', error);
+          this.waterRequestsCount = 0;
+          this.waterRequestsPending = 0;
+        }
+      });
     }
-
-    // Obtener water water-requests de todos los residentes
-    const waterRequestObservables = residents.map(resident =>
-      this.sensordataApiService.getWaterRequestsByResidentId(resident.id).pipe(
-        catchError(error => {
-          console.error(`Error loading requests for resident ${resident.id}:`, error);
-          return of([]);
-        })
-      )
-    );
-
-    forkJoin(waterRequestObservables).subscribe({
-      next: (requestArrays) => {
-        const allRequests = requestArrays.flat();
-        this.waterRequestsCount = allRequests.length;
-        this.waterRequestsPending = allRequests.filter(req => req.status === 'RECEIVED').length;
-        console.log(`Total requests: ${this.waterRequestsCount}, Pending: ${this.waterRequestsPending}`);
-      },
-      error: (error) => {
-        console.error('Error loading water water-requests stats:', error);
-        this.waterRequestsCount = 0;
-        this.waterRequestsPending = 0;
-      }
-    });
   }
 
   private loadReports(): void {

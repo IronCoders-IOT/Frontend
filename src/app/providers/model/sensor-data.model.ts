@@ -16,7 +16,7 @@ export interface SubscriptionData {
   startDate: string;
   endDate: string;
   status: string;
-  sensorId: number;
+  deviceId: number;
   residentId: number;
 }
 
@@ -25,7 +25,7 @@ export interface SensorEvent {
   eventType: string;
   qualityValue: string;
   levelValue: string;
-  sensorId: number;
+  deviceId: number;
 }
 
 export interface ResidentSensorData {

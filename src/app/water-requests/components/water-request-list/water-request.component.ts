@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {HeaderContentComponent} from '../../../public/components/header-content/header-content.component';
 import {WaterRequestModel} from '../../model/water-request.model';
 import {SensordataApiService} from '../../services/sensordata-api.service';
@@ -39,19 +39,17 @@ export class WaterRequestComponent implements AfterViewInit {
   userRole: string | null = null;
   isAdmin: boolean = false;
 
-  constructor(private sensordataApiService: SensordataApiService, private dialog: MatDialog, private translationService: TranslationService) {}
+  constructor(
+    private sensordataApiService: SensordataApiService, 
+    private dialog: MatDialog, 
+    private translationService: TranslationService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-
-
     this.loadUsername(); // Cargar el nombre de usuario al iniciar
 
-    this.displayedColumns = ['id', 'firstName', 'emissionDate', 'requestedLiters', 'status'];
-
-    if (!this.isAdmin) {
-      this.displayedColumns.splice(this.displayedColumns.length - 1, 0, 'delivered_at');
-    }
-    this.getAllRequests();
+    this.displayedColumns = ['id', 'firstName', 'emissionDate', 'requestedLiters', 'delivered_at', 'status'];
 
     this.requests.filterPredicate = (data: WaterRequestModel, filter: string) => {
       if (!filter.trim()) {
@@ -93,11 +91,25 @@ export class WaterRequestComponent implements AfterViewInit {
           this.sensordataApiService.updateDeliveredAt(requestId, result.status, result.selectedDate).subscribe(
             (updatedRequest) => {
               console.log('Updated request:', updatedRequest);
-              row.delivered_at = updatedRequest.delivered_at;
-              row.status = updatedRequest.status;
-              this.requests.data = [...this.requests.data];
-              //RECARGA LOS DATOS DESPUÉS DE ACTUALIZAR
-              this.getAllRequests();
+              
+              // Encontrar el índice de la fila en el array
+              const rowIndex = this.requests.data.findIndex(r => r.id === row.id);
+              if (rowIndex !== -1) {
+                // Crear un nuevo objeto con los datos actualizados
+                const updatedRow = { ...this.requests.data[rowIndex] };
+                updatedRow.delivered_at = updatedRequest.delivered_at;
+                updatedRow.status = updatedRequest.status;
+                
+                // Actualizar el array con el nuevo objeto
+                const newData = [...this.requests.data];
+                newData[rowIndex] = updatedRow;
+                this.requests.data = newData;
+                
+                // Forzar la detección de cambios
+                this.cdr.detectChanges();
+                
+                console.log('Row updated - Status:', updatedRow.status, 'Delivered_at:', updatedRow.delivered_at);
+              }
             },
             (error) => {
               console.error('Error updating request:', error);
@@ -186,11 +198,12 @@ export class WaterRequestComponent implements AfterViewInit {
     // Ejecutar todas las peticiones en paralelo
     forkJoin(waterRequestObservables).subscribe(
       (requestArrays) => {
-        // Aplanar el array de arrays
+        // Aplanar el array de arrays y eliminar duplicados por ID
         const allRequests = requestArrays.flat();
+        const uniqueRequests = this.removeDuplicates(allRequests);
 
-        console.log('Todas las water water-requests del proveedor:', allRequests);
-        this.requests.data = allRequests;
+        console.log('Todas las water water-requests del proveedor:', uniqueRequests);
+        this.requests.data = uniqueRequests;
         this.isLoadingResults = false;
         this.resultsLength = this.requests.data.length;
       },
@@ -268,14 +281,15 @@ export class WaterRequestComponent implements AfterViewInit {
 
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-    // TAMBIÉN NECESITAS ACTUALIZAR ESTE MÉTODO PARA QUE RESPETE EL FILTRO
+    // Cargar datos iniciales solo una vez
+    this.getAllRequests();
+
+    // Configurar paginación y ordenamiento sin recargar datos
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
-          this.isLoadingResults = true;
-          // Llamar al método que filtra por proveedor
-          this.getAllRequests();
+          // Solo actualizar la vista, no recargar datos
           return observableOf([]);
         })
       )
@@ -317,16 +331,51 @@ export class WaterRequestComponent implements AfterViewInit {
     }
   }
 
-  // Función para determinar si debe mostrar la deliveredAt en lugar del botón
-  shouldShowEmissionDate(row: WaterRequestModel): boolean {
-    return row.status === 'In Progress' || row.status === 'Closed';
+  // Función para determinar si debe mostrar la fecha en lugar del botón
+  shouldShowDate(row: WaterRequestModel): boolean {
+    // Siempre mostrar fecha si el status es In Progress o Closed
+    if (row.status === 'In Progress' || row.status === 'Closed') {
+      return true;
+    }
+    
+    // Mostrar fecha si hay delivered_at establecido
+    return !!row.delivered_at;
   }
 
-  // Función para obtener la fecha a mostrar (delivered_at o deliveredAt de la API)
+  // Función para obtener la fecha a mostrar
   getDisplayDate(row: WaterRequestModel): Date | string | null {
-    if (this.shouldShowEmissionDate(row)) {
-      return (row as any).deliveredAt || null;
+    // Si hay delivered_at establecido, mostrarlo
+    if (row.delivered_at) {
+      return row.delivered_at;
     }
-    return row.delivered_at;
+    
+    // Si el status es In Progress o Closed, mostrar deliveredAt de la API o fecha por defecto
+    if (row.status === 'In Progress' || row.status === 'Closed') {
+      // Intentar obtener deliveredAt de la API
+      const apiDeliveredAt = (row as any).deliveredAt;
+      if (apiDeliveredAt) {
+        return apiDeliveredAt;
+      }
+      
+      // Si no hay fecha de la API, mostrar la fecha de emisión como fallback
+      if (row.emissionDate) {
+        return row.emissionDate;
+      }
+      
+      // Si no hay fecha de emisión, mostrar fecha actual
+      return new Date();
+    }
+    
+    return null;
+  }
+
+  // Método para eliminar duplicados por ID
+  private removeDuplicates(requests: WaterRequestModel[]): WaterRequestModel[] {
+    const seen = new Set();
+    return requests.filter(request => {
+      const duplicate = seen.has(request.id);
+      seen.add(request.id);
+      return !duplicate;
+    });
   }
 }

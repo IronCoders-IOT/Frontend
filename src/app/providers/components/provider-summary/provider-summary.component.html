@@ -56,7 +56,7 @@
       <th mat-header-cell class="cell-status" *matHeaderCellDef>Status</th>
       <td mat-cell *matCellDef="let row" class="custom-status-column">
         <span [ngClass]="getStatusClass(row.status)">
-              {{ row.status }}
+              {{ getStatusText(row.status) }}
         </span>
       </td>
     </ng-container>

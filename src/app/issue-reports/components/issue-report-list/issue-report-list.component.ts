@@ -46,15 +46,13 @@ export class IssueReportListComponent implements AfterViewInit {
   allReports: IssueReportModel[] = []; // Guardamos todos los reportes originales
 
   goToDetail(id: number): void {
-    // Solo permitir navegación si no es admin
-    if (!this.isAdmin) {
-      this.router.navigate(['/issue-reports', id]);
-    }
+    // Permitir navegación para todos los usuarios
+    this.router.navigate(['/issue-reports', id]);
   }
 
   // Función para determinar si la fila es clickeable
   isRowClickable(): boolean {
-    return !this.isAdmin;
+    return true; // Ahora todas las filas son clickeables
   }
 
   tittle = 'Lista de Reportes';

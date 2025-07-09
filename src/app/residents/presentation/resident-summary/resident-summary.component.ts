@@ -42,7 +42,7 @@ export class ResidentSummaryComponent implements OnInit {
   residentData: Resident | null = null;
   subscriptions = new MatTableDataSource<SubscriptionModel>();
 
-  displayedColumns: string[] = ['id', 'sensorId', 'startDate', 'endDate', 'status'];
+  displayedColumns: string[] = ['id', 'deviceId', 'startDate', 'endDate', 'status'];
   isLoadingResults = true;
   error: string | null = null;
   constructor(

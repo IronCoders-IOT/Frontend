@@ -8,6 +8,8 @@ import {ResidentApiServiceService} from '../../services/resident-api.service.ser
 import {NgForOf} from '@angular/common';
 import {SubscriptionApiServiceService} from '../../services/subscription-api.service.service';
 import {Provider} from '../../model/provider.model';
+import {AuthService} from '../../../iam/application/services/auth.service';
+import {User} from '../../../iam/domain/models/user.model';
 
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
@@ -37,17 +39,21 @@ export class ProviderSummaryComponent implements OnInit{
   subscriptions: { [residentId: number]: Subscription[] } = {};
 
   provider!: Provider;
+  currentUser: User | null = null;
+  isAdmin: boolean = false;
+  isProvider: boolean = false;
 
   displayedColumns: string[] = ['id', 'firts_name', 'last_name', 'phone','status'];
 
-
   providerId!: number;
+  isLoading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
     private residentService: ResidentApiServiceService,
     private subscriptionService: SubscriptionApiServiceService,
     private providerService: ProviderApiServiceService,
+    private authService: AuthService,
     private dialog: MatDialog,
     private router: Router
   ) {}
@@ -55,33 +61,94 @@ export class ProviderSummaryComponent implements OnInit{
   ngOnInit(): void {
     // Get provider_id from route parameters
     this.providerId = Number(this.route.snapshot.paramMap.get('id'));
+    
+    // Get current user and determine role
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+      this.determineUserRole();
+      this.loadDataBasedOnRole();
+    });
+  }
 
+  private determineUserRole(): void {
+    if (!this.currentUser) {
+      console.error('No hay usuario autenticado');
+      return;
+    }
 
-    this.providerService.getProviderById(this.providerId).subscribe(
+    // Determinar el rol basado en el username o roles del usuario
+    // Asumiendo que los admins tienen un patrón específico o rol específico
+    this.isAdmin = !!(this.currentUser.username?.includes('admin') || 
+                   this.currentUser.roles?.includes('ADMIN') ||
+                   this.currentUser.roles?.includes('ROLE_ADMIN'));
+    
+    this.isProvider = !this.isAdmin;
+    
+    console.log('Usuario actual:', this.currentUser);
+    console.log('Es admin:', this.isAdmin);
+    console.log('Es proveedor:', this.isProvider);
+  }
+
+  private loadDataBasedOnRole(): void {
+    if (this.isAdmin) {
+      this.loadAdminData();
+    } else if (this.isProvider) {
+      this.loadProviderData();
+    }
+  }
+
+  private loadAdminData(): void {
+    console.log('Cargando datos como ADMIN');
+    
+    // Admin puede ver todos los detalles del proveedor usando endpoint directo
+    this.providerService.getProviderByIdForAdmin(this.providerId).subscribe(
       provider => {
         this.provider = provider;
-        console.log('Provider details:', this.provider);
+        console.log('Provider details (ADMIN):', this.provider);
+      },
+      error => {
+        console.error('Error fetching provider details (ADMIN):', error);
       }
     );
 
-
-    // Fetch residents by provider_id
+    // Admin puede ver todos los residentes del proveedor
     this.residentService.getAllResidentByProviderId(this.providerId).subscribe(
       (residents) => {
         const filteredResidents: Resident[] = [];
         residents.forEach((resident) => {
           if (resident.providerId === this.providerId) {
+            // Asignar estado activo para residentes del admin también
+            resident.status = resident.status || 'active';
             filteredResidents.push(resident);
           }
         });
         this.resident = filteredResidents;
         this.subscriptionsDataSource.data = this.resident;
-        console.log('Residentes filtrados:', filteredResidents);
+        this.isLoading = false;
+        console.log('Residentes filtrados (ADMIN):', filteredResidents);
       },
       (error) => {
-        console.error('Error fetching residents:', error);
+        console.error('Error fetching residents (ADMIN):', error);
+        this.isLoading = false;
       }
     );
+  }
+
+  private loadProviderData(): void {
+    console.log('Cargando datos como PROVIDER');
+    
+    // Proveedor solo puede ver su propio perfil
+    this.providerService.getProvidersProfile().subscribe(
+      (provider: any) => {
+        this.provider = provider;
+        console.log('Provider profile (PROVIDER):', this.provider);
+      },
+      (error: any) => {
+        console.error('Error fetching provider profile (PROVIDER):', error);
+      }
+    );
+
+    // Proveedor puede ver sus residentes
     this.residentService.getAllResidentByProviderId(this.providerId).subscribe(
       (residents) => {
         residents.forEach((resident) => {
@@ -89,13 +156,14 @@ export class ProviderSummaryComponent implements OnInit{
         });
         this.resident = residents;
         this.subscriptionsDataSource.data = this.resident;
-        console.log('Residentes actualizados:', this.resident);
+        this.isLoading = false;
+        console.log('Residentes del proveedor:', this.resident);
       },
       (error) => {
-        console.error('Error fetching residents:', error);
+        console.error('Error fetching residents (PROVIDER):', error);
+        this.isLoading = false;
       }
     );
-
   }
 
   getStatusClass(status: string): string {
@@ -105,11 +173,25 @@ export class ProviderSummaryComponent implements OnInit{
       case 'active':
         return 'status-active';
       default:
-        return '';
+        return 'status-active'; // Por defecto mostrar como activo
     }
+  }
+
+  getStatusText(status: string): string {
+    return status || 'active'; // Si no hay status, mostrar 'active'
   }
 
   goToProfile(): void {
     this.router.navigate([`/provider/${this.providerId}/profile`]);
+  }
+
+  // Método para mostrar información adicional solo para admins
+  showAdminInfo(): boolean {
+    return this.isAdmin;
+  }
+
+  // Método para mostrar información limitada para proveedores
+  showProviderInfo(): boolean {
+    return this.isProvider;
   }
 }

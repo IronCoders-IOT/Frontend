@@ -32,8 +32,8 @@ export class SensorDataService extends BaseService<any> {
     );
   }
 
-  getSensorEvents(sensorId: number): Observable<SensorEvent[]> {
-    const url = `${this.basePath}devices/${sensorId}/events`;
+  getSensorEvents(deviceId: number): Observable<SensorEvent[]> {
+    const url = `${this.basePath}devices/${deviceId}/events`;
     return this.http.get<SensorEvent[]>(url, this.httpOptions).pipe(
       catchError(this.handleError)
     );
@@ -66,7 +66,7 @@ export class SensorDataService extends BaseService<any> {
               if (subscriptions && subscriptions.length > 0) {
                 // Obtener eventos de todos los sensores del residente
                 const sensorEventObservables = subscriptions.map(subscription => 
-                  this.getSensorEvents(subscription.sensorId).pipe(
+                  this.getSensorEvents(subscription.deviceId).pipe(
                     catchError(() => of([]))
                   )
                 );

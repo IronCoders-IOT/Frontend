@@ -3,5 +3,5 @@ export interface SubscriptionModel {
   startDate: string;
   endDate: string;
   status: string;
-  sensorId: number;
+  deviceId: number;
 }

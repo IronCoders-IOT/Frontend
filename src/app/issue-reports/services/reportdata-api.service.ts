@@ -28,7 +28,7 @@ export class ReportdataApiService extends BaseService<IssueReportModel> {
   }
 
   getResidentById(residentId: number): Observable<any> {
-    return this.http.get<any>(`${this.basePath}residents/${residentId}?userId=${residentId}`, this.httpOptions);
+    return this.http.get<any>(`${this.basePath}residents/${residentId}`, this.httpOptions);
   }
 
 

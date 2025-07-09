@@ -473,19 +473,27 @@
 
 /* Estilos de colores para calidad del agua */
 .quality-excellent {
-  color: #16a34a !important; /* Verde oscuro para excelente */
+  color: #16a34a !important; /* Verde oscuro para excellent */
 }
 
 .quality-good {
-  color: #22c55e !important; /* Verde claro para aceptable */
+  color: #22c55e !important; /* Verde claro para good */
 }
 
-.quality-fair {
-  color: #f59e0b !important; /* Amarillo/Naranja para no potable */
+.quality-acceptable {
+  color: #3b82f6 !important; /* Azul para acceptable */
 }
 
-.quality-poor {
-  color: #dc2626 !important; /* Rojo para crítico (no hay agua, error tds, agua contaminada) */
+.quality-bad {
+  color: #f59e0b !important; /* Amarillo/Naranja para bad */
+}
+
+.quality-non-potable {
+  color: #ea580c !important; /* Naranja oscuro para non-potable */
+}
+
+.quality-contaminated {
+  color: #dc2626 !important; /* Rojo para contaminated water */
 }
 
 /* Modal styles */

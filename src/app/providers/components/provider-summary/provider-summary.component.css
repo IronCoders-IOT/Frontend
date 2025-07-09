@@ -208,3 +208,81 @@ tr:hover {
     width: 90%;
   }
 }
+
+/* Estilos para información de admin y proveedor */
+.admin-info, .provider-info {
+  margin-bottom: 20px;
+}
+
+.admin-badge, .provider-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.admin-badge {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.provider-badge {
+  background-color: #4ecdc4;
+  color: white;
+}
+
+.admin-label, .provider-label {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Información adicional para admins */
+.admin-details {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #ff6b6b;
+}
+
+.admin-details .subtitle {
+  margin: 5px 0;
+  font-weight: 500;
+}
+
+.highlight {
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+/* Contenedor de carga */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  gap: 20px;
+}
+
+.loading-container p {
+  font-family: 'Inter', sans-serif;
+  color: #666;
+  font-size: 16px;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .admin-badge, .provider-badge {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+  
+  .admin-details {
+    padding: 10px;
+  }
+  
+  .loading-container {
+    height: 200px;
+  }
+}
