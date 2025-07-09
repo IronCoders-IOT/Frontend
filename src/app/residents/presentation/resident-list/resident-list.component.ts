@@ -65,10 +65,8 @@ export class ResidentListComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    // Usar timer para dar tiempo a la inicialización completa
-    timer(100).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.loadResidents();
-    });
+    // Llamar una sola vez a la carga de residentes
+    this.loadResidents();
 
     this.residents.filterPredicate = (data: Resident, filter: string) => {
       if (!filter.trim()) {
@@ -91,49 +89,29 @@ export class ResidentListComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (residents) => {
-          console.log('ResidentListComponent - Residentes obtenidos:', residents);
-          console.log('ResidentListComponent - Número de residentes:', residents?.length || 0);
-
           // Asegurar que tenemos un array válido
           const validResidents = Array.isArray(residents) ? residents : [];
-
           this.residents.data = validResidents;
           this.loading = false;
-          this.retryCount = 0; // Reset retry count on success
-
-          console.log('ResidentListComponent - MatTableDataSource actualizado');
-          console.log('ResidentListComponent - Datos en la tabla:', this.residents.data);
-
-          // Forzar detección de cambios
+          this.retryCount = 0;
+          this.error = null;
           this.cdr.detectChanges();
-
-          // Timeout adicional para asegurar renderizado
-          setTimeout(() => {
-            console.log('ResidentListComponent - Timeout ejecutado, datos finales:', this.residents.data);
-            this.cdr.detectChanges();
-          }, 100);
         },
         error: (err) => {
-          console.error('ResidentListComponent - Error al obtener residentes:', err);
           this.loading = false;
           this.retryCount++;
-
-          // Intentar reintento automático
-          if (this.retryCount <= this.maxRetries) {
-            console.log(`ResidentListComponent - Reintento ${this.retryCount}/${this.maxRetries} en 2 segundos`);
-            this.error = `Error al cargar los residentes. Reintentando... (${this.retryCount}/${this.maxRetries})`;
-            timer(2000).pipe(takeUntil(this.destroy$)).subscribe(() => {
-              this.loadResidents();
-            });
-          } else {
-            this.error = 'Error al cargar los residentes después de varios intentos';
+          // Si es 404, mostrar mensaje de "no residentes" y NO reintentar
+          if (err.status === 404) {
+            this.residents.data = [];
+            this.error = null;
+            this.cdr.detectChanges();
+            return;
           }
-
+          // Otros errores: mostrar error y NO reintentar
+          this.error = 'Error al cargar los residentes.';
           this.cdr.detectChanges();
-
           // Manejar error de autenticación
           if (err.message && err.message.includes('401')) {
-            console.log('ResidentListComponent - Error 401, redirigiendo al login');
             localStorage.removeItem('auth_token');
             this.router.navigate(['/login']);
           }
@@ -156,14 +134,9 @@ export class ResidentListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    console.log('ResidentListComponent - ngAfterViewInit');
-    // Verificar si hay datos cargados y forzar detección de cambios si es necesario
+    // Solo forzar detección de cambios si hay datos cargados
     if (this.residents.data.length > 0) {
-      console.log('ResidentListComponent - Datos ya cargados, forzando detección de cambios');
       this.cdr.detectChanges();
-    } else if (!this.loading && !this.error) {
-      console.log('ResidentListComponent - No hay datos pero tampoco carga/error, reintentando carga');
-      this.loadResidents();
     }
   }
 

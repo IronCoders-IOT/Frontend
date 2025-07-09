@@ -89,7 +89,8 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
       documentNumber: ['', [Validators.required]],
       direction: ['', [Validators.required, Validators.minLength(5)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]]
+      phone: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
+      waterTankSize: [null, [Validators.required, Validators.min(1)]]
     });
   }
 

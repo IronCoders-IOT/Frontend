@@ -1,4 +1,3 @@
-// src/app/AquaConecta/subscriptions/services/subscription.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -26,5 +25,9 @@ export class SubscriptionService extends BaseService<SubscriptionModel> {
 
   getSubscriptionById(id: number): Observable<SubscriptionModel> {
     return this.http.get<SubscriptionModel>(`${this.basePath}${this.resourceEndpoint}/${id}`, this.httpOptions);
+  }
+  createSubscription(data: { residentId: number; waterTankSize: number }): Observable<any> {
+    const url = `${this.basePath}${this.resourceEndpoint}`;
+    return this.http.post(url, data, this.httpOptions);
   }
 }

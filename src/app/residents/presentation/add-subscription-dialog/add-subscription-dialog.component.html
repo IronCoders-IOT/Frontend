@@ -1,0 +1,61 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      <span class="header-icon">+</span>
+      Añadir Nueva Suscripción
+    </h2>
+    <button class="close-button" (click)="onCancel()">
+      <span class="close-icon">×</span>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+    <form [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()">
+      <div class="form-field-container">
+        <label class="form-label">Tamaño del Tanque de Agua (litros)</label>
+        <div class="input-container">
+          <input 
+            type="number" 
+            formControlName="waterTankSize"
+            placeholder="Ej: 1000"
+            min="1"
+            class="form-input">
+          <span class="input-icon">💧</span>
+        </div>
+        <div class="error-message" *ngIf="subscriptionForm.get('waterTankSize')?.invalid && subscriptionForm.get('waterTankSize')?.touched">
+          {{ getErrorMessage('waterTankSize') }}
+        </div>
+      </div>
+
+      <div class="info-message">
+        <span class="info-icon">ℹ</span>
+        <span>Se creará una nueva suscripción para el residente con ID: {{ data.residentId }}</span>
+      </div>
+
+      <div class="error-message" *ngIf="error">
+        <span class="error-icon">⚠</span>
+        <span>{{ error }}</span>
+      </div>
+    </form>
+  </div>
+
+  <div class="dialog-actions">
+    <button 
+      type="button"
+      class="cancel-button" 
+      (click)="onCancel()" 
+      [disabled]="isLoading">
+      <span class="button-icon">✕</span>
+      Cancelar
+    </button>
+    <button 
+      type="submit"
+      class="submit-button" 
+      (click)="onSubmit()" 
+      [disabled]="subscriptionForm.invalid || isLoading">
+      <span class="button-icon" *ngIf="!isLoading">+</span>
+      <span class="loading-spinner" *ngIf="isLoading"></span>
+      {{ isLoading ? 'Agregando...' : 'Agregar Nueva Suscripción' }}
+    </button>
+  </div>
+</div> 

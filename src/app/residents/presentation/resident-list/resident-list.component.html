@@ -93,8 +93,13 @@
       </table>
 
       <!-- No Data Message -->
-      <div *ngIf="residents.data.length === 0 && !loading" class="no-data-container">
-        <p>{{ translate('no_residents_found') || 'No se encontraron residentes' }}</p>
+      <div *ngIf="residents.data.length === 0 && !loading && !error" class="no-data-container">
+        <p>{{ translate('no_residents_found') }}</p>
+      </div>
+
+      <!-- Error Message (Visual) -->
+      <div *ngIf="error && !loading" class="no-data-container">
+        <p style="color: #dc2626; font-weight: 500;">{{ error }}</p>
       </div>
     </div>
   </div>

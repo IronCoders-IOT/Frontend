@@ -14,6 +14,8 @@ export class Resident {
   username?: string;
   password?: string;
 
+  waterTankSize: number;
+
   constructor(data: any = {}) {
     this.firstName = data.firstName || '';
     this.lastName = data.lastName || '';
@@ -22,6 +24,7 @@ export class Resident {
     this.email = data.email || '';
     this.direction = data.direction || '';
     this.phone = data.phone || '';
+    this.waterTankSize = data.waterTankSize || 0;
 
     this.id = data.id;
     this.providerId = data.providerId;
@@ -38,7 +41,8 @@ export class Resident {
       direction: this.direction,
       documentNumber: this.documentNumber,
       documentType: this.documentType,
-      phone: this.phone
+      phone: this.phone,
+      waterTankSize: this.waterTankSize
     };
   }
 

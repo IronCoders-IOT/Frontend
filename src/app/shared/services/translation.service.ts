@@ -7,6 +7,12 @@ import { LanguageService } from './language.service';
 export class TranslationService {
   private translations: { [key: string]: { [key: string]: string } } = {
     en: {
+      // Water Tank Size
+      'water_tank_size': 'Water Tank Size (liters)',
+      'water_tank_size_placeholder': 'e.g. 1000',
+      'water_tank_size_required': 'Water tank size is required',
+      // Residents - List (No Data)
+      'no_residents_found': 'No residents have been added yet.',
       // Home page
       'welcome': 'Welcome',
       'water_management_dashboard': 'Your comprehensive water management dashboard',
@@ -371,6 +377,12 @@ export class TranslationService {
       'error_loading_sensor_data': 'Error loading sensor data'
     },
     es: {
+      // Water Tank Size
+      'water_tank_size': 'Tamaño del Tanque de Agua (litros)',
+      'water_tank_size_placeholder': 'ej. 1000',
+      'water_tank_size_required': 'El tamaño del tanque de agua es requerido',
+      // Residents - List (No Data)
+      'no_residents_found': 'Aún no se han agregado residentes.',
       // Home page
       'welcome': 'Bienvenido',
       'water_management_dashboard': 'Tu panel integral de gestión del agua',

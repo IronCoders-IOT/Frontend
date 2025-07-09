@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatDialog } from '@angular/material/dialog';
 import { HeaderContentComponent } from '../../../public/components/header-content/header-content.component';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { TranslationService } from '../../../shared/services/translation.service';
@@ -17,6 +18,7 @@ import { Resident } from '../../models/resident.model';
 import { SubscriptionModel } from '../../models/subscription.model';
 import { ResidentService } from '../../services/resident.service';
 import { SubscriptionService } from '../../services/subscription.service';
+import { AddSubscriptionDialogComponent } from '../add-subscription-dialog/add-subscription-dialog.component';
 
 @Component({
   selector: 'app-resident-summary',
@@ -48,7 +50,8 @@ export class ResidentSummaryComponent implements OnInit {
     private residentService: ResidentService,
     private subscriptionService: SubscriptionService,
     private cdr: ChangeDetectorRef,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -105,5 +108,39 @@ export class ResidentSummaryComponent implements OnInit {
       case 'CLOSED': return this.translationService.translate('closed');
       default: return status;
     }
+  }
+
+  openAddSubscriptionDialog(): void {
+    if (!this.residentData) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(AddSubscriptionDialogComponent, {
+      width: '500px',
+      data: { residentId: this.residentData.id }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.success) {
+        // Recargar las suscripciones después de agregar una nueva
+        this.loadSubscriptions();
+      }
+    });
+  }
+
+  private loadSubscriptions(): void {
+    if (!this.residentData) return;
+
+    this.subscriptionService.getSubscriptionsByResidentId(this.residentData.id).subscribe({
+      next: (subscriptions) => {
+        this.subscriptions.data = subscriptions;
+        this.subscriptions.paginator = this.paginator;
+        this.subscriptions.sort = this.sort;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error recargando suscripciones:', error);
+      }
+    });
   }
 }

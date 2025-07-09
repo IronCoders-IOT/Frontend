@@ -60,7 +60,7 @@ export class ResidentService extends BaseService<Resident> {
 
   // Método para obtener un residente por ID, si da error em eñ resident-summary.component cambiar para que devuelva un array
   getResidentById(id: number): Observable<Resident> {
-    const url = `${this.resourcePath()}/${id}?userId=${id}`;  // URL actual
+    const url = `${this.resourcePath()}/${id}`;  // URL actual
     console.log('URL para GET resident by ID:', url);
 
     return this.http.get<Resident[]>(url, this.httpOptions).pipe(
