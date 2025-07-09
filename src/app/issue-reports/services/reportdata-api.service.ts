@@ -11,7 +11,7 @@ import {BaseService} from '../../shared/services/base.service';
 export class ReportdataApiService extends BaseService<IssueReportModel> {
   constructor(http: HttpClient) {
     super(http);
-    this.resourceEndpoint = 'requests';
+    this.resourceEndpoint = 'issue-reports';
   }
 
   getAllProviders(): Observable<any[]> {
@@ -19,25 +19,25 @@ export class ReportdataApiService extends BaseService<IssueReportModel> {
   }
 
   getProviderProfile(): Observable<any> {
-    return this.http.get<any>(`${this.basePath}providers/me`, this.httpOptions);
+    return this.http.get<any>(`${this.basePath}providers/{providerId}/profiles`, this.httpOptions);
   }
 
   getReportsByProviderId(providerId: number): Observable<IssueReportModel[]> {
 
-    return this.http.get<IssueReportModel[]>(`${this.basePath}requests/provider/${providerId}`, this.httpOptions)
+    return this.http.get<IssueReportModel[]>(`${this.basePath}issue-reports`, this.httpOptions)
   }
 
   getResidentById(residentId: number): Observable<any> {
-    return this.http.get<any>(`${this.basePath}residents/{id}?userId=${residentId}`, this.httpOptions);
+    return this.http.get<any>(`${this.basePath}residents/${residentId}?userId=${residentId}`, this.httpOptions);
   }
 
 
   getReportById(id: string): Observable<IssueReportModel> {
-   return this.http.get<any>(`${this.basePath}requests/${id}`, this.httpOptions);
+   return this.http.get<any>(`${this.basePath}issue-reports/${id}`, this.httpOptions);
   }
 
   updateReport(report: IssueReportModel): Observable<IssueReportModel> {
-    return this.http.put<IssueReportModel>(`${this.basePath}requests/${report.id}`, report, this.httpOptions)
+    return this.http.put<IssueReportModel>(`${this.basePath}issue-reports/${report.id}`, report, this.httpOptions)
   }
 
   getAllReports(): Observable<IssueReportModel[]> {

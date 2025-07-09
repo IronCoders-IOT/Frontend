@@ -19,7 +19,7 @@ export class SubscriptionApiServiceService extends BaseService<Subscription> {
   }
   //
   getSubscriptionsByResidentId(residentId: number): Observable<Subscription[]> {
-    const url = `${this.resourceEndpoint}/resident/${residentId}`;
+    const url = `/residents/${residentId}/${this.resourceEndpoint}`;
     return this.http.get<Subscription[]>(url, this.httpOptions);
   }
 

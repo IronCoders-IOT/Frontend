@@ -17,7 +17,7 @@ export class ResidentApiServiceService extends BaseService<Resident>{
 
   //Selecciona los residentes de un proveedor, y todos los residentes tienen una suscripcion
   getAllResidentByProviderId(providerId: number): Observable<Resident[]> {
-    const url = `${this.resourceEndpoint}/by-provider/${providerId}`;
+    const url = `${this.resourceEndpoint}`;
     return this.http.get<Resident[]>(url, this.httpOptions);
   }
 }

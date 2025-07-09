@@ -11,11 +11,11 @@ export class SensordataApiService extends BaseService<WaterRequestModel> {
 
   constructor(http: HttpClient) {
     super(http);
-    this.resourceEndpoint = 'water-request';
+    this.resourceEndpoint = 'water-supply-requests';
   }
 
   getProviderProfile(): Observable<any> {
-    return this.http.get<any>(`${this.basePath}providers/me`, this.httpOptions);
+    return this.http.get<any>(`${this.basePath}providers/{providerId}/profiles`, this.httpOptions);
   }
 
   getAllRequests(): Observable<WaterRequestModel[]> {
@@ -23,7 +23,7 @@ export class SensordataApiService extends BaseService<WaterRequestModel> {
   }
   // se obtiene el los residentes con el providerId http://localhost:8080/api/v1/residents/by-provider/providerId, este te da el id del resident(id
   getResidentsByProviderId(providerId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.basePath}residents/by-provider/${providerId}`, this.httpOptions);
+    return this.http.get<any[]>(`${this.basePath}residents`, this.httpOptions);
   }
 
   getResidentsByAdmin(): Observable<any[]> {
@@ -31,7 +31,7 @@ export class SensordataApiService extends BaseService<WaterRequestModel> {
   }
 
   getWaterRequestsByResidentId(residentId: number): Observable<WaterRequestModel[]> {
-    return this.http.get<WaterRequestModel[]>(`${this.basePath}water-request/resident/${residentId}`, this.httpOptions);
+    return this.http.get<WaterRequestModel[]>(`${this.basePath}residents/${residentId}/water-supply-requests`, this.httpOptions);
   }
 
   // con la id del residente obtenido te devuelve todos los residentes con water request http://localhost:8080/api/v1/water-request/resident/residentId

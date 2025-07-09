@@ -19,7 +19,7 @@ export class ResidentService extends BaseService<Resident> {
   }
 
   getProvidersProfile(): Observable<any> {
-    return this.http.get<any>(`${this.basePath}providers/me`, this.httpOptions);
+    return this.http.get<any>(`${this.basePath}providers/{providerId}/profiles`, this.httpOptions);
   }
 
   // Método que obtiene residentes por provider usando el perfil
@@ -35,7 +35,7 @@ export class ResidentService extends BaseService<Resident> {
           throw new Error('No se pudo obtener el ID del proveedor del perfil');
         }
 
-        const url = `${this.resourcePath()}/by-provider/${providerId}`;
+        const url = `${this.resourcePath()}`;
         console.log('URL para GET residents:', url);
 
         return this.http.get<Resident[]>(url, this.httpOptions);
@@ -60,7 +60,7 @@ export class ResidentService extends BaseService<Resident> {
 
   // Método para obtener un residente por ID, si da error em eñ resident-summary.component cambiar para que devuelva un array
   getResidentById(id: number): Observable<Resident> {
-    const url = `${this.resourcePath()}/{id}?userId=${id}`;  // URL actual
+    const url = `${this.resourcePath()}/${id}?userId=${id}`;  // URL actual
     console.log('URL para GET resident by ID:', url);
 
     return this.http.get<Resident[]>(url, this.httpOptions).pipe(

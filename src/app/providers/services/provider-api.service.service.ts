@@ -23,7 +23,7 @@ export class ProviderApiServiceService extends BaseService<Provider> {
     }
     const user = JSON.parse(storedUser);
     console.log('Getting profile for user:', user);
-    return this.http.get<any>(`${this.basePath}${this.resourceEndpoint}/me`, this.httpOptions);
+    return this.http.get<any>(`${this.basePath}${this.resourceEndpoint}/providers/{providerId}/profiles`, this.httpOptions);
   }
 
   UpdateProvider(provider: Partial<Provider>): Observable<any> {
