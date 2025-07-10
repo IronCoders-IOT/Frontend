@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderContentComponent } from '../../components/header-content/header-content.component';
 import { HttpClient } from '@angular/common/http';
-import {SensordataApiService} from '../../../water-requests/services/sensordata-api.service';
+import {WaterRequestApiService} from '../../../water-requests/services/water-request-api.service';
 import {ResidentService} from '../../../residents/services/resident.service';
 import {AuthService} from '../../../iam/application/services/auth.service';
 import {catchError} from 'rxjs/operators';
@@ -13,7 +13,7 @@ import {ReportdataApiService} from '../../../issue-reports/services/reportdata-a
 import { LanguageService } from '../../../shared/services/language.service';
 import { TranslationService } from '../../../shared/services/translation.service';
 import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
-import { SensorDataService } from '../../../providers/services/sensor-data.service';
+import {DeviceDataService} from '../../../providers/services/device-data.service';
 
 @Component({
   selector: 'app-home',
@@ -50,14 +50,14 @@ export class HomeComponent implements OnInit {
     { path: '/provider', name: 'Detalles del proveedor' },
   ];
   constructor(
-    private sensordataApiService: SensordataApiService,
+    private sensordataApiService: WaterRequestApiService,
     private residentService: ResidentService,
     private authService: AuthService,
     private reportdataapiservice: ReportdataApiService,
     private http: HttpClient,
     private languageService: LanguageService,
     private translationService: TranslationService,
-    private sensorDataService: SensorDataService ) {
+    private sensorDataService: DeviceDataService ) {
   }
   ngOnInit(): void {
     this.loadUsername();
@@ -180,7 +180,7 @@ export class HomeComponent implements OnInit {
       this.sensordataApiService.getProviderProfile().subscribe({
         next: (providerProfile) => {
           const authenticatedProviderId = providerProfile.id;
-          
+
           // Obtener todas las requests y filtrar por providerId
           this.sensordataApiService.getAllRequests().subscribe({
             next: (allRequests) => {
@@ -189,7 +189,7 @@ export class HomeComponent implements OnInit {
                 // Asumiendo que el request tiene providerId o podemos obtenerlo del residentId
                 return request.providerId === authenticatedProviderId;
               });
-              
+
               this.waterRequestsCount = providerRequests.length;
               this.waterRequestsPending = providerRequests.filter(req => req.status === 'RECEIVED').length;
               console.log(`Provider - Total requests: ${this.waterRequestsCount}, Pending: ${this.waterRequestsPending}`);

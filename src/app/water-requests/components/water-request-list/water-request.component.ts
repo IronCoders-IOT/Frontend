@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {HeaderContentComponent} from '../../../public/components/header-content/header-content.component';
 import {WaterRequestModel} from '../../model/water-request.model';
-import {SensordataApiService} from '../../services/sensordata-api.service';
 import {HttpClient} from '@angular/common/http';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatSort, MatSortModule, SortDirection} from '@angular/material/sort';
@@ -18,6 +17,7 @@ import { Resident } from '../../../residents/models/resident.model';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { TranslationService } from '../../../shared/services/translation.service';
 import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
+import {WaterRequestApiService} from '../../services/water-request-api.service';
 
 @Component({
   selector: 'app-water-request-list',
@@ -40,8 +40,8 @@ export class WaterRequestComponent implements AfterViewInit {
   isAdmin: boolean = false;
 
   constructor(
-    private sensordataApiService: SensordataApiService, 
-    private dialog: MatDialog, 
+    private waterRequestApiService: WaterRequestApiService,
+    private dialog: MatDialog,
     private translationService: TranslationService,
     private cdr: ChangeDetectorRef
   ) {}
@@ -88,10 +88,10 @@ export class WaterRequestComponent implements AfterViewInit {
         const requestId = row.id;
         if (requestId !== undefined) {
           console.log('Modal result:', result);
-          this.sensordataApiService.updateDeliveredAt(requestId, result.status, result.selectedDate).subscribe(
+          this.waterRequestApiService.updateDeliveredAt(requestId, result.status, result.selectedDate).subscribe(
             (updatedRequest) => {
               console.log('Updated request:', updatedRequest);
-              
+
               // Encontrar el índice de la fila en el array
               const rowIndex = this.requests.data.findIndex(r => r.id === row.id);
               if (rowIndex !== -1) {
@@ -99,15 +99,15 @@ export class WaterRequestComponent implements AfterViewInit {
                 const updatedRow = { ...this.requests.data[rowIndex] };
                 updatedRow.delivered_at = updatedRequest.delivered_at;
                 updatedRow.status = updatedRequest.status;
-                
+
                 // Actualizar el array con el nuevo objeto
                 const newData = [...this.requests.data];
                 newData[rowIndex] = updatedRow;
                 this.requests.data = newData;
-                
+
                 // Forzar la detección de cambios
                 this.cdr.detectChanges();
-                
+
                 console.log('Row updated - Status:', updatedRow.status, 'Delivered_at:', updatedRow.delivered_at);
               }
             },
@@ -127,13 +127,13 @@ export class WaterRequestComponent implements AfterViewInit {
     this.isLoadingResults = true;
 
 
-    this.sensordataApiService.getProviderProfile().subscribe(
+    this.waterRequestApiService.getProviderProfile().subscribe(
       (providerProfile) => {
         const authenticatedProviderId = providerProfile.id;
         console.log('Proveedor autenticado:', providerProfile);
 
 
-        this.sensordataApiService.getResidentsByProviderId(authenticatedProviderId).subscribe(
+        this.waterRequestApiService.getResidentsByProviderId(authenticatedProviderId).subscribe(
           (residents) => {
             console.log('Residentes del proveedor:', residents);
             this.loadWaterRequestsForResidents(residents);
@@ -147,7 +147,7 @@ export class WaterRequestComponent implements AfterViewInit {
       (error) => {
         console.warn('Error al obtener perfil del proveedor. Asumiendo que el usuario es administrador:', error);
 
-        this.sensordataApiService.getAllRequests().subscribe(
+        this.waterRequestApiService.getAllRequests().subscribe(
           (allRequests) => {
             console.log('Todas las solicitudes de agua:', allRequests);
             this.loadWaterRequestsForAdmin(); // Llama a la nueva función
@@ -173,7 +173,7 @@ export class WaterRequestComponent implements AfterViewInit {
 
     // Crear observables para obtener water water-requests de cada residente
     const waterRequestObservables = residents.map(resident =>
-      this.sensordataApiService.getWaterRequestsByResidentId(resident.id).pipe(
+      this.waterRequestApiService.getWaterRequestsByResidentId(resident.id).pipe(
         map(requests => {
           // Asignar el residente a cada request
           return requests.map(request => {
@@ -219,8 +219,8 @@ export class WaterRequestComponent implements AfterViewInit {
   private loadWaterRequestsForAdmin(): void {
     // Obtener todas las water water-requests y todos los residentes en paralelo
     forkJoin({
-      waterRequests: this.sensordataApiService.getAllRequests(),
-      residents: this.sensordataApiService.getResidentsByAdmin() // o el método que tengas para admin
+      waterRequests: this.waterRequestApiService.getAllRequests(),
+      residents: this.waterRequestApiService.getResidentsByAdmin() // o el método que tengas para admin
     }).subscribe(
       ({ waterRequests, residents }) => {
         // Crear un mapa de residentes por ID para búsqueda rápida
@@ -337,7 +337,7 @@ export class WaterRequestComponent implements AfterViewInit {
     if (row.status === 'In Progress' || row.status === 'Closed') {
       return true;
     }
-    
+
     // Mostrar fecha si hay delivered_at establecido
     return !!row.delivered_at;
   }
@@ -348,7 +348,7 @@ export class WaterRequestComponent implements AfterViewInit {
     if (row.delivered_at) {
       return row.delivered_at;
     }
-    
+
     // Si el status es In Progress o Closed, mostrar deliveredAt de la API o fecha por defecto
     if (row.status === 'In Progress' || row.status === 'Closed') {
       // Intentar obtener deliveredAt de la API
@@ -356,16 +356,16 @@ export class WaterRequestComponent implements AfterViewInit {
       if (apiDeliveredAt) {
         return apiDeliveredAt;
       }
-      
+
       // Si no hay fecha de la API, mostrar la fecha de emisión como fallback
       if (row.emissionDate) {
         return row.emissionDate;
       }
-      
+
       // Si no hay fecha de emisión, mostrar fecha actual
       return new Date();
     }
-    
+
     return null;
   }
 

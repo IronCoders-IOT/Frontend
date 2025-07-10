@@ -14,9 +14,7 @@ import { LanguageToggleComponent } from '../../../shared/components/language-tog
 import { ProviderApiServiceService } from '../../../providers/services/provider-api.service.service';
 import { ResidentService } from '../../../residents/services/resident.service';
 import { ResidentApiServiceService } from '../../../providers/services/resident-api.service.service';
-import { SensordataApiService } from '../../../water-requests/services/sensordata-api.service';
 import { ReportdataApiService } from '../../../issue-reports/services/reportdata-api.service';
-import { SensorDataService } from '../../../providers/services/sensor-data.service';
 import { Provider } from '../../../providers/model/provider.model';
 import { WaterRequestModel } from '../../../water-requests/model/water-request.model';
 import { IssueReportModel } from '../../../issue-reports/model/issue-report.model';
@@ -25,6 +23,8 @@ import { AuthService } from '../../../iam/application/services/auth.service';
 import { AdminApiServices } from '../services/admin-api.services';
 import { LanguageService } from '../../../shared/services/language.service';
 import { TranslationService } from '../../../shared/services/translation.service';
+import {WaterRequestApiService} from '../../../water-requests/services/water-request-api.service';
+import {DeviceDataService} from '../../../providers/services/device-data.service';
 
 
 
@@ -92,13 +92,13 @@ export class AdminDashboardComponent implements OnInit {
         private providerService: ProviderApiServiceService,
         private residentService: ResidentService,
         private residentApiService: ResidentApiServiceService,
-        private requestService: SensordataApiService,
+        private requestService: WaterRequestApiService,
         private reportService: ReportdataApiService,
         private adminService: AdminApiServices,
         private authService: AuthService,
         private languageService: LanguageService,
         private translationService: TranslationService,
-        private sensorDataService: SensorDataService
+        private sensorDataService: DeviceDataService
 ) { }
 
     ngOnInit(): void {

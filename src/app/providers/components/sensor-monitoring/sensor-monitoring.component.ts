@@ -1,10 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SensorDataService } from '../../services/sensor-data.service';
 import { ResidentSensorData, SensorEvent } from '../../model/sensor-data.model';
 import { HeaderContentComponent } from '../../../public/components/header-content/header-content.component';
 import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
 import { TranslationService } from '../../../shared/services/translation.service';
+import {DeviceDataService} from '../../services/device-data.service';
 
 @Component({
   selector: 'app-sensor-monitoring',
@@ -24,7 +24,7 @@ export class SensorMonitoringComponent implements OnInit {
   modalStep: 'sensors' | 'details' = 'sensors';
 
   constructor(
-    private sensorDataService: SensorDataService,
+    private deviceDataService: DeviceDataService,
     private translationService: TranslationService
   ) {}
 
@@ -40,7 +40,7 @@ export class SensorMonitoringComponent implements OnInit {
     this.isLoading = true;
     this.loadError = null;
 
-    this.sensorDataService.getCompleteSensorData().subscribe({
+    this.deviceDataService.getCompleteSensorData().subscribe({
       next: (data) => {
         this.residentSensorData = data;
         this.isLoading = false;
@@ -163,7 +163,7 @@ export class SensorMonitoringComponent implements OnInit {
   }
 
   hasActiveSensor(residentData: ResidentSensorData): boolean {
-    return residentData.subscriptions && residentData.subscriptions.length > 0 && 
+    return residentData.subscriptions && residentData.subscriptions.length > 0 &&
            residentData.subscriptions.some(sub => sub.status.toLowerCase() === 'active');
   }
 
@@ -275,11 +275,11 @@ export class SensorMonitoringComponent implements OnInit {
     if (qualities.length === 0) return 'N/A';
 
     const uniqueQualities = [...new Set(qualities)];
-    
+
     if (uniqueQualities.length === 1) {
       return uniqueQualities[0];
     }
-    
+
     // Ordenar de mejor a peor: excellent, good, acceptable, bad, non-potable, contaminated water
     const qualityOrder = ['excellent', 'good', 'acceptable', 'bad', 'non-potable', 'contaminated water'];
     const sortedQualities = uniqueQualities.sort((a, b) => {
@@ -294,11 +294,11 @@ export class SensorMonitoringComponent implements OnInit {
   // Verificar si hay sensores críticos (calidad mala o nivel bajo)
   hasCriticalSensors(residentData: ResidentSensorData): boolean {
     const activeSubscriptions = this.getActiveSubscriptions(residentData);
-    
+
     return activeSubscriptions.some(subscription => {
       const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
-        const levelValue = typeof latestEvent.levelValue === 'string' ? 
+        const levelValue = typeof latestEvent.levelValue === 'string' ?
           parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
         const qualityLower = latestEvent.qualityValue.toLowerCase().trim();
         const isBadQuality = ['bad', 'non-potable', 'contaminated water'].includes(qualityLower);
@@ -311,11 +311,11 @@ export class SensorMonitoringComponent implements OnInit {
   // Contar sensores críticos
   getCriticalSensorsCount(residentData: ResidentSensorData): number {
     const activeSubscriptions = this.getActiveSubscriptions(residentData);
-    
+
     return activeSubscriptions.filter(subscription => {
       const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
-        const levelValue = typeof latestEvent.levelValue === 'string' ? 
+        const levelValue = typeof latestEvent.levelValue === 'string' ?
           parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
         const qualityLower = latestEvent.qualityValue.toLowerCase().trim();
         const isBadQuality = ['bad', 'non-potable', 'contaminated water'].includes(qualityLower);
@@ -378,7 +378,7 @@ export class SensorMonitoringComponent implements OnInit {
 
     const sum = qualityValues.reduce((accumulator, current) => accumulator + current, 0);
     const average = sum / qualityValues.length;
-    
+
     if (average >= 5.5) return 'excellent';
     if (average >= 4.5) return 'good';
     if (average >= 3.5) return 'acceptable';
@@ -401,7 +401,7 @@ export class SensorMonitoringComponent implements OnInit {
     });
 
     if (qualities.length === 0) return 'N/A';
-    
+
     if (activeSubscriptions.length === 1) {
       return this.translateQualityValue(qualities[0]); // Si solo hay un sensor, mostrar su valor exacto traducido
     }
@@ -423,7 +423,7 @@ export class SensorMonitoringComponent implements OnInit {
     });
 
     if (qualities.length === 0) return 'N/A';
-    
+
     if (activeSubscriptions.length === 1) {
       return qualities[0]; // Valor original sin traducir
     }
@@ -440,7 +440,7 @@ export class SensorMonitoringComponent implements OnInit {
     activeSubscriptions.forEach(subscription => {
       const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
-        const levelValue = typeof latestEvent.levelValue === 'string' ? 
+        const levelValue = typeof latestEvent.levelValue === 'string' ?
           parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
         if (!isNaN(levelValue)) {
           levels.push(levelValue);
@@ -449,7 +449,7 @@ export class SensorMonitoringComponent implements OnInit {
     });
 
     if (levels.length === 0) return 'N/A';
-    
+
     if (activeSubscriptions.length === 1) {
       return `${levels[0]}%`; // Si solo hay un sensor, mostrar su valor exacto
     }
@@ -463,7 +463,7 @@ export class SensorMonitoringComponent implements OnInit {
   getAverageLevelClass(residentData: ResidentSensorData): string {
     const levelSummary = this.getCurrentLevelSummary(residentData);
     if (levelSummary === 'N/A') return '';
-    
+
     const levelValue = parseFloat(levelSummary.replace('%', ''));
     return this.getLevelClass(levelValue.toString());
   }
@@ -471,7 +471,7 @@ export class SensorMonitoringComponent implements OnInit {
   // Traducir valores de calidad del agua
   translateQualityValue(quality: string): string {
     if (!quality) return 'N/A';
-    
+
     const qualityLower = quality.toLowerCase().trim();
     switch (qualityLower) {
       case 'excellent':
