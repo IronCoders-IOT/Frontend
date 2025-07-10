@@ -100,6 +100,15 @@ export class WaterRequestComponent implements AfterViewInit {
                 updatedRow.delivered_at = updatedRequest.delivered_at;
                 updatedRow.status = updatedRequest.status;
 
+                // ⭐ TRANSFORMAR EL STATUS AL FORMATO CORRECTO
+                if (updatedRow.status === 'IN_PROGRESS') {
+                  updatedRow.status = 'In Progress';
+                } else if (updatedRow.status === 'CLOSED') {
+                  updatedRow.status = 'Closed';
+                } else if (updatedRow.status === 'RECEIVED') {
+                  updatedRow.status = 'Received';
+                }
+
                 // Actualizar el array con el nuevo objeto
                 const newData = [...this.requests.data];
                 newData[rowIndex] = updatedRow;
