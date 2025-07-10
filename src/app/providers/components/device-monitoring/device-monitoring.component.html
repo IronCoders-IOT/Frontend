@@ -1,4 +1,4 @@
-<!-- sensor-monitoring.component.html -->
+<!-- device-monitoring.component.html -->
 <app-header-content></app-header-content>
 
 <div class="dashboard-container">
@@ -61,7 +61,7 @@
                     <p>{{ translate('events') }}</p>
                 </div>
             </div>
-            
+
             <!--
             <div class="stat-card avg-quality">
                 <div class="stat-icon">
@@ -81,13 +81,13 @@
                 <i class="fa fa-home"></i>
                 {{ translate('residents_nav') }}
             </h2>
-            
+
             <div class="residents-grid">
-                <div class="resident-dashboard-card" 
-                     *ngFor="let residentData of residentDeviceData" 
+                <div class="resident-dashboard-card"
+                     *ngFor="let residentData of residentDeviceData"
                      (click)="selectResident(residentData)"
                      [class.no-sensor]="!hasActiveDevice(residentData)">
-                    
+
                     <div class="card-header">
                         <div class="resident-avatar">
                             {{ getResidentInitials(residentData) }}
@@ -106,7 +106,7 @@
                             <i class="fa fa-map-marker-alt"></i>
                             <span>{{ residentData.resident.address }}</span>
                         </div>
-                        
+
                         <div *ngIf="hasActiveDevice(residentData)" class="sensor-metrics">
                             <!-- Mostrar número de dispositivos activos si hay más de uno -->
                             <div class="metric" *ngIf="getActiveSubscriptions(residentData).length > 1">
@@ -115,13 +115,13 @@
                                     {{ getActiveSubscriptions(residentData).length }}
                                 </div>
                             </div>
-                            
+
                             <!-- Mostrar device ID si solo hay uno -->
                             <div class="metric" *ngIf="getActiveSubscriptions(residentData).length === 1">
                                 <div class="metric-label">{{ translate('device_id') }}</div>
                                 <div class="metric-value">{{ getActiveSubscription(residentData)?.deviceId }}</div>
                             </div>
-                            
+
                             <!-- Resumen de calidad actual -->
                             <div class="metric">
                                 <div class="metric-label">{{ translate('current_quality') }}</div>
@@ -129,7 +129,7 @@
                                     {{ getCurrentQualitySummary(residentData) }}
                                 </div>
                             </div>
-                            
+
                             <!-- Resumen de nivel actual -->
                             <div class="metric">
                                 <div class="metric-label">{{ translate('current_level') }}</div>
@@ -146,7 +146,7 @@
                     </div>
 
                     <div class="card-footer">
-                       
+
                         <div class="events-summary" *ngIf="hasActiveDevice(residentData)">
                             <span class="events-count">{{ residentData.sensorEvents.length }} {{ translate('events') }}</span>
                             <span class="status-badge" [ngClass]="getStatusClass(getActiveSubscription(residentData)?.status || '')">
@@ -195,13 +195,13 @@
 
                 <div class="sensors-grid" *ngIf="selectedResident">
                     <h4>{{ translate('available_devices') }} ({{ selectedResident.subscriptions.length }})</h4>
-                    
+
                     <div class="sensors-list">
-                        <div *ngFor="let subscription of selectedResident.subscriptions" 
+                        <div *ngFor="let subscription of selectedResident.subscriptions"
                              class="sensor-card"
                              [ngClass]="subscription.status.toLowerCase()"
                              (click)="selectDevice(subscription)">
-                            
+
                             <div class="sensor-header">
                                 <div class="sensor-icon">
                                     <i class="fa fa-tint"></i>
@@ -213,7 +213,7 @@
                                     </span>
                                 </div>
                                 <div class="sensor-activity">
-                                    <span class="activity-indicator" 
+                                    <span class="activity-indicator"
                                           [ngClass]="hasDeviceActivity(subscription.deviceId) ? 'active' : 'inactive'">
                                         <i [class]="hasDeviceActivity(subscription.deviceId) ? 'fa fa-check-circle' : 'fa fa-exclamation-circle'"></i>
                                     </span>
@@ -240,7 +240,7 @@
                                     </span>
                                 </div>
                             </div>
-                            
+
                             <!--
                             <div class="sensor-dates">
                                 <div class="date-item">
@@ -356,7 +356,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let event of getDeviceEvents(selectedDevice.deviceId); let i = index" 
+                                    <tr *ngFor="let event of getDeviceEvents(selectedDevice.deviceId); let i = index"
                                         [class.latest-event]="i === getDeviceEvents(selectedDevice.deviceId).length - 1">
                                         <td>{{ event.id }}</td>
                                         <td>

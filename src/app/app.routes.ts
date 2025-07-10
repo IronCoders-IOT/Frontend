@@ -10,7 +10,7 @@ import {ResidentListComponent} from './residents/presentation/resident-list/resi
 import {ResidentSummaryComponent} from './residents/presentation/resident-summary/resident-summary.component';
 import {ProviderSummaryComponent} from './providers/components/provider-summary/provider-summary.component';
 import {ProviderItemComponent} from './providers/components/provider-item/provider-item.component';
-import {SensorMonitoringComponent} from './providers/components/sensor-monitoring/sensor-monitoring.component';
+import {DeviceMonitoringComponent} from './providers/components/device-monitoring/device-monitoring.component';
 import {LoginComponent} from './iam/presentation/pages/login/login.component';
 import {SignupComponent} from './iam/presentation/pages/signup/signup.component';
 import {IssueSummaryComponent} from './issue-reports/components/issue-summary/issue-summary.component';
@@ -33,7 +33,7 @@ export const routes: Routes = [
   { path: 'provider/:id', redirectTo: 'provider/:id/detail', pathMatch: 'full' },
   { path: 'provider/:id/detail', component: ProviderSummaryComponent },
   { path: 'provider/:id/profile', component: ProviderItemComponent },
-  { path: 'sensor-monitoring', component: SensorMonitoringComponent },
+  { path: 'sensor-monitoring', component: DeviceMonitoringComponent },
   // Wildcard route for 404 page - must be last
   { path: '**', component: PageNotFoundComponent }
 ];

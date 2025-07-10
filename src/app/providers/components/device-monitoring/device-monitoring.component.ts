@@ -8,12 +8,12 @@ import {DeviceDataService} from '../../services/device-data.service';
 
 @Component({
   selector: 'app-sensor-monitoring',
-  templateUrl: './sensor-monitoring.component.html',
-  styleUrls: ['./sensor-monitoring.component.css'],
+  templateUrl: './device-monitoring.component.html',
+  styleUrls: ['./device-monitoring.component.css'],
   standalone: true,
   imports: [CommonModule, HeaderContentComponent]
 })
-export class SensorMonitoringComponent implements OnInit {
+export class DeviceMonitoringComponent implements OnInit {
   residentDeviceData: ResidentSensorData[] = [];
   selectedResident: ResidentSensorData | null = null;
   selectedDevice: any = null;
