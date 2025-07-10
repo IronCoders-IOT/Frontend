@@ -2,11 +2,11 @@ import { Component, OnInit, ViewEncapsulation, AfterViewInit, OnDestroy } from '
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { HeaderContentComponent } from '../../../public/components/header-content/header-content.component';
 import { ResidentService } from '../../services/resident.service';
 import { Resident } from '../../models/resident.model';
 import { TranslationService } from '../../../shared/services/translation.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 declare var MercadoPago: any;
 
@@ -45,7 +45,7 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
     private formBuilder: FormBuilder,
     private router: Router,
     private residentService: ResidentService,
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
     private translationService: TranslationService
   ) {}
 
@@ -111,11 +111,7 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
 
     if (!token || !user) {
       console.error('Usuario no autenticado - redirigiendo al login');
-      this.snackBar.open('Please log in to create residents', 'Close', {
-        duration: 3000,
-        verticalPosition: 'bottom',
-        horizontalPosition: 'center'
-      });
+      this.notificationService.error('Por favor inicie sesión para crear residentes', 3000);
       this.router.navigate(['/login']);
       return;
     }
@@ -359,22 +355,17 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
 
   private showSuccessMessage(): void {
     this.paymentStatus = 'success';
-    this.paymentStatusMessage = '¡Payment completed successfully! Creating resident and redirecting...';
+    this.paymentStatusMessage = '¡Pago completado exitosamente! Creando residente y redirigiendo...';
     this.paymentStatusClass = 'payment-success';
     this.paymentCompleted = true;
 
-    // Mostrar snackbar solo con mensaje de pago exitoso
-    this.snackBar.open('¡Payment completed successfully!', 'Close', {
-      duration: 6000,
-      verticalPosition: 'bottom',
-      horizontalPosition: 'center',
-      panelClass: ['custom-snackbar']
-    });
+    // Mostrar notificación personalizada con mensaje de confirmación de pago
+    this.notificationService.success('¡Pago completado exitosamente! El residente ha sido creado.', 8000);
 
-    // Redirigir después de 6 segundos
+    // Redirigir después de 8 segundos para dar tiempo a leer el mensaje
     setTimeout(() => {
       this.router.navigate(['/residents']);
-    }, 6000);
+    }, 8000);
   }
 
   private showPaymentError(message: string): void {
@@ -383,12 +374,7 @@ export class CreateResidentComponent implements OnInit, AfterViewInit, OnDestroy
     this.paymentStatusClass = 'payment-error';
     this.paymentCompleted = false;
 
-    this.snackBar.open(message, 'Close', {
-      duration: 3000,
-      verticalPosition: 'bottom',
-      horizontalPosition: 'center',
-      panelClass: ['error-snackbar']
-    });
+    this.notificationService.error(message, 3000);
   }
 
   onSubmit(): void {

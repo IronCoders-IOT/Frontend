@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { TranslationService } from '../../../shared/services/translation.service';
 import { LanguageService } from '../../../shared/services/language.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 import { subscriptionTranslations } from './translations';
 import { environment } from '../../../../environments/environment';
 
@@ -56,7 +57,8 @@ export class AddSubscriptionDialogComponent implements OnInit, AfterViewInit, On
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private translationService: TranslationService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private notificationService: NotificationService
   ) {
     this.subscriptionForm = this.formBuilder.group({
       waterTankSize: ['', [Validators.required, Validators.min(1), Validators.pattern('^[0-9]+$')]]
@@ -272,9 +274,12 @@ export class AddSubscriptionDialogComponent implements OnInit, AfterViewInit, On
 
   private processSuccessfulPayment(): void {
     this.paymentStatus = 'success';
-    this.paymentStatusMessage = this.translate('payment_successful_creating');
+    this.paymentStatusMessage = this.translate('payment_completed_success');
     this.paymentStatusClass = 'payment-success';
     this.paymentCompleted = true;
+
+    // Mostrar mensaje de confirmación de pago
+    this.notificationService.success(this.translate('payment_completed_success'), 4000);
 
     // Crear la suscripción después del pago exitoso
     this.createSubscription();
@@ -302,6 +307,10 @@ export class AddSubscriptionDialogComponent implements OnInit, AfterViewInit, On
       .subscribe({
         next: (response) => {
           this.isLoading = false;
+          
+          // Mostrar mensaje de confirmación de suscripción creada
+          this.notificationService.success(this.translate('payment_and_subscription_success'), 6000);
+          
           this.dialogRef.close({ success: true, data: response });
         },
         error: (error) => {

@@ -122,6 +122,17 @@
             <span class="status-icon" *ngIf="paymentStatus === 'error'">⚠</span>
             <span class="status-text">{{ paymentStatusMessage }}</span>
           </div>
+          
+          <!-- Mensaje adicional de confirmación para pago exitoso -->
+          <div class="success-confirmation" *ngIf="paymentStatus === 'success' && paymentCompleted">
+            <div class="confirmation-message">
+              <span class="confirmation-icon">🎉</span>
+              <span class="confirmation-text">{{ translate('payment_completed_success') }}</span>
+            </div>
+            <div class="confirmation-details">
+              <p>{{ translate('subscription_created_success') }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

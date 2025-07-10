@@ -111,6 +111,33 @@ input:focus {
   background-color: #2563eb;
 }
 
+/* New Resident Button */
+.new-resident-button {
+  color: #00a0ff;
+  text-decoration: underline;
+  font-weight: 500;
+  margin-left: auto;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+}
+
+.new-resident-button:hover {
+  color: #0077cc;
+  background-color: rgba(0, 160, 255, 0.1);
+  text-decoration: none;
+}
+
+.new-resident-button:focus {
+  outline: 2px solid #00a0ff;
+  outline-offset: 2px;
+}
+
 /*----------------------------------------------*/
 
 /* Structure */
