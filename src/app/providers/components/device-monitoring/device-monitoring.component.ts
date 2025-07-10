@@ -459,12 +459,12 @@ export class DeviceMonitoringComponent implements OnInit {
     if (levels.length === 0) return 'N/A';
 
     if (activeSubscriptions.length === 1) {
-      return `${levels[0]}%`; // Si solo hay un sensor, mostrar su valor exacto
+      return `${levels[0].toFixed(2)}%`; // Si solo hay un sensor, mostrar su valor exacto con 2 decimales
     }
 
     // Para múltiples sensores, calcular promedio
     const averageLevel = levels.reduce((sum, level) => sum + level, 0) / levels.length;
-    return `${Math.round(averageLevel)}%`;
+    return `${averageLevel.toFixed(2)}%`;
   }
 
   // Obtener clase CSS para el nivel promedio

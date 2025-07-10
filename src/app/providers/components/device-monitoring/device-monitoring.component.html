@@ -229,9 +229,9 @@
                                 </div>
                                 <div class="summary-item" *ngIf="getLatestEventForDevice(subscription.deviceId) as latestEvent">
                                     <span class="summary-label">{{ translate('water_level') }}:</span>
-                                    <span class="summary-value" [ngClass]="getLevelClass(latestEvent.levelValue)">
-                                        {{ latestEvent.levelValue }}%
-                                    </span>
+                                                    <span class="summary-value" [ngClass]="getLevelClass(latestEvent.levelValue)">
+                  {{ latestEvent.levelValue | number:'1.2-2' }}%
+                </span>
                                 </div>
                                 <div class="summary-item">
                                     <span class="summary-label">{{ translate('total_events') }}:</span>
@@ -370,9 +370,9 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <span class="level-value" [ngClass]="getLevelClass(event.levelValue)">
-                                                {{ event.levelValue }}%
-                                            </span>
+                                                              <span class="level-value" [ngClass]="getLevelClass(event.levelValue)">
+                    {{ event.levelValue | number:'1.2-2' }}%
+                  </span>
                                         </td>
                                     </tr>
                                 </tbody>

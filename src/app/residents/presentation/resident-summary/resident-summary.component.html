@@ -12,7 +12,7 @@
   <div class="request-title-search">
     <h1 class="title-request">{{ 'subscriptions' | translate }}</h1>
     <button class="add-subscription-button" (click)="openAddSubscriptionDialog()">
-      <span class="button-icon">+</span> Añadir nueva suscripción
+      <span class="button-icon">+</span> {{ 'add_new_subscription' | translate }}
     </button>
   </div>
 
@@ -25,10 +25,10 @@
         <td mat-cell *matCellDef="let row">{{ row.id }}</td>
       </ng-container>
 
-      <!-- Sensor ID Column -->
+      <!-- Device ID Column -->
       <ng-container matColumnDef="deviceId">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'sensor' | translate }}</th>
-        <td mat-cell *matCellDef="let row">#S{{ row.deviceId }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'device' | translate }}</th>
+        <td mat-cell *matCellDef="let row">#D{{ row.deviceId }}</td>
       </ng-container>
 
 

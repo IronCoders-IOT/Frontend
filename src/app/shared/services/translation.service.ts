@@ -229,6 +229,7 @@ export class TranslationService {
       // View History - Residents
       'doc_number': 'Doc. Number',
       'subscriptions': 'Subscriptions',
+      'add_new_subscription': 'Add New Subscription',
       'sensor': 'Sensor',
       'device': 'Device',
       'start_date': 'Start Date',
@@ -629,6 +630,7 @@ export class TranslationService {
       // View History - Residents
       'doc_number': 'Núm. Doc.',
       'subscriptions': 'Suscripciones',
+      'add_new_subscription': 'Añadir Nueva Suscripción',
       'sensor': 'Sensor',
       'device': 'Dispositivo',
       'start_date': 'Fecha de Inicio',
