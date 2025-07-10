@@ -28,6 +28,7 @@ export class TranslationService {
       'view_all_requests': 'View all water-requests',
 
       'service_reports': 'Service Reports',
+      'issue_reports': 'Issue Reports',
       'maintenance_reports': 'Maintenance issue-reports and service issues from residents',
       'active': 'Active',
       'total_reports': 'Total Reports',
@@ -176,6 +177,7 @@ export class TranslationService {
       // Page Titles
       'providers_title': 'Providers',
       'report_requests_title': 'Report Requests',
+      'issue_reports_title': 'Issue Reports',
       'water_requests_title': 'Water Requests',
       'residents_title': 'Residents',
       'search_placeholder': 'Enter ID',
@@ -429,6 +431,7 @@ export class TranslationService {
       'view_all_requests': 'Ver todas las solicitudes',
 
       'service_reports': 'Reportes de Servicio',
+      'issue_reports': 'Reportes de Problemas',
       'maintenance_reports': 'Reportes de mantenimiento y problemas de servicio de los residentes',
       'active': 'Activo',
       'total_reports': 'Total de Reportes',
@@ -577,6 +580,7 @@ export class TranslationService {
       // Page Titles
       'providers_title': 'Proveedores',
       'report_requests_title': 'Solicitudes de Reporte',
+      'issue_reports_title': 'Reportes de Problemas',
       'water_requests_title': 'Solicitudes de Agua',
       'residents_title': 'Residentes',
       'search_placeholder': 'Ingrese ID',
