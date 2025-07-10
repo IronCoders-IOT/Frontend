@@ -1,51 +1,67 @@
 /*---------------------------- GENERAL -----------------------------*/
 
 .request-title-search {
-  margin: 5px;
-  margin-top: 3%;
+  margin: 3% auto 0 auto;
   width: 92.5%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .example-container {
   position: relative;
   width: 92.5%;
-  margin: 0 auto;
-  margin-top: 1%;
+  margin: 1% auto 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  background: white;
+  border: 1px solid #e5e7eb;
 }
 
 .example-table-container {
   position: relative;
   min-height: 200px;
-  overflow-x: auto;
-  padding: 0 20px;
+  overflow: auto;
 }
 
+/* Tabla profesional */
 table {
   width: 100%;
   background-color: white;
   font-size: 15px;
-  overflow: hidden;
-  margin-bottom: 5%;
-  table-layout: auto;
-  word-wrap: break-word;
+  margin-bottom: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #e5e7eb;
 }
 
 td, th {
-  color: #555555;
-  font-size: 15px;
+  color: #374151;
+  font-size: 14px;
   font-family: "Inter-Regular", sans-serif;
-  white-space: normal;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.15s ease;
 }
 
 th {
-  font-weight: bold;
+  font-weight: 600;
+  background-color: #f9fafb;
+  color: #374151;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  font-family: "Inter-Medium", sans-serif;
 }
 
+/* Hover sutil */
 tr:hover {
-  background-color: whitesmoke;
+  background-color: #f9fafb;
 }
 
 .example-loading-shade {
@@ -54,7 +70,8 @@ tr:hover {
   left: 0;
   bottom: 56px;
   right: 0;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(2px);
   z-index: 1;
   display: flex;
   align-items: center;
@@ -64,8 +81,14 @@ tr:hover {
 .example-rate-limit-reached {
   max-width: 360px;
   text-align: center;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
 }
 
+/* Column Widths */
 .mat-column-number,
 .mat-column-state {
   width: 64px;
@@ -75,12 +98,51 @@ tr:hover {
   width: 124px;
 }
 
+/*-----Status profesional----------------------*/
+.custom-cell-status{
+  text-align: center;
+  width: 15%;
+}
+
+.status-received,
+.status-in-progress,
+.status-closed {
+  display: inline-block;
+  width: 90%;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "Inter-Medium", sans-serif;
+}
+
+.status-received {
+  background-color: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.status-in-progress {
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.status-closed {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
 /*---------------------------- TÍTULOS -----------------------------*/
 
 .title-request {
-  text-decoration: underline;
-  font-family: "Inter-Bold", sans-serif;
-  font-size: 25px;
+  font-size: 40px;
+  color: #1f2937;
+  font-family: "Inter-Regular", sans-serif;
+  font-weight: 600;
   padding: 0 20px;
 }
 
@@ -156,95 +218,79 @@ tr:hover {
   margin: 0;
 }
 
-/*----------------------------- ESTADOS ----------------------------*/
-
-.custom-cell-status {
-  text-align: left;
-  width: 15%;
-  padding-left: 10px;
-}
-
-.status-active,
-.status-inactive,
-.status-unknown {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 9999px; /* completamente redondo */
-  font-weight: bold;
-  font-size: 14px;
-  text-align: center;
-  min-width: 80px; /* ancho mínimo para consistencia */
-}
-
-.status-active {
-  background-color: #d2f5d7;
-  color: #3e8842;
-}
-
-.status-inactive {
-  background-color: #ffcdd2;
-  color: #c62828;
-}
-
-.status-unknown {
-  background-color: #eeeeee;
-  color: #424242;
-}
-
-
-.status-normal,
-.status-alert,
-.status-critical {
-  display: inline-block;
-  width: 100px;
-  border-radius: 15px;
-  padding: 6px 0;
-  margin-left: 0;
-  text-align: center;
-}
-
-.status-normal {
-  background-color: #8de6c5ac;
-  color: #007606;
-}
-
-.status-alert {
-  background-color: #FFED92;
-  color: #A68F12;
-}
-
-.status-critical {
-  background-color: #fb8b8b;
-  color: #FF0C0C;
-}
-
 /*---------------------- RESPONSIVE: TABLET ------------------------*/
 
 @media (max-width: 1200px) {
-  .user-name {
-    font-size: 28px;
-  }
-
-  .user-details {
-    font-size: 16px;
-  }
-
   .request-container {
-    width: 90%;
+    width: 95%;
     padding: 0 10px;
     margin-top: 20px;
   }
 
-  .title-request {
-    font-size: 22px;
+  .request-title-search {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
     text-align: center;
+  }
+
+  .title-request {
+    font-size: 32px;
+    margin: 0;
+    text-align: center;
+  }
+
+  .search-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .input-wrapper {
+    display: flex;
+    justify-content: center;
+    width: auto;
+  }
+
+  .input-wrapper input {
+    width: 180px;
+    margin: 0;
+    padding-left: 38px;
+  }
+
+  .search-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    margin: 0;
   }
 
   .example-container,
   .example-table-container,
   table {
     width: 100%;
-    margin-top: 10px;
+  }
+
+  th, td {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .status-received,
+  .status-in-progress,
+  .status-closed {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .schedule-link {
+    padding: 4px 8px;
+    font-size: 12px;
   }
 }
 
@@ -299,9 +345,89 @@ tr:hover {
   }
 }
 
+/* Scrollbar minimalista */
+.example-table-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.example-table-container::-webkit-scrollbar-track {
+  background: #f9fafb;
+}
+
+.example-table-container::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.example-table-container::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Indicadores de ordenamiento */
+.mat-sort-header-arrow {
+  color: #6b7280 !important;
+}
+
+/* Mejoras sutiles */
+tr {
+  transition: background-color 0.15s ease;
+}
+
+th:hover {
+  background-color: #f3f4f6;
+}
+
+/* Bordes más definidos */
+table {
+  border: 1px solid #e5e7eb;
+}
+
+/* Primera y última fila */
+tr:first-child td {
+  border-top: none;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
 /*---------------------------- ENLACES -----------------------------*/
 
 .schedule-link {
-  color: blue;
-  text-decoration: underline;
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  display: inline-block;
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  font-size: 13px;
+}
+
+.schedule-link:hover:not(.disabled) {
+  color: #1d4ed8;
+  background-color: #e0f2fe;
+  border-color: #7dd3fc;
+}
+
+.schedule-link.disabled {
+  color: #9ca3af !important;
+  background-color: #f9fafb !important;
+  border-color: #e5e7eb !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Filas deshabilitadas */
+.row-disabled {
+  opacity: 0.6;
+  background-color: #f9fafb !important;
+}
+
+.row-disabled:hover {
+  background-color: #f9fafb !important;
 }
