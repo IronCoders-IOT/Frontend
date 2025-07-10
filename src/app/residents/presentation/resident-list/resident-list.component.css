@@ -1,13 +1,18 @@
 .request-container {
   margin: 0 auto;
-  width: 119rem;
+  max-width: 1200px;
+  width: 100%;
 }
 
 .request-title-search {
-  margin: 3% auto 0 auto;
-  width: 92.5%;
+  margin: 40px auto 0 auto;
+  max-width: 1200px;
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .title-request {
@@ -15,6 +20,16 @@
   color: #1f2937;
   font-family: "Inter-Regular", sans-serif;
   font-weight: 600;
+  text-align: left;
+}
+
+.search-container {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+  height: 40px;
+  margin-left: 0;
+  justify-content: flex-end;
 }
 
 @media (max-width: 1822px) {
@@ -101,7 +116,8 @@ input:focus {
 /* Structure */
 .residents-data-container {
   position: relative;
-  width: 92.5%;
+  max-width: 1200px;
+  width: 100%;
   margin: 1% auto 0 auto;
   border-radius: 12px;
   overflow: hidden;

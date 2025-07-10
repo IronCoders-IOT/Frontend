@@ -1,15 +1,54 @@
 /*---------------------------- GENERAL -----------------------------*/
 
+.request-container {
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+}
+
 .request-title-search {
-  margin: 3% auto 0 auto;
-  width: 92.5%;
+  margin: 40px auto 0 auto;
+  max-width: 1200px;
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.title-request {
+  font-size: 40px;
+  color: #1f2937;
+  font-family: "Inter-Regular", sans-serif;
+  font-weight: 600;
+  text-align: left;
+}
+
+.add-subscription-button {
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 15px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  font-family: Inter-Medium, sans-serif;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-subscription-button:hover {
+  background-color: #2563eb;
 }
 
 .example-container {
   position: relative;
-  width: 92.5%;
+  max-width: 1200px;
+  width: 100%;
   margin: 1% auto 0 auto;
   border-radius: 12px;
   overflow: hidden;
@@ -35,15 +74,6 @@ table {
   border: 1px solid #e5e7eb;
 }
 
-td, th {
-  color: #374151;
-  font-size: 14px;
-  font-family: "Inter-Regular", sans-serif;
-  padding: 16px 20px;
-  border-bottom: 1px solid #f3f4f6;
-  transition: background-color 0.15s ease;
-}
-
 th {
   font-weight: 600;
   background-color: #f9fafb;
@@ -59,9 +89,31 @@ th {
   font-family: "Inter-Medium", sans-serif;
 }
 
-/* Hover sutil */
+td {
+  color: #374151;
+  font-size: 14px;
+  font-family: "Inter-Regular", sans-serif;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.15s ease;
+}
+
 tr:hover {
   background-color: #f9fafb;
+}
+
+/* Bordes más definidos */
+table {
+  border: 1px solid #e5e7eb;
+}
+
+/* Primera y última fila */
+tr:first-child td {
+  border-top: none;
+}
+
+tr:last-child td {
+  border-bottom: none;
 }
 
 .example-loading-shade {
@@ -160,6 +212,7 @@ tr:hover {
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-left: auto;
 }
 
 .add-subscription-button:hover {
