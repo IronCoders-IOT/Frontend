@@ -9,16 +9,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
-import { HeaderContentComponent } from '../../../public/components/header-content/header-content.component';
-import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import { TranslationService } from '../../../shared/services/translation.service';
-import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
+import { HeaderContentComponent } from '../../../../public/components/header-content/header-content.component';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../../shared/services/translation.service';
+import { LanguageToggleComponent } from '../../../../shared/components/language-toggle/language-toggle.component';
 
 import { Resident } from '../../models/resident.model';
 import { SubscriptionModel } from '../../models/subscription.model';
 import { ResidentService } from '../../services/resident.service';
 import { SubscriptionService } from '../../services/subscription.service';
-import { AddSubscriptionDialogComponent } from '../add-subscription-dialog/add-subscription-dialog.component';
+import { AddSubscriptionDialogComponent } from '../../../../subcriptions/add-subscription-dialog/add-subscription-dialog.component';
 
 @Component({
   selector: 'app-resident-summary',

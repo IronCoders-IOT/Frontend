@@ -1,10 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ResidentSensorData, SensorEvent } from '../../model/device-data.model';
-import { HeaderContentComponent } from '../../../public/components/header-content/header-content.component';
-import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
-import { TranslationService } from '../../../shared/services/translation.service';
-import {DeviceDataService} from '../../services/device-data.service';
+import { ResidentSensorData, SensorEvent } from '../../profiles/providers/model/device-data.model';
+import { HeaderContentComponent } from '../../public/components/header-content/header-content.component';
+import { LanguageToggleComponent } from '../../shared/components/language-toggle/language-toggle.component';
+import { TranslationService } from '../../shared/services/translation.service';
+import {DeviceDataService} from '../../profiles/providers/services/device-data.service';
 
 @Component({
   selector: 'app-sensor-monitoring',

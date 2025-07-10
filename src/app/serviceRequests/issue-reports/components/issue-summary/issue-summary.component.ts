@@ -2,15 +2,15 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ReportdataApiService } from '../../services/reportdata-api.service';
-import { HeaderContentComponent } from "../../../public/components/header-content/header-content.component";
+import { HeaderContentComponent } from "../../../../public/components/header-content/header-content.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {IssueReportModel} from '../../model/issue-report.model';
 import { switchMap } from 'rxjs/operators';
-import { AuthService } from '../../../iam/application/services/auth.service';
-import { User } from '../../../iam/domain/models/user.model';
+import { AuthService } from '../../../../iam/application/services/auth.service';
+import { User } from '../../../../iam/domain/models/user.model';
 
 @Component({
   selector: 'app-report-detail',
@@ -150,12 +150,12 @@ export class IssueSummaryComponent implements OnInit {
     }
 
     // Determinar el rol basado en el username o roles del usuario
-    this.isAdmin = !!(this.currentUser.username?.includes('admin') || 
+    this.isAdmin = !!(this.currentUser.username?.includes('admin') ||
                    this.currentUser.roles?.includes('ADMIN') ||
                    this.currentUser.roles?.includes('ROLE_ADMIN'));
-    
+
     this.isProvider = !this.isAdmin;
-    
+
     console.log('Usuario actual:', this.currentUser);
     console.log('Es admin:', this.isAdmin);
     console.log('Es proveedor:', this.isProvider);
@@ -176,7 +176,7 @@ export class IssueSummaryComponent implements OnInit {
 
   private loadReportForAdmin(id: string): void {
     console.log('Cargando reporte como ADMIN');
-    
+
     // Admin usa el endpoint directo
     this.reportService.getReportById(id).pipe(
       switchMap((data) => {
@@ -197,7 +197,7 @@ export class IssueSummaryComponent implements OnInit {
 
   private loadReportForProvider(id: string): void {
     console.log('Cargando reporte como PROVIDER');
-    
+
     // Provider usa el mismo endpoint pero con contexto diferente
     this.reportService.getReportById(id).pipe(
       switchMap((data) => {

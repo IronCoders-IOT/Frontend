@@ -2,11 +2,11 @@ import { Component, OnInit, ViewEncapsulation, AfterViewInit, OnDestroy } from '
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HeaderContentComponent } from '../../../public/components/header-content/header-content.component';
-import { ResidentService } from '../../services/resident.service';
-import { Resident } from '../../models/resident.model';
-import { TranslationService } from '../../../shared/services/translation.service';
-import { NotificationService } from '../../../shared/services/notification.service';
+import { HeaderContentComponent } from '../../public/components/header-content/header-content.component';
+import { ResidentService } from '../../profiles/residents/services/resident.service';
+import { Resident } from '../../profiles/residents/models/resident.model';
+import { TranslationService } from '../../shared/services/translation.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 declare var MercadoPago: any;
 

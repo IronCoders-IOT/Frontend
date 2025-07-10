@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, inject, ViewChild} from '@angular/core';
-import {HeaderContentComponent} from '../../../public/components/header-content/header-content.component';
+import {HeaderContentComponent} from '../../../../public/components/header-content/header-content.component';
 import {IssueReportModel} from '../../model/issue-report.model';
 
 import {HttpClient} from '@angular/common/http';
@@ -17,9 +17,9 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import {ReportdataApiService} from '../../services/reportdata-api.service';
-import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import { TranslationService } from '../../../shared/services/translation.service';
-import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../../shared/services/translation.service';
+import { LanguageToggleComponent } from '../../../../shared/components/language-toggle/language-toggle.component';
 
 // Interfaz para el proveedor
 interface Provider {

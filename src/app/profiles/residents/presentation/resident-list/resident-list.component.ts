@@ -1,5 +1,5 @@
 import {Component, OnInit, AfterViewInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
-import {HeaderContentComponent} from '../../../public/components/header-content/header-content.component';
+import {HeaderContentComponent} from '../../../../public/components/header-content/header-content.component';
 import {CommonModule} from '@angular/common';
 import {MatTableDataSource} from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ import {RouterLink, RouterModule} from '@angular/router';
 import {Resident} from '../../models/resident.model';
 import {ResidentService} from '../../services/resident.service';
 import { MatCardModule } from '@angular/material/card';
-import { TranslationService } from '../../../shared/services/translation.service';
+import { TranslationService } from '../../../../shared/services/translation.service';
 import { Subject, takeUntil, timer } from 'rxjs';
 
 @Component({

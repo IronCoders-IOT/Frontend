@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import { TranslationService } from '../../../shared/services/translation.service';
-import { LanguageService } from '../../../shared/services/language.service';
-import { NotificationService } from '../../../shared/services/notification.service';
+import { TranslatePipe } from '../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../shared/services/translation.service';
+import { LanguageService } from '../../shared/services/language.service';
+import { NotificationService } from '../../shared/services/notification.service';
 import { subscriptionTranslations } from './translations';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 declare var MercadoPago: any;
 
@@ -307,16 +307,16 @@ export class AddSubscriptionDialogComponent implements OnInit, AfterViewInit, On
       .subscribe({
         next: (response) => {
           this.isLoading = false;
-          
+
           // Mostrar mensaje de confirmación de suscripción creada
           this.notificationService.success(this.translate('payment_and_subscription_success'), 6000);
-          
+
           this.dialogRef.close({ success: true, data: response });
         },
         error: (error) => {
           this.isLoading = false;
           console.error('Error al crear suscripción:', error);
-          
+
           if (error.status === 401) {
             this.error = this.translate('session_expired');
           } else if (error.status === 400) {
@@ -383,4 +383,4 @@ export class AddSubscriptionDialogComponent implements OnInit, AfterViewInit, On
     const translations = subscriptionTranslations[currentLang as keyof typeof subscriptionTranslations];
     return translations?.[key as keyof typeof translations] || key;
   }
-} 
+}

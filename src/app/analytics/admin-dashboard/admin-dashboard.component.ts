@@ -8,28 +8,28 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { HeaderContentComponent } from '../../../public/components/header-content/header-content.component';
-import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
+import { HeaderContentComponent } from '../../public/components/header-content/header-content.component';
+import { LanguageToggleComponent } from '../../shared/components/language-toggle/language-toggle.component';
 
-import { ProviderApiServiceService } from '../../../providers/services/provider-api.service.service';
-import { ResidentService } from '../../../residents/services/resident.service';
-import { ResidentApiServiceService } from '../../../providers/services/resident-api.service.service';
-import { ReportdataApiService } from '../../../issue-reports/services/reportdata-api.service';
-import { Provider } from '../../../providers/model/provider.model';
-import { WaterRequestModel } from '../../../water-requests/model/water-request.model';
-import { IssueReportModel } from '../../../issue-reports/model/issue-report.model';
-import { SensorEvent } from '../../../providers/model/device-data.model';
-import { AuthService } from '../../../iam/application/services/auth.service';
+import { ProviderApiServiceService } from '../../profiles/providers/services/provider-api.service.service';
+import { ResidentService } from '../../profiles/residents/services/resident.service';
+import { ResidentApiServiceService } from '../../profiles/providers/services/resident-api.service.service';
+import { ReportdataApiService } from '../../serviceRequests/issue-reports/services/reportdata-api.service';
+import { Provider } from '../../profiles/providers/model/provider.model';
+import { WaterRequestModel } from '../../serviceRequests/water-requests/model/water-request.model';
+import { IssueReportModel } from '../../serviceRequests/issue-reports/model/issue-report.model';
+import { SensorEvent } from '../../profiles/providers/model/device-data.model';
+import { AuthService } from '../../iam/application/services/auth.service';
 import { AdminApiServices } from '../services/admin-api.services';
-import { LanguageService } from '../../../shared/services/language.service';
-import { TranslationService } from '../../../shared/services/translation.service';
-import {WaterRequestApiService} from '../../../water-requests/services/water-request-api.service';
-import {DeviceDataService} from '../../../providers/services/device-data.service';
+import { LanguageService } from '../../shared/services/language.service';
+import { TranslationService } from '../../shared/services/translation.service';
+import {WaterRequestApiService} from '../../serviceRequests/water-requests/services/water-request-api.service';
+import {DeviceDataService} from '../../profiles/providers/services/device-data.service';
 
 
 
 @Component({
-    selector: 'app-admin-dashboard',
+    selector: 'app-admin-admin-dashboard',
     templateUrl: './admin-dashboard.component.html',
     styleUrls: ['./admin-dashboard.component.scss'],
     standalone: true,
@@ -158,7 +158,7 @@ export class AdminDashboardComponent implements OnInit {
     }
 
     loadDashboardData(): void {
-      // Use the dashboard summary endpoint for all main counters
+      // Use the admin-dashboard summary endpoint for all main counters
       this.adminService.getAdminSummary().subscribe({
         next: (summary) => {
           // Load all data from the summary endpoint
@@ -177,7 +177,7 @@ export class AdminDashboardComponent implements OnInit {
           });
         },
         error: (error) => {
-          console.error('Error loading dashboard summary:', error);
+          console.error('Error loading admin-dashboard summary:', error);
           // Set default values if the summary fails
           this.totalProviders = 0;
           this.totalResidents = 0;

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {BaseService} from '../../shared/services/base.service';
+import {BaseService} from '../../../shared/services/base.service';
 import {HttpClient} from '@angular/common/http';
 import {Resident} from '../model/resident.model';
-import {environment} from '../../../environments/environment';
+import {environment} from '../../../../environments/environment';
 import {Observable} from 'rxjs';
 
 @Injectable({

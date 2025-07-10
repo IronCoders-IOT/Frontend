@@ -15,9 +15,9 @@ import {MatInputModule} from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
-import {HeaderContentComponent} from '../../../public/components/header-content/header-content.component';
-import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
+import {HeaderContentComponent} from '../../../../public/components/header-content/header-content.component';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { LanguageToggleComponent } from '../../../../shared/components/language-toggle/language-toggle.component';
 
 @Component({
   selector: 'app-provider-list',

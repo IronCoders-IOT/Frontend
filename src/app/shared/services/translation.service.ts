@@ -15,7 +15,7 @@ export class TranslationService {
       'no_residents_found': 'No residents have been added yet.',
       // Home page
       'welcome': 'Welcome',
-      'water_management_dashboard': 'Your comprehensive water management dashboard',
+      'water_management_dashboard': 'Your comprehensive water management admin-dashboard',
       'view_profile': 'View Profile',
       'sign_out': 'Sign Out',
       'language': 'Language',
@@ -720,7 +720,7 @@ export class TranslationService {
       'address_required_error': 'La dirección es requerida',
       'view_active_plans': 'Ver Planes Activos',
 
-      // Sensor monitoring dashboard - Spanish
+      // Sensor monitoring admin-dashboard - Spanish
       'sensor_monitoring_title': 'Panel de Monitoreo de Sensores',
       'device_monitoring_title': 'Panel de Monitoreo de Dispositivos',
       'updating': 'Actualizando...',

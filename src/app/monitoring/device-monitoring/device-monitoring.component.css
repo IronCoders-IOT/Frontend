@@ -9,7 +9,7 @@
   min-height: 100vh;
 }
 
-/* Header del dashboard */
+/* Header del admin-dashboard */
 .dashboard-header {
   display: flex;
   justify-content: space-between;

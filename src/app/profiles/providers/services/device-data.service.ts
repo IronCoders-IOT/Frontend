@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
-import { BaseService } from '../../shared/services/base.service';
+import { BaseService } from '../../../shared/services/base.service';
 import { ResidentData, SubscriptionData, SensorEvent, ResidentSensorData } from '../model/device-data.model';
 
 @Injectable({

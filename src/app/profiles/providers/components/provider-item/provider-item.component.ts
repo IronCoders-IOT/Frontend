@@ -3,14 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HeaderContentComponent } from '../../../public/components/header-content/header-content.component';
+import { HeaderContentComponent } from '../../../../public/components/header-content/header-content.component';
 import { ProviderApiServiceService } from '../../services/provider-api.service.service';
 import { Provider } from '../../model/provider.model';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {AuthService} from '../../../iam/application/services/auth.service';
-import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
+import {AuthService} from '../../../../iam/application/services/auth.service';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { LanguageToggleComponent } from '../../../../shared/components/language-toggle/language-toggle.component';
 
 @Component({
     selector: 'app-provider-item',

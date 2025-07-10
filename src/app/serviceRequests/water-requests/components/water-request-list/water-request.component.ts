@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
-import {HeaderContentComponent} from '../../../public/components/header-content/header-content.component';
+import {HeaderContentComponent} from '../../../../public/components/header-content/header-content.component';
 import {WaterRequestModel} from '../../model/water-request.model';
 import {HttpClient} from '@angular/common/http';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
@@ -13,10 +13,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { ScheduleDateComponent } from '../schedule-date/schedule-date.component';
-import { Resident } from '../../../profiles/residents/models/resident.model';
-import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import { TranslationService } from '../../../shared/services/translation.service';
-import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
+import { Resident } from '../../../../profiles/residents/models/resident.model';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../../shared/services/translation.service';
+import { LanguageToggleComponent } from '../../../../shared/components/language-toggle/language-toggle.component';
 import {WaterRequestApiService} from '../../services/water-request-api.service';
 
 @Component({

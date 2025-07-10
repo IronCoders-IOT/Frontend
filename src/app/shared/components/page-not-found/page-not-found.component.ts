@@ -64,10 +64,10 @@ export class PageNotFoundComponent implements OnInit {
       this.redirectingMessage = 'Redirigiendo al inicio de sesión';
       console.log('Usuario no autenticado - enviando a login');
     } else if (this.isAdmin()) {
-      // Administrador - enviar al dashboard admin
-      redirectPath = '/admin/dashboard';
+      // Administrador - enviar al admin-dashboard admin
+      redirectPath = '/admin/admin-dashboard';
       this.redirectingMessage = 'Redirigiendo al panel de administración';
-      console.log('Usuario admin detectado - enviando a admin dashboard');
+      console.log('Usuario admin detectado - enviando a admin admin-dashboard');
     } else {
       // Proveedor u otro usuario autenticado - enviar a home
       redirectPath = '/home';
@@ -106,7 +106,7 @@ export class PageNotFoundComponent implements OnInit {
       return true;
     }
 
-    // 5. Verificar la URL actual - si ya está en admin dashboard, es admin
+    // 5. Verificar la URL actual - si ya está en admin admin-dashboard, es admin
     if (window.location.pathname.includes('/admin')) {
       return true;
     }
@@ -166,8 +166,8 @@ export class PageNotFoundComponent implements OnInit {
     if (!this.currentUser) {
       this.router.navigate(['/login']);
     } else if (this.isAdmin()) {
-      // Si es admin, llevarlo al dashboard, no a home
-      this.router.navigate(['/admin/dashboard']);
+      // Si es admin, llevarlo al admin-dashboard, no a home
+      this.router.navigate(['/admin/admin-dashboard']);
     } else {
       this.router.navigate(['/home']);
     }

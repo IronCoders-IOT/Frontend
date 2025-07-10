@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import { Observable } from 'rxjs';
-import {BaseService} from '../../shared/services/base.service';
+import {BaseService} from '../../../shared/services/base.service';
 import {WaterRequestModel} from '../model/water-request.model';
 
 @Injectable({

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HeaderContentComponent} from '../../../public/components/header-content/header-content.component';
+import {HeaderContentComponent} from '../../../../public/components/header-content/header-content.component';
 import {Subscription} from '../../model/subscription.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProviderApiServiceService} from '../../services/provider-api.service.service';
@@ -8,8 +8,8 @@ import {ResidentApiServiceService} from '../../services/resident-api.service.ser
 import {NgForOf} from '@angular/common';
 import {SubscriptionApiServiceService} from '../../services/subscription-api.service.service';
 import {Provider} from '../../model/provider.model';
-import {AuthService} from '../../../iam/application/services/auth.service';
-import {User} from '../../../iam/domain/models/user.model';
+import {AuthService} from '../../../../iam/application/services/auth.service';
+import {User} from '../../../../iam/domain/models/user.model';
 
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
@@ -61,7 +61,7 @@ export class ProviderSummaryComponent implements OnInit{
   ngOnInit(): void {
     // Get provider_id from route parameters
     this.providerId = Number(this.route.snapshot.paramMap.get('id'));
-    
+
     // Get current user and determine role
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
@@ -78,12 +78,12 @@ export class ProviderSummaryComponent implements OnInit{
 
     // Determinar el rol basado en el username o roles del usuario
     // Asumiendo que los admins tienen un patrón específico o rol específico
-    this.isAdmin = !!(this.currentUser.username?.includes('admin') || 
+    this.isAdmin = !!(this.currentUser.username?.includes('admin') ||
                    this.currentUser.roles?.includes('ADMIN') ||
                    this.currentUser.roles?.includes('ROLE_ADMIN'));
-    
+
     this.isProvider = !this.isAdmin;
-    
+
     console.log('Usuario actual:', this.currentUser);
     console.log('Es admin:', this.isAdmin);
     console.log('Es proveedor:', this.isProvider);
@@ -99,7 +99,7 @@ export class ProviderSummaryComponent implements OnInit{
 
   private loadAdminData(): void {
     console.log('Cargando datos como ADMIN');
-    
+
     // Admin puede ver todos los detalles del proveedor usando endpoint directo
     this.providerService.getProviderByIdForAdmin(this.providerId).subscribe(
       provider => {
@@ -136,7 +136,7 @@ export class ProviderSummaryComponent implements OnInit{
 
   private loadProviderData(): void {
     console.log('Cargando datos como PROVIDER');
-    
+
     // Proveedor solo puede ver su propio perfil
     this.providerService.getProvidersProfile().subscribe(
       (provider: any) => {

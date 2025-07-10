@@ -238,7 +238,7 @@ th {
     color: #333333;
 }
 
-/* admin-dashboard.component.scss */
+/* admin-admin-dashboard.component.scss */
 .dashboard-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -584,7 +584,7 @@ mat-progress-bar.status-poor ::ng-deep .mdc-linear-progress__bar-inner {
 /* New styles for sensor metrics */
 .metric-details {
   margin: 0.5rem 0;
-  
+
   .detail-text {
     font-size: 0.85rem;
     color: #64748b;
@@ -604,7 +604,7 @@ mat-progress-bar.status-poor ::ng-deep .mdc-linear-progress__bar-inner {
 /* Enhanced status classes for quality and level */
 .status-excellent {
   color: #059669 !important;
-  
+
   &.mat-mdc-progress-bar {
     --mdc-linear-progress-active-indicator-color: #059669;
     --mdc-linear-progress-track-color: rgba(5, 150, 105, 0.2);
@@ -613,7 +613,7 @@ mat-progress-bar.status-poor ::ng-deep .mdc-linear-progress__bar-inner {
 
 .status-good {
   color: #0891b2 !important;
-  
+
   &.mat-mdc-progress-bar {
     --mdc-linear-progress-active-indicator-color: #0891b2;
     --mdc-linear-progress-track-color: rgba(8, 145, 178, 0.2);
@@ -622,7 +622,7 @@ mat-progress-bar.status-poor ::ng-deep .mdc-linear-progress__bar-inner {
 
 .status-average {
   color: #d97706 !important;
-  
+
   &.mat-mdc-progress-bar {
     --mdc-linear-progress-active-indicator-color: #d97706;
     --mdc-linear-progress-track-color: rgba(217, 119, 6, 0.2);
@@ -631,7 +631,7 @@ mat-progress-bar.status-poor ::ng-deep .mdc-linear-progress__bar-inner {
 
 .status-poor {
   color: #dc2626 !important;
-  
+
   &.mat-mdc-progress-bar {
     --mdc-linear-progress-active-indicator-color: #dc2626;
     --mdc-linear-progress-track-color: rgba(220, 38, 38, 0.2);
