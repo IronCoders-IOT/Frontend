@@ -13,7 +13,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { ScheduleDateComponent } from '../schedule-date/schedule-date.component';
-import { Resident } from '../../../residents/models/resident.model';
+import { Resident } from '../../../profiles/residents/models/resident.model';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { TranslationService } from '../../../shared/services/translation.service';
 import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';

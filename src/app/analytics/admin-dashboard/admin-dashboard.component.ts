@@ -18,7 +18,7 @@ import { ReportdataApiService } from '../../../issue-reports/services/reportdata
 import { Provider } from '../../../providers/model/provider.model';
 import { WaterRequestModel } from '../../../water-requests/model/water-request.model';
 import { IssueReportModel } from '../../../issue-reports/model/issue-report.model';
-import { SensorEvent } from '../../../providers/model/sensor-data.model';
+import { SensorEvent } from '../../../providers/model/device-data.model';
 import { AuthService } from '../../../iam/application/services/auth.service';
 import { AdminApiServices } from '../services/admin-api.services';
 import { LanguageService } from '../../../shared/services/language.service';
