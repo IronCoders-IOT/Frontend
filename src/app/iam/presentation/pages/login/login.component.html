@@ -1,56 +1,154 @@
 <div class="login-container">
-  <div class="image-section">
-    <div class="background-image"></div>
-    <!-- La imagen de fondo de manos y agua se carga mediante CSS -->
+  <!-- Animated background particles -->
+  <div class="particles-container">
+    <div class="particle" *ngFor="let particle of particles; let i = index" 
+         [style.left.%]="particle.x" 
+         [style.animation-delay.s]="particle.delay"
+         [style.animation-duration.s]="particle.duration">
+    </div>
   </div>
-  <div class="form-section">    <div class="form-container">
-      <h1 class="app-title">Aqua<span class="highlight">Conecta</span></h1>
 
-      <p class="welcome-message">{{ 'welcome_back' | translate }}</p>
+  <!-- Left side - Image/Brand section -->
+  <div class="image-section">
+    <div class="water-animation"></div>
+    <div class="brand-section">
+      <h1 class="app-title">AquaConecta</h1>
+      <img src="../../../../../assets/images/aquaconecta.png" alt="AquaConecta Logo" class="brand-logo" style="max-width: 320px; margin: 0 auto; display: block;">
+      <div class="water-drops">
+        <div class="drop drop-1"></div>
+        <div class="drop drop-2"></div>
+        <div class="drop drop-3"></div>
+      </div>
+    </div>
+  </div>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">        <div class="form-group">
-          <label for="username">{{ 'username' | translate }}</label>
-          <input
-            type="text"
-            id="username"
-            formControlName="username"
-            [placeholder]="'username_placeholder' | translate"
-            class="form-control"
-            [ngClass]="{'invalid': hasError('username', 'required')}"
-          >
-          <div class="error-message" *ngIf="hasError('username', 'required')">
+  <!-- Right side - Form section -->
+  <div class="form-section">
+    <div class="form-container">
+      <!-- Header -->
+      <div class="form-header">
+        <h1 class="app-title">Sign <span class="highlight">In</span></h1>
+        <p class="welcome-message">{{ 'welcome_back' | translate }}</p>
+      </div>
+
+      <!-- Login Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <!-- Username Field -->
+        <div class="form-group">
+          <label for="username" class="form-label">
+            {{ 'username' | translate }}
+          </label>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              id="username"
+              formControlName="username"
+              [placeholder]="'username_placeholder' | translate"
+              class="form-control"
+              [class.invalid]="hasError('username', 'required')"
+              [class.focused]="focusedField === 'username'"
+              (focus)="onFieldFocus('username')"
+              (blur)="onFieldBlur()"
+            >
+            <div class="input-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <div class="input-ripple" [class.active]="focusedField === 'username'"></div>
+          </div>
+          <div class="error-message" 
+               *ngIf="hasError('username', 'required')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
             {{ 'username_required' | translate }}
           </div>
-        </div>        <div class="form-group">
-          <label for="password">{{ 'password' | translate }}</label>
-          <input
-            type="password"
-            id="password"
-            formControlName="password"
-            [placeholder]="'password_placeholder' | translate"
-            class="form-control"
-            [ngClass]="{'invalid': hasError('password', 'required') || hasError('password', 'minlength')}"
-          >
-          <div class="error-message" *ngIf="hasError('password', 'required')">
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password" class="form-label">
+            {{ 'password' | translate }}
+          </label>
+          <div class="input-wrapper">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              [placeholder]="'password_placeholder' | translate"
+              class="form-control"
+              [class.invalid]="hasError('password', 'required') || hasError('password', 'minlength')"
+              [class.focused]="focusedField === 'password'"
+              (focus)="onFieldFocus('password')"
+              (blur)="onFieldBlur()"
+            >
+            <div class="input-icon password-toggle" (click)="togglePassword()">
+              <svg *ngIf="!showPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg *ngIf="showPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </div>
+            <div class="input-ripple" [class.active]="focusedField === 'password'"></div>
+          </div>
+          <div class="error-message" 
+               *ngIf="hasError('password', 'required')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
             {{ 'password_required' | translate }}
           </div>
-          <div class="error-message" *ngIf="hasError('password', 'minlength')">
+          <div class="error-message" 
+               *ngIf="hasError('password', 'minlength')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
             {{ 'password_minlength' | translate }}
           </div>
         </div>
 
+        <!-- General Error Message -->
         <div class="error-container" *ngIf="errorMessage">
-          <p class="error-message">{{ errorMessage }}</p>
-        </div>        <button
+          <div class="error-content">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+            <p class="error-text">{{ errorMessage }}</p>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button
           type="submit"
           class="btn-signin"
           [disabled]="isSubmitting"
+          [class.loading]="isSubmitting"
         >
-          {{ isSubmitting ? ('signing_in' | translate) : ('sign_in' | translate) }}
+          <span class="btn-content">
+            <div class="loading-spinner" *ngIf="isSubmitting"></div>
+            <span class="btn-text">
+              {{ isSubmitting ? ('signing_in' | translate) : ('sign_in' | translate) }}
+            </span>
+          </span>
+          <div class="btn-ripple"></div>
         </button>
 
+        <!-- Signup Section -->
         <div class="signup-section">
-          <span>{{ 'dont_have_account' | translate }}</span>
+          <span class="signup-text">{{ 'dont_have_account' | translate }}</span>
           <a (click)="onSignup()" class="signup-link">{{ 'sign_up_here' | translate }}</a>
         </div>
       </form>
