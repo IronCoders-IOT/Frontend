@@ -213,6 +213,12 @@ tr:hover {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-family: "Inter-Medium", sans-serif;
+  /* Eliminar posibles restricciones de texto */
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  min-width: 80px;
+  max-width: none;
 }
 
 .status-received {
@@ -398,4 +404,36 @@ tr:first-child td {
 
 tr:last-child td {
   border-bottom: none;
+}
+
+/* Forzar que el status nunca tenga ellipsis ni recorte */
+.custom-cell-status,
+.custom-cell-status span,
+td.custom-cell-status,
+.mat-cell.custom-cell-status,
+.mat-cell .custom-cell-status,
+.mat-column-status,
+td.mat-column-status {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  word-break: break-word !important;
+  max-width: none !important;
+}
+
+/* Asegura que el chip ocupe todo el ancho disponible */
+.custom-cell-status span {
+  display: block !important;
+  width: 100% !important;
+  min-width: 80px;
+  box-sizing: border-box;
+}
+
+[matColumnDef="status"] {
+  text-align: center !important;
+}
+
+[matColumnDef="status"] * {
+  text-align: center !important;
+  justify-content: center !important;
 }
