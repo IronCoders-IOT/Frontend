@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { SubscriptionModel } from '../models/subscription.model';
-import { BaseService } from '../../shared/services/base.service';
+import {BaseService} from '../../../shared/services/base.service';
 
 @Injectable({
   providedIn: 'root'

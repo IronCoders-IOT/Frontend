@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
-import { BaseService } from '../../shared/services/base.service';
 import { ResidentData, SubscriptionData, SensorEvent, ResidentSensorData } from '../model/sensor-data.model';
+import {BaseService} from '../../../shared/services/base.service';
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +66,7 @@ export class DeviceDataService extends BaseService<any> {
   getCompleteSensorDataByProvider(providerId: number): Observable<ResidentSensorData[]> {
     console.log('=== SERVICIO: getCompleteSensorDataByProvider() iniciado ===');
     console.log('Provider ID recibido:', providerId);
-    
+
     return this.getResidentsByProvider(providerId).pipe(
       switchMap(residents => {
         console.log('Residentes obtenidos:', residents);

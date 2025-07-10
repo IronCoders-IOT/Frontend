@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { IssueReportModel } from '../model/issue-report.model';
-import {BaseService} from '../../shared/services/base.service';
+import {BaseService} from '../../../shared/services/base.service';
 
 @Injectable({
   providedIn: 'root'

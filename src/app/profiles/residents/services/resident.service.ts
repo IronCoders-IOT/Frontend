@@ -3,11 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {catchError, retry, switchMap} from 'rxjs/operators';
 import { Resident } from '../models/resident.model';
-import { BaseService } from '../../shared/services/base.service';
 import { OperatorFunction, throwError, timer } from 'rxjs';
 import { retryWhen, mergeMap } from 'rxjs/operators';
 import { Event } from '../models/event.model';
 import { map } from 'rxjs/operators';
+import {BaseService} from '../../../shared/services/base.service';
 @Injectable({
   providedIn: 'root'
 })

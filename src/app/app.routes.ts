@@ -1,20 +1,24 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './public/pages/home/home.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
-import {WaterRequestComponent} from './water-requests/components/water-request-list/water-request.component';
-import {ProviderListComponent} from './providers/components/provider-list/provider-list.component';
-import {ScheduleDateComponent} from './water-requests/components/schedule-date/schedule-date.component';
-import {IssueReportListComponent} from './issue-reports/components/issue-report-list/issue-report-list.component';
-import {CreateResidentComponent} from './residents/presentation/create-resident/create-resident.component';
-import {ResidentListComponent} from './residents/presentation/resident-list/resident-list.component';
-import {ResidentSummaryComponent} from './residents/presentation/resident-summary/resident-summary.component';
-import {ProviderSummaryComponent} from './providers/components/provider-summary/provider-summary.component';
-import {ProviderItemComponent} from './providers/components/provider-item/provider-item.component';
-import {DeviceMonitoringComponent} from './providers/components/device-monitoring/device-monitoring.component';
 import {LoginComponent} from './iam/presentation/pages/login/login.component';
 import {SignupComponent} from './iam/presentation/pages/signup/signup.component';
-import {IssueSummaryComponent} from './issue-reports/components/issue-summary/issue-summary.component';
-import {AdminDashboardComponent} from './analytics/presentation/dashboard/admin-dashboard.component';
+import {ProviderListComponent} from './profiles/providers/components/provider-list/provider-list.component';
+import {
+  WaterRequestComponent
+} from './ServiceRequests/water-requests/components/water-request-list/water-request.component';
+import {ScheduleDateComponent} from './ServiceRequests/water-requests/components/schedule-date/schedule-date.component';
+import {
+  IssueReportListComponent
+} from './ServiceRequests/issue-reports/components/issue-report-list/issue-report-list.component';
+import {CreateResidentComponent} from './subcriptions/create-resident/create-resident.component';
+import {ResidentListComponent} from './profiles/residents/presentation/resident-list/resident-list.component';
+import {ResidentSummaryComponent} from './profiles/residents/presentation/resident-summary/resident-summary.component';
+import {IssueSummaryComponent} from './ServiceRequests/issue-reports/components/issue-summary/issue-summary.component';
+import {AdminDashboardComponent} from './dashboard/admin-dashboard/admin-dashboard.component';
+import {ProviderSummaryComponent} from './profiles/providers/components/provider-summary/provider-summary.component';
+import {ProviderItemComponent} from './profiles/providers/components/provider-item/provider-item.component';
+import {DeviceMonitoringComponent} from './monitoring/device-monitoring/device-monitoring.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },

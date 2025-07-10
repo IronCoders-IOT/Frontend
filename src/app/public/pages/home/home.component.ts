@@ -4,16 +4,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderContentComponent } from '../../components/header-content/header-content.component';
 import { HttpClient } from '@angular/common/http';
-import {WaterRequestApiService} from '../../../water-requests/services/water-request-api.service';
-import {ResidentService} from '../../../residents/services/resident.service';
+
 import {AuthService} from '../../../iam/application/services/auth.service';
 import {catchError} from 'rxjs/operators';
 import {forkJoin, of} from 'rxjs';
-import {ReportdataApiService} from '../../../issue-reports/services/reportdata-api.service';
 import { LanguageService } from '../../../shared/services/language.service';
 import { TranslationService } from '../../../shared/services/translation.service';
 import { LanguageToggleComponent } from '../../../shared/components/language-toggle/language-toggle.component';
-import {DeviceDataService} from '../../../providers/services/device-data.service';
+import {WaterRequestApiService} from '../../../ServiceRequests/water-requests/services/water-request-api.service';
+import {ResidentService} from '../../../profiles/residents/services/resident.service';
+import {ReportdataApiService} from '../../../ServiceRequests/issue-reports/services/reportdata-api.service';
+import {DeviceDataService} from '../../../profiles/providers/services/device-data.service';
 
 @Component({
   selector: 'app-home',

@@ -3,10 +3,11 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HeaderContentComponent } from '../../../public/components/header-content/header-content.component';
-import { ResidentService } from '../../services/resident.service';
-import { Resident } from '../../models/resident.model';
-import { TranslationService } from '../../../shared/services/translation.service';
+import {HeaderContentComponent} from '../../public/components/header-content/header-content.component';
+import {ResidentService} from '../../profiles/residents/services/resident.service';
+import {TranslationService} from '../../shared/services/translation.service';
+import {Resident} from '../../profiles/residents/models/resident.model';
+
 
 declare var MercadoPago: any;
 

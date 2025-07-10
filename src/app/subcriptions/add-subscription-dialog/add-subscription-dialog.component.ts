@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import { TranslationService } from '../../../shared/services/translation.service';
-import { LanguageService } from '../../../shared/services/language.service';
 import { subscriptionTranslations } from './translations';
-import { environment } from '../../../../environments/environment';
+import {LanguageService} from '../../shared/services/language.service';
+import {TranslationService} from '../../shared/services/translation.service';
+import {environment} from '../../../environments/environment';
 
 declare var MercadoPago: any;
 
@@ -307,7 +306,7 @@ export class AddSubscriptionDialogComponent implements OnInit, AfterViewInit, On
         error: (error) => {
           this.isLoading = false;
           console.error('Error al crear suscripción:', error);
-          
+
           if (error.status === 401) {
             this.error = this.translate('session_expired');
           } else if (error.status === 400) {
@@ -374,4 +373,4 @@ export class AddSubscriptionDialogComponent implements OnInit, AfterViewInit, On
     const translations = subscriptionTranslations[currentLang as keyof typeof subscriptionTranslations];
     return translations?.[key as keyof typeof translations] || key;
   }
-} 
+}

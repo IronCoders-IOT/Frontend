@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {BaseService} from '../../shared/services/base.service';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Subscription} from '../model/subscription.model';
+import {BaseService} from '../../../shared/services/base.service';
 
 @Injectable({
   providedIn: 'root'
