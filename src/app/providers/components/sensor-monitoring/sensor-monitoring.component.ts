@@ -14,14 +14,14 @@ import {DeviceDataService} from '../../services/device-data.service';
   imports: [CommonModule, HeaderContentComponent]
 })
 export class SensorMonitoringComponent implements OnInit {
-  residentSensorData: ResidentSensorData[] = [];
+  residentDeviceData: ResidentSensorData[] = [];
   selectedResident: ResidentSensorData | null = null;
-  selectedSensor: any = null;
+  selectedDevice: any = null;
   isLoading = false;
   loadError: string | null = null;
   isModalOpen = false;
   isDetailModalOpen = false;
-  modalStep: 'sensors' | 'details' = 'sensors';
+  modalStep: 'devices' | 'details' = 'devices';
 
   constructor(
     private deviceDataService: DeviceDataService,
@@ -33,21 +33,21 @@ export class SensorMonitoringComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadSensorData();
+    this.loadDeviceData();
   }
 
-  loadSensorData(): void {
+  loadDeviceData(): void {
     this.isLoading = true;
     this.loadError = null;
 
     this.deviceDataService.getCompleteSensorData().subscribe({
       next: (data) => {
-        this.residentSensorData = data;
+        this.residentDeviceData = data;
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading sensor data:', error);
-        this.loadError = this.translate('error_loading_sensor_data');
+        console.error('Error loading device data:', error);
+        this.loadError = this.translate('error_loading_device_data');
         this.isLoading = false;
       }
     });
@@ -55,26 +55,26 @@ export class SensorMonitoringComponent implements OnInit {
 
   selectResident(residentData: ResidentSensorData): void {
     this.selectedResident = residentData;
-    this.selectedSensor = null;
-    this.modalStep = 'sensors';
+    this.selectedDevice = null;
+    this.modalStep = 'devices';
     this.isModalOpen = true;
   }
 
-  selectSensor(sensor: any): void {
-    this.selectedSensor = sensor;
+  selectDevice(device: any): void {
+    this.selectedDevice = device;
     this.modalStep = 'details';
   }
 
-  backToSensorList(): void {
-    this.selectedSensor = null;
-    this.modalStep = 'sensors';
+  backToDeviceList(): void {
+    this.selectedDevice = null;
+    this.modalStep = 'devices';
   }
 
   closeModal(): void {
     this.isModalOpen = false;
     this.selectedResident = null;
-    this.selectedSensor = null;
-    this.modalStep = 'sensors';
+    this.selectedDevice = null;
+    this.modalStep = 'devices';
   }
 
   @HostListener('document:keydown.escape', ['$event'])
@@ -85,7 +85,7 @@ export class SensorMonitoringComponent implements OnInit {
   }
 
   retry(): void {
-    this.loadSensorData();
+    this.loadDeviceData();
   }
 
   getStatusClass(status: string): string {
@@ -112,6 +112,8 @@ export class SensorMonitoringComponent implements OnInit {
       case 'warning': return 'event-warning';
       case 'critical': return 'event-critical';
       case 'maintenance': return 'event-maintenance';
+      case 'water-measurement': return 'event-water-measurement';
+      case 'monitoring measurement': return 'event-monitoring-measurement';
       default: return 'event-unknown';
     }
   }
@@ -122,6 +124,8 @@ export class SensorMonitoringComponent implements OnInit {
       case 'warning': return this.translate('event_warning');
       case 'critical': return this.translate('event_critical');
       case 'maintenance': return this.translate('event_maintenance');
+      case 'water-measurement': return this.translate('event_water_measurement');
+      case 'monitoring measurement': return this.translate('event_monitoring_measurement');
       default: return eventType || this.translate('event_unknown');
     }
   }
@@ -141,6 +145,8 @@ export class SensorMonitoringComponent implements OnInit {
         return 'quality-non-potable';
       case 'contaminated water':
         return 'quality-contaminated';
+      case 'without water':
+        return 'quality-without-water';
       default:
         // Fallback para valores numéricos o desconocidos
         const qualityNum = parseFloat(quality);
@@ -162,9 +168,9 @@ export class SensorMonitoringComponent implements OnInit {
     return 'level-critical';
   }
 
-  hasActiveSensor(residentData: ResidentSensorData): boolean {
+  hasActiveDevice(residentData: ResidentSensorData): boolean {
     return residentData.subscriptions && residentData.subscriptions.length > 0 &&
-           residentData.subscriptions.some(sub => sub.status.toLowerCase() === 'active');
+           residentData.subscriptions.some((sub: any) => sub.status.toLowerCase() === 'active');
   }
 
   getLatestEvent(events: SensorEvent[]): SensorEvent | null {
@@ -182,22 +188,22 @@ export class SensorMonitoringComponent implements OnInit {
   }
 
   // Dashboard statistics methods
-  getActiveSensorsCount(): number {
-    return this.residentSensorData.reduce((total, resident) => {
-      const activeSubscriptions = resident.subscriptions?.filter(sub => sub.status.toLowerCase() === 'active') || [];
+  getActiveDevicesCount(): number {
+    return this.residentDeviceData.reduce((total: number, resident: ResidentSensorData) => {
+      const activeSubscriptions = resident.subscriptions?.filter((sub: any) => sub.status.toLowerCase() === 'active') || [];
       return total + activeSubscriptions.length;
     }, 0);
   }
 
   getTotalEventsCount(): number {
-    return this.residentSensorData.reduce((total, resident) => {
+    return this.residentDeviceData.reduce((total: number, resident: ResidentSensorData) => {
       return total + (resident.sensorEvents?.length || 0);
     }, 0);
   }
 
   getAverageQuality(): string {
-    const activeResidents = this.residentSensorData.filter(resident =>
-      this.hasActiveSensor(resident) && resident.sensorEvents && resident.sensorEvents.length > 0
+    const activeResidents = this.residentDeviceData.filter((resident: ResidentSensorData) =>
+      this.hasActiveDevice(resident) && resident.sensorEvents && resident.sensorEvents.length > 0
     );
 
     if (activeResidents.length === 0) {
@@ -229,44 +235,44 @@ export class SensorMonitoringComponent implements OnInit {
     }
   }
 
-  // Método para obtener eventos específicos de un sensor de un residente específico
-  getSensorEventsForResident(deviceId: number, residentData: ResidentSensorData): SensorEvent[] {
-    return residentData.sensorEvents.filter(event => event.deviceId === deviceId);
+  // Método para obtener eventos específicos de un dispositivo de un residente específico
+  getDeviceEventsForResident(deviceId: number, residentData: ResidentSensorData): SensorEvent[] {
+    return residentData.sensorEvents.filter((event: SensorEvent) => event.deviceId === deviceId);
   }
 
-  // Método para obtener el último evento de un sensor específico de un residente específico
-  getLatestEventForSensorOfResident(deviceId: number, residentData: ResidentSensorData): SensorEvent | null {
-    const events = this.getSensorEventsForResident(deviceId, residentData);
+  // Método para obtener el último evento de un dispositivo específico de un residente específico
+  getLatestEventForDeviceOfResident(deviceId: number, residentData: ResidentSensorData): SensorEvent | null {
+    const events = this.getDeviceEventsForResident(deviceId, residentData);
     return events.length > 0 ? events[events.length - 1] : null;
   }
 
-  // Método para obtener eventos específicos de un sensor
-  getSensorEvents(deviceId: number): SensorEvent[] {
+  // Método para obtener eventos específicos de un dispositivo
+  getDeviceEvents(deviceId: number): SensorEvent[] {
     if (!this.selectedResident) return [];
-    return this.selectedResident.sensorEvents.filter(event => event.deviceId === deviceId);
+    return this.selectedResident.sensorEvents.filter((event: SensorEvent) => event.deviceId === deviceId);
   }
 
-  // Método para obtener el último evento de un sensor específico
-  getLatestEventForSensor(deviceId: number): SensorEvent | null {
-    const events = this.getSensorEvents(deviceId);
+  // Método para obtener el último evento de un dispositivo específico
+  getLatestEventForDevice(deviceId: number): SensorEvent | null {
+    const events = this.getDeviceEvents(deviceId);
     return events.length > 0 ? events[events.length - 1] : null;
   }
 
-  // Método para verificar si un sensor tiene eventos recientes
-  hasSensorActivity(deviceId: number): boolean {
-    return this.getSensorEvents(deviceId).length > 0;
+  // Método para verificar si un dispositivo tiene eventos recientes
+  hasDeviceActivity(deviceId: number): boolean {
+    return this.getDeviceEvents(deviceId).length > 0;
   }
 
   // Nuevas funciones para el resumen inteligente del card
 
-  // Obtener rango de calidad de todos los sensores activos
+  // Obtener rango de calidad de todos los dispositivos activos
   getQualityRange(residentData: ResidentSensorData): string {
     const activeSubscriptions = this.getActiveSubscriptions(residentData);
     if (activeSubscriptions.length === 0) return 'N/A';
 
     const qualities: string[] = [];
-    activeSubscriptions.forEach(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
+    activeSubscriptions.forEach((subscription: any) => {
+      const latestEvent = this.getLatestEventForDeviceOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         qualities.push(latestEvent.qualityValue);
       }
@@ -291,59 +297,59 @@ export class SensorMonitoringComponent implements OnInit {
     return `${sortedQualities[0]} - ${sortedQualities[sortedQualities.length - 1]}`;
   }
 
-  // Verificar si hay sensores críticos (calidad mala o nivel bajo)
-  hasCriticalSensors(residentData: ResidentSensorData): boolean {
+  // Verificar si hay dispositivos críticos (calidad mala o nivel bajo)
+  hasCriticalDevices(residentData: ResidentSensorData): boolean {
     const activeSubscriptions = this.getActiveSubscriptions(residentData);
 
-    return activeSubscriptions.some(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
+    return activeSubscriptions.some((subscription: any) => {
+      const latestEvent = this.getLatestEventForDeviceOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         const levelValue = typeof latestEvent.levelValue === 'string' ?
           parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
         const qualityLower = latestEvent.qualityValue.toLowerCase().trim();
-        const isBadQuality = ['bad', 'non-potable', 'contaminated water'].includes(qualityLower);
+        const isBadQuality = ['bad', 'non-potable', 'contaminated water', 'without water'].includes(qualityLower);
         return isBadQuality || levelValue < 30;
       }
       return false;
     });
   }
 
-  // Contar sensores críticos
-  getCriticalSensorsCount(residentData: ResidentSensorData): number {
+  // Contar dispositivos críticos
+  getCriticalDevicesCount(residentData: ResidentSensorData): number {
     const activeSubscriptions = this.getActiveSubscriptions(residentData);
 
-    return activeSubscriptions.filter(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
+    return activeSubscriptions.filter((subscription: any) => {
+      const latestEvent = this.getLatestEventForDeviceOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         const levelValue = typeof latestEvent.levelValue === 'string' ?
           parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
         const qualityLower = latestEvent.qualityValue.toLowerCase().trim();
-        const isBadQuality = ['bad', 'non-potable', 'contaminated water'].includes(qualityLower);
+        const isBadQuality = ['bad', 'non-potable', 'contaminated water', 'without water'].includes(qualityLower);
         return isBadQuality || levelValue < 30;
       }
       return false;
     }).length;
   }
 
-  // Obtener estado general de los sensores
-  getSensorsStatusSummary(residentData: ResidentSensorData): string {
+  // Obtener estado general de los dispositivos
+  getDevicesStatusSummary(residentData: ResidentSensorData): string {
     const activeSubscriptions = this.getActiveSubscriptions(residentData);
-    if (activeSubscriptions.length === 0) return this.translate('no_sensors');
+    if (activeSubscriptions.length === 0) return this.translate('no_devices');
 
-    const totalSensors = activeSubscriptions.length;
-    const criticalCount = this.getCriticalSensorsCount(residentData);
-    const goodCount = totalSensors - criticalCount;
+    const totalDevices = activeSubscriptions.length;
+    const criticalCount = this.getCriticalDevicesCount(residentData);
+    const goodCount = totalDevices - criticalCount;
 
-    if (totalSensors === 1) {
+    if (totalDevices === 1) {
       return criticalCount > 0 ? this.translate('critical_status') : this.translate('normal_status');
     }
 
     if (criticalCount === 0) {
-      return `${totalSensors} ${this.translate('sensors_normal')}`;
-    } else if (criticalCount === totalSensors) {
-      return `${totalSensors} ${this.translate('sensors_critical')}`;
+      return `${totalDevices} ${this.translate('devices_normal')}`;
+    } else if (criticalCount === totalDevices) {
+      return `${totalDevices} ${this.translate('devices_critical')}`;
     } else {
-      return `${goodCount} ${this.translate('sensors_ok')}, ${criticalCount} ${this.translate('sensors_critical_short')}`;
+      return `${goodCount} ${this.translate('devices_ok')}, ${criticalCount} ${this.translate('devices_critical_short')}`;
     }
   }
 
@@ -353,8 +359,8 @@ export class SensorMonitoringComponent implements OnInit {
     if (activeSubscriptions.length === 0) return 'N/A';
 
     const qualities: string[] = [];
-    activeSubscriptions.forEach(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
+    activeSubscriptions.forEach((subscription: any) => {
+      const latestEvent = this.getLatestEventForDeviceOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         qualities.push(latestEvent.qualityValue);
       }
@@ -372,6 +378,7 @@ export class SensorMonitoringComponent implements OnInit {
         case 'bad': return 3;
         case 'non-potable': return 2;
         case 'contaminated water': return 1;
+        case 'without water': return 0;
         default: return 0;
       }
     });
@@ -384,17 +391,18 @@ export class SensorMonitoringComponent implements OnInit {
     if (average >= 3.5) return 'acceptable';
     if (average >= 2.5) return 'bad';
     if (average >= 1.5) return 'non-potable';
-    return 'contaminated water';
+    if (average >= 0.5) return 'contaminated water';
+    return 'without water';
   }
 
-  // Obtener calidad promedio actual de todos los sensores activos
+  // Obtener calidad promedio actual de todos los dispositivos activos
   getCurrentQualitySummary(residentData: ResidentSensorData): string {
     const activeSubscriptions = this.getActiveSubscriptions(residentData);
     if (activeSubscriptions.length === 0) return 'N/A';
 
     const qualities: string[] = [];
-    activeSubscriptions.forEach(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
+    activeSubscriptions.forEach((subscription: any) => {
+      const latestEvent = this.getLatestEventForDeviceOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         qualities.push(latestEvent.qualityValue);
       }
@@ -415,8 +423,8 @@ export class SensorMonitoringComponent implements OnInit {
     if (activeSubscriptions.length === 0) return 'N/A';
 
     const qualities: string[] = [];
-    activeSubscriptions.forEach(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
+    activeSubscriptions.forEach((subscription: any) => {
+      const latestEvent = this.getLatestEventForDeviceOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         qualities.push(latestEvent.qualityValue);
       }
@@ -431,14 +439,14 @@ export class SensorMonitoringComponent implements OnInit {
     return this.getAverageQualityForResident(residentData);
   }
 
-  // Obtener nivel promedio actual de todos los sensores activos
+  // Obtener nivel promedio actual de todos los dispositivos activos
   getCurrentLevelSummary(residentData: ResidentSensorData): string {
     const activeSubscriptions = this.getActiveSubscriptions(residentData);
     if (activeSubscriptions.length === 0) return 'N/A';
 
     const levels: number[] = [];
-    activeSubscriptions.forEach(subscription => {
-      const latestEvent = this.getLatestEventForSensorOfResident(subscription.deviceId, residentData);
+    activeSubscriptions.forEach((subscription: any) => {
+      const latestEvent = this.getLatestEventForDeviceOfResident(subscription.deviceId, residentData);
       if (latestEvent) {
         const levelValue = typeof latestEvent.levelValue === 'string' ?
           parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
@@ -486,6 +494,8 @@ export class SensorMonitoringComponent implements OnInit {
         return this.translate('quality_non_potable');
       case 'contaminated water':
         return this.translate('quality_contaminated_water');
+      case 'without water':
+        return this.translate('quality_without_water');
       default:
         return quality; // Mantener valor original si no se reconoce
     }

@@ -35,8 +35,8 @@ export class HomeComponent implements OnInit {
   reportsCount: number = 0;
   reportsActive: number = 0;
   residentsCount: number = 0;
-  sensorEventsCount: number = 0;
-  lastSensorUpdate: string = 'Live';
+  deviceEventsCount: number = 0;
+  lastDeviceUpdate: string = 'Live';
   isAdmin: boolean = false;
 
   private apiUrl = 'http://localhost:3000/api';
@@ -157,7 +157,7 @@ export class HomeComponent implements OnInit {
 
     this.loadResidents();
 
-    this.loadSensors();
+    this.loadDevices();
   }
 
   private loadWaterRequests(): void {
@@ -268,11 +268,11 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  private loadSensors(): void {
-    // Obtener todos los datos de sensores del proveedor autenticado
+  private loadDevices(): void {
+    // Obtener todos los datos de dispositivos del proveedor autenticado
     this.sensorDataService.getCompleteSensorData().subscribe({
       next: (sensorData) => {
-        // Contar todos los eventos de sensores
+        // Contar todos los eventos de dispositivos
         let totalEvents = 0;
 
         sensorData.forEach(residentData => {
@@ -281,16 +281,16 @@ export class HomeComponent implements OnInit {
           }
         });
 
-        this.sensorEventsCount = totalEvents;
-        this.lastSensorUpdate = totalEvents > 0 ? 'Live' : 'No data';
+        this.deviceEventsCount = totalEvents;
+        this.lastDeviceUpdate = totalEvents > 0 ? 'Live' : 'No data';
 
-        console.log(`Total sensor events: ${this.sensorEventsCount}`);
+        console.log(`Total device events: ${this.deviceEventsCount}`);
       },
       error: (error) => {
-        console.error('Error loading sensor events:', error);
+        console.error('Error loading device events:', error);
         // Valores por defecto en caso de error
-        this.sensorEventsCount = 0;
-        this.lastSensorUpdate = 'No data';
+        this.deviceEventsCount = 0;
+        this.lastDeviceUpdate = 'No data';
       }
     });
   }

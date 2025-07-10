@@ -40,11 +40,15 @@ export class TranslationService {
       'registered': 'Registered',
 
       'sensor_monitoring': 'Sensor Monitoring',
+      'device_monitoring': 'Device Monitoring',
       'realtime_monitoring': 'Real-time monitoring of water quality and flow sensors',
       'live_data': 'Live Data',
       'view_sensor_history': 'View sensor history',
+      'view_device_history': 'View device history',
       'active_sensors': 'Active Sensors',
+      'active_devices': 'Active Devices',
       'sensor_events_data': 'Real-time water quality and level monitoring data from all active sensors',
+      'device_events_data': 'Real-time water quality and level monitoring data from all active devices',
 
       // Admin Dashboard
       'admin_dashboard': 'Dashboard',
@@ -226,6 +230,7 @@ export class TranslationService {
       'doc_number': 'Doc. Number',
       'subscriptions': 'Subscriptions',
       'sensor': 'Sensor',
+      'device': 'Device',
       'start_date': 'Start Date',
       'end_date': 'End Date',
 
@@ -311,35 +316,48 @@ export class TranslationService {
 
       // Sensor Monitoring
       'sensor_monitoring_title': 'Water Sensor Monitoring',
+      'device_monitoring_title': 'Water Device Monitoring',
       'updating': 'Updating...',
       'update_data': 'Update Data',
       'loading_sensor_data': 'Loading sensor data...',
+      'loading_device_data': 'Loading device data...',
       'error_loading_data': 'Error loading data',
       'retry_button': 'Retry',
       'sensor_id': 'Sensor ID',
+      'device_id': 'Device ID',
       'no_active_sensor': 'No active sensor',
+      'no_active_device': 'No active device',
       'events': 'Events',
       'current_quality': 'Current Quality',
       'current_level': 'Current Level',
       'select_sensor': 'Select Sensor',
+      'select_device': 'Select Device',
       'available_sensors': 'Available Sensors',
+      'available_devices': 'Available Devices',
       'latest_quality': 'Latest Quality',
       'total_events': 'Total Events',
       'view_details': 'View Details',
       'no_sensors_available': 'No Sensors Available',
+      'no_devices_available': 'No Devices Available',
       'no_sensors_message': 'This resident has no sensors assigned yet.',
+      'no_devices_message': 'This resident has no devices assigned yet.',
       'back_to_sensors': 'Back to Sensors',
+      'back_to_devices': 'Back to Devices',
       'sensor_details': 'Sensor Details',
+      'device_details': 'Device Details',
       'resident_information': 'Resident Information',
       'full_name': 'Full Name',
       'subscription_status': 'Subscription Status',
       'sensor_information': 'Sensor Information',
+      'device_information': 'Device Information',
       'sensor_events': 'Sensor Events',
+      'device_events': 'Device Events',
       'event_type': 'Event Type',
       'quality_value': 'Quality Value',
       'water_level': 'Water Level',
       'no_events_recorded': 'No Events Recorded',
       'no_events_available_sensor': 'No event data available for this sensor.',
+      'no_events_available_device': 'No event data available for this device.',
       'quality_range': 'Quality Range',
       'status_summary': 'Status Summary',
 
@@ -354,6 +372,11 @@ export class TranslationService {
       'event_warning': 'Warning',
       'event_critical': 'Critical',
       'event_maintenance': 'Maintenance',
+      'event_without_water': 'Without Water',
+      'event_water_measurement': 'Water Measurement',
+      'event_monitoring_measurement': 'Monitoring Measurement',
+      'event_iot_device_error': 'IoT Device Error',
+      'event_water_contaminated': 'Water Contaminated',
       'event_unknown': 'Unknown',
 
       // Water quality values
@@ -363,18 +386,25 @@ export class TranslationService {
       'quality_bad': 'Bad',
       'quality_non_potable': 'Non-potable',
       'quality_contaminated_water': 'Contaminated Water',
+      'quality_without_water': 'Without Water',
 
       // Sensor status summary
       'no_sensors': 'No sensors',
+      'no_devices': 'No devices',
       'critical_status': 'Critical',
       'normal_status': 'Normal',
       'sensors_normal': 'normal sensors',
+      'devices_normal': 'normal devices',
       'sensors_critical': 'critical sensors',
+      'devices_critical': 'critical devices',
       'sensors_ok': 'OK',
+      'devices_ok': 'OK',
       'sensors_critical_short': 'critical',
+      'devices_critical_short': 'critical',
 
       // Error messages
-      'error_loading_sensor_data': 'Error loading sensor data'
+      'error_loading_sensor_data': 'Error loading sensor data',
+      'error_loading_device_data': 'Error loading device data'
     },
     es: {
       // Water Tank Size
@@ -410,11 +440,15 @@ export class TranslationService {
       'registered': 'Registrados',
 
       'sensor_monitoring': 'Monitoreo de Sensores',
+      'device_monitoring': 'Monitoreo de Dispositivos',
       'realtime_monitoring': 'Monitoreo en tiempo real de sensores de calidad y flujo de agua',
       'live_data': 'Datos en Vivo',
       'view_sensor_history': 'Ver historial de sensores',
+      'view_device_history': 'Ver historial de dispositivos',
       'active_sensors': 'Sensores Activos',
+      'active_devices': 'Dispositivos Activos',
       'sensor_events_data': 'Datos de monitoreo en tiempo real de calidad y nivel de agua de todos los sensores activos',
+      'device_events_data': 'Datos de monitoreo en tiempo real de calidad y nivel de agua de todos los dispositivos activos',
 
       // Admin Dashboard
       'admin_dashboard': 'Panel de Administración',
@@ -596,6 +630,7 @@ export class TranslationService {
       'doc_number': 'Núm. Doc.',
       'subscriptions': 'Suscripciones',
       'sensor': 'Sensor',
+      'device': 'Dispositivo',
       'start_date': 'Fecha de Inicio',
       'end_date': 'Fecha de Fin',
 
@@ -681,35 +716,48 @@ export class TranslationService {
 
       // Sensor monitoring dashboard - Spanish
       'sensor_monitoring_title': 'Panel de Monitoreo de Sensores',
+      'device_monitoring_title': 'Panel de Monitoreo de Dispositivos',
       'updating': 'Actualizando...',
       'update_data': 'Actualizar Datos',
       'loading_sensor_data': 'Cargando datos de sensores...',
+      'loading_device_data': 'Cargando datos de dispositivos...',
       'error_loading_data': 'Error al Cargar Datos',
       'retry_button': 'Intentar de Nuevo',
       'events': 'Eventos',
       'current_quality': 'Calidad Actual',
       'sensor_id': 'ID del Sensor',
+      'device_id': 'ID del Dispositivo',
       'current_level': 'Nivel Actual',
       'no_active_sensor': 'Sin sensor activo',
+      'no_active_device': 'Sin dispositivo activo',
       'sensor_details': 'Detalles del Sensor',
+      'device_details': 'Detalles del Dispositivo',
       'resident_information': 'Información del Residente',
       'full_name': 'Nombre Completo',
       'subscription_status': 'Estado de Suscripción',
       'sensor_events': 'Eventos del Sensor',
+      'device_events': 'Eventos del Dispositivo',
       'event_type': 'Tipo de Evento',
       'quality_value': 'Valor de Calidad',
       'water_level': 'Nivel de Agua',
       'no_events_recorded': 'Sin Eventos Registrados',
       'no_events_available_sensor': 'Aún no se han registrado eventos del sensor para este residente.',
+      'no_events_available_device': 'Aún no se han registrado eventos del dispositivo para este residente.',
       'select_sensor': 'Seleccionar Sensor',
+      'select_device': 'Seleccionar Dispositivo',
       'available_sensors': 'Sensores Disponibles',
+      'available_devices': 'Dispositivos Disponibles',
       'latest_quality': 'Última Calidad',
       'total_events': 'Total de Eventos',
       'view_details': 'Ver Detalles',
       'no_sensors_available': 'No Hay Sensores Disponibles',
+      'no_devices_available': 'No Hay Dispositivos Disponibles',
       'no_sensors_message': 'Este residente aún no tiene sensores asignados.',
+      'no_devices_message': 'Este residente aún no tiene dispositivos asignados.',
       'back_to_sensors': 'Volver a Sensores',
+      'back_to_devices': 'Volver a Dispositivos',
       'sensor_information': 'Información del Sensor',
+      'device_information': 'Información del Dispositivo',
       'quality_range': 'Rango de Calidad',
       'status_summary': 'Resumen de Estado',
 
@@ -724,6 +772,11 @@ export class TranslationService {
       'event_warning': 'Advertencia',
       'event_critical': 'Crítico',
       'event_maintenance': 'Mantenimiento',
+      'event_without_water': 'Sin Agua',
+      'event_water_measurement': 'Medición de Agua',
+      'event_monitoring_measurement': 'Medición de Monitoreo',
+      'event_iot_device_error': 'Error de Dispositivo IoT',
+      'event_water_contaminated': 'Agua Contaminada',
       'event_unknown': 'Desconocido',
 
       // Water quality values
@@ -733,18 +786,25 @@ export class TranslationService {
       'quality_bad': 'Malo',
       'quality_non_potable': 'No Potable',
       'quality_contaminated_water': 'Agua Contaminada',
+      'quality_without_water': 'Sin Agua',
 
       // Sensor status summary
       'no_sensors': 'Sin sensores',
+      'no_devices': 'Sin dispositivos',
       'critical_status': 'Crítico',
       'normal_status': 'Normal',
       'sensors_normal': 'normales',
+      'devices_normal': 'normales',
       'sensors_critical': 'críticos',
+      'devices_critical': 'críticos',
       'sensors_ok': 'OK',
+      'devices_ok': 'OK',
       'sensors_critical_short': 'críticos',
+      'devices_critical_short': 'críticos',
 
       // Error messages
-      'error_loading_sensor_data': 'Error al cargar los datos de sensores'
+      'error_loading_sensor_data': 'Error al cargar los datos de sensores',
+      'error_loading_device_data': 'Error al cargar los datos de dispositivos'
     }
   };
 

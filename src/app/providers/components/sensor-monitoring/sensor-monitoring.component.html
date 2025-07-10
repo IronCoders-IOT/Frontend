@@ -7,12 +7,12 @@
         <div class="header-content">
             <h1 class="dashboard-title">
                 <i class="fa fa-tint"></i>
-                {{ translate('sensor_monitoring_title') }}
+                {{ translate('device_monitoring_title') }}
             </h1>
             <p class="dashboard-subtitle">{{ translate('realtime_monitoring') }}</p>
         </div>
         <div class="header-actions">
-            <button class="btn-refresh" (click)="loadSensorData()" [disabled]="isLoading">
+            <button class="btn-refresh" (click)="loadDeviceData()" [disabled]="isLoading">
                 <i [class]="isLoading ? 'fa fa-spinner fa-spin' : 'fa fa-sync-alt'"></i>
                 {{ isLoading ? translate('updating') : translate('update_data') }}
             </button>
@@ -22,7 +22,7 @@
     <!-- Loading State -->
     <div *ngIf="isLoading" class="loading-state">
         <div class="loading-spinner"></div>
-        <p>{{ translate('loading_sensor_data') }}</p>
+        <p>{{ translate('loading_device_data') }}</p>
     </div>
 
     <!-- Error State -->
@@ -43,15 +43,15 @@
         <div class="stats-grid">
             <div class="stat-card total-residents">
                 <div class="stat-content">
-                    <h3>{{ residentSensorData.length }}</h3>
+                    <h3>{{ residentDeviceData.length }}</h3>
                     <p>{{ translate('residents') }}</p>
                 </div>
             </div>
 
             <div class="stat-card active-sensors">
                 <div class="stat-content">
-                    <h3>{{ getActiveSensorsCount() }}</h3>
-                    <p>{{ translate('active_sensors') }}</p>
+                    <h3>{{ getActiveDevicesCount() }}</h3>
+                    <p>{{ translate('active_devices') }}</p>
                 </div>
             </div>
 
@@ -84,9 +84,9 @@
             
             <div class="residents-grid">
                 <div class="resident-dashboard-card" 
-                     *ngFor="let residentData of residentSensorData" 
+                     *ngFor="let residentData of residentDeviceData" 
                      (click)="selectResident(residentData)"
-                     [class.no-sensor]="!hasActiveSensor(residentData)">
+                     [class.no-sensor]="!hasActiveDevice(residentData)">
                     
                     <div class="card-header">
                         <div class="resident-avatar">
@@ -96,8 +96,8 @@
                             <h4>{{ residentData.resident.firstName }} {{ residentData.resident.lastName }}</h4>
                             <p class="resident-id">{{ residentData.resident.documentNumber }}</p>
                         </div>
-                        <div class="sensor-status-indicator" [ngClass]="hasActiveSensor(residentData) ? 'active' : 'inactive'">
-                            <i [class]="hasActiveSensor(residentData) ? 'fa fa-check-circle' : 'fa fa-times-circle'"></i>
+                        <div class="sensor-status-indicator" [ngClass]="hasActiveDevice(residentData) ? 'active' : 'inactive'">
+                            <i [class]="hasActiveDevice(residentData) ? 'fa fa-check-circle' : 'fa fa-times-circle'"></i>
                         </div>
                     </div>
 
@@ -107,18 +107,18 @@
                             <span>{{ residentData.resident.address }}</span>
                         </div>
                         
-                        <div *ngIf="hasActiveSensor(residentData)" class="sensor-metrics">
-                            <!-- Mostrar número de sensores activos si hay más de uno -->
+                        <div *ngIf="hasActiveDevice(residentData)" class="sensor-metrics">
+                            <!-- Mostrar número de dispositivos activos si hay más de uno -->
                             <div class="metric" *ngIf="getActiveSubscriptions(residentData).length > 1">
-                                <div class="metric-label">{{ translate('active_sensors') }}</div>
+                                <div class="metric-label">{{ translate('active_devices') }}</div>
                                 <div class="metric-value sensor-count">
                                     {{ getActiveSubscriptions(residentData).length }}
                                 </div>
                             </div>
                             
-                            <!-- Mostrar sensor ID si solo hay uno -->
+                            <!-- Mostrar device ID si solo hay uno -->
                             <div class="metric" *ngIf="getActiveSubscriptions(residentData).length === 1">
-                                <div class="metric-label">{{ translate('sensor_id') }}</div>
+                                <div class="metric-label">{{ translate('device_id') }}</div>
                                 <div class="metric-value">{{ getActiveSubscription(residentData)?.deviceId }}</div>
                             </div>
                             
@@ -139,15 +139,15 @@
                             </div>
                         </div>
 
-                        <div *ngIf="!hasActiveSensor(residentData)" class="no-sensor-info">
+                        <div *ngIf="!hasActiveDevice(residentData)" class="no-sensor-info">
                             <i class="fa fa-exclamation-triangle"></i>
-                            <span>{{ translate('no_active_sensor') }}</span>
+                            <span>{{ translate('no_active_device') }}</span>
                         </div>
                     </div>
 
                     <div class="card-footer">
                        
-                        <div class="events-summary" *ngIf="hasActiveSensor(residentData)">
+                        <div class="events-summary" *ngIf="hasActiveDevice(residentData)">
                             <span class="events-count">{{ residentData.sensorEvents.length }} {{ translate('events') }}</span>
                             <span class="status-badge" [ngClass]="getStatusClass(getActiveSubscription(residentData)?.status || '')">
                                 {{ getStatusText(getActiveSubscription(residentData)?.status || '') }}
@@ -168,12 +168,12 @@
 <!-- Modal para selección de sensores y detalles -->
 <div *ngIf="isModalOpen" class="modal-overlay" (click)="closeModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
-        <!-- Modal para lista de sensores -->
-        <div *ngIf="modalStep === 'sensors'" class="sensor-selection-modal">
+        <!-- Modal para lista de dispositivos -->
+        <div *ngIf="modalStep === 'devices'" class="sensor-selection-modal">
             <div class="modal-header">
                 <h2 class="modal-title">
                     <i class="fa fa-microchip"></i>
-                    {{ translate('select_sensor') }}
+                    {{ translate('select_device') }}
                     <span *ngIf="selectedResident"> - {{ selectedResident.resident.firstName }} {{ selectedResident.resident.lastName }}</span>
                 </h2>
                 <button class="btn-close" (click)="closeModal()">
@@ -194,40 +194,40 @@
                 </div>
 
                 <div class="sensors-grid" *ngIf="selectedResident">
-                    <h4>{{ translate('available_sensors') }} ({{ selectedResident.subscriptions.length }})</h4>
+                    <h4>{{ translate('available_devices') }} ({{ selectedResident.subscriptions.length }})</h4>
                     
                     <div class="sensors-list">
                         <div *ngFor="let subscription of selectedResident.subscriptions" 
                              class="sensor-card"
                              [ngClass]="subscription.status.toLowerCase()"
-                             (click)="selectSensor(subscription)">
+                             (click)="selectDevice(subscription)">
                             
                             <div class="sensor-header">
                                 <div class="sensor-icon">
                                     <i class="fa fa-tint"></i>
                                 </div>
                                 <div class="sensor-info">
-                                    <h5>{{ translate('sensor') }} #{{ subscription.deviceId }}</h5>
+                                    <h5>{{ translate('device') }} #{{ subscription.deviceId }}</h5>
                                     <span class="sensor-status" [ngClass]="getStatusClass(subscription.status)">
                                         {{ getStatusText(subscription.status) }}
                                     </span>
                                 </div>
                                 <div class="sensor-activity">
                                     <span class="activity-indicator" 
-                                          [ngClass]="hasSensorActivity(subscription.deviceId) ? 'active' : 'inactive'">
-                                        <i [class]="hasSensorActivity(subscription.deviceId) ? 'fa fa-check-circle' : 'fa fa-exclamation-circle'"></i>
+                                          [ngClass]="hasDeviceActivity(subscription.deviceId) ? 'active' : 'inactive'">
+                                        <i [class]="hasDeviceActivity(subscription.deviceId) ? 'fa fa-check-circle' : 'fa fa-exclamation-circle'"></i>
                                     </span>
                                 </div>
                             </div>
 
                             <div class="sensor-summary" *ngIf="subscription.status.toLowerCase() === 'active'">
-                                <div class="summary-item" *ngIf="getLatestEventForSensor(subscription.deviceId) as latestEvent">
+                                <div class="summary-item" *ngIf="getLatestEventForDevice(subscription.deviceId) as latestEvent">
                                     <span class="summary-label">{{ translate('latest_quality') }}:</span>
                                     <span class="summary-value" [ngClass]="getQualityClass(latestEvent.qualityValue)">
                                         {{ translateQualityValue(latestEvent.qualityValue) }}
                                     </span>
                                 </div>
-                                <div class="summary-item" *ngIf="getLatestEventForSensor(subscription.deviceId) as latestEvent">
+                                <div class="summary-item" *ngIf="getLatestEventForDevice(subscription.deviceId) as latestEvent">
                                     <span class="summary-label">{{ translate('water_level') }}:</span>
                                     <span class="summary-value" [ngClass]="getLevelClass(latestEvent.levelValue)">
                                         {{ latestEvent.levelValue }}%
@@ -236,7 +236,7 @@
                                 <div class="summary-item">
                                     <span class="summary-label">{{ translate('total_events') }}:</span>
                                     <span class="summary-value events-count">
-                                        {{ getSensorEvents(subscription.deviceId).length }}
+                                        {{ getDeviceEvents(subscription.deviceId).length }}
                                     </span>
                                 </div>
                             </div>
@@ -264,8 +264,8 @@
                         <div class="no-sensors-icon">
                             <i class="fa fa-microchip"></i>
                         </div>
-                        <h4>{{ translate('no_sensors_available') }}</h4>
-                        <p>{{ translate('no_sensors_message') }}</p>
+                        <h4>{{ translate('no_devices_available') }}</h4>
+                        <p>{{ translate('no_devices_message') }}</p>
                     </div>
                 </div>
             </div>
@@ -274,13 +274,13 @@
         <!-- Modal para detalles específicos del sensor -->
         <div *ngIf="modalStep === 'details'" class="sensor-details-modal">
             <div class="modal-header">
-                <button class="btn-back" (click)="backToSensorList()" title="{{ translate('back_to_sensors') }}">
+                <button class="btn-back" (click)="backToDeviceList()" title="{{ translate('back_to_devices') }}">
                     <i class="fa fa-arrow-left"></i>
                     <span>{{ translate('back') }}</span>
                 </button>
                 <h2 class="modal-title">
                     <i class="fa fa-chart-area"></i>
-                    {{ translate('sensor_details') }} #{{ selectedSensor?.deviceId }}
+                    {{ translate('device_details') }} #{{ selectedDevice?.deviceId }}
                     <span *ngIf="selectedResident"> - {{ selectedResident.resident.firstName }} {{ selectedResident.resident.lastName }}</span>
                 </h2>
                 <button class="btn-close" (click)="closeModal()">
@@ -289,7 +289,7 @@
             </div>
 
             <div class="modal-body">
-                <div class="sensor-detail-info" *ngIf="selectedSensor && selectedResident">
+                <div class="sensor-detail-info" *ngIf="selectedDevice && selectedResident">
                     <!-- Información del residente -->
                     <div class="detail-section">
                         <h3>{{ translate('resident_information') }}</h3>
@@ -313,38 +313,38 @@
                         </div>
                     </div>
 
-                    <!-- Información del sensor -->
+                    <!-- Información del dispositivo -->
                     <div class="detail-section">
-                        <h3>{{ translate('sensor_information') }}</h3>
+                        <h3>{{ translate('device_information') }}</h3>
                         <div class="detail-grid">
                             <div class="detail-item">
-                                <span class="detail-label">{{ translate('sensor_id') }}</span>
-                                <span class="detail-value">{{ selectedSensor.deviceId }}</span>
+                                <span class="detail-label">{{ translate('device_id') }}</span>
+                                <span class="detail-value">{{ selectedDevice.deviceId }}</span>
                             </div>
                             <div class="detail-item">
                                 <span class="detail-label">{{ translate('subscription_status') }}</span>
                                 <span class="detail-value">
-                                    <span class="status-badge" [ngClass]="getStatusClass(selectedSensor.status)">
-                                        {{ getStatusText(selectedSensor.status) }}
+                                    <span class="status-badge" [ngClass]="getStatusClass(selectedDevice.status)">
+                                        {{ getStatusText(selectedDevice.status) }}
                                     </span>
                                 </span>
                             </div>
                             <div class="detail-item">
                                 <span class="detail-label">{{ translate('start_date') }}</span>
-                                <span class="detail-value">{{ selectedSensor.startDate }}</span>
+                                <span class="detail-value">{{ selectedDevice.startDate }}</span>
                             </div>
                             <div class="detail-item">
                                 <span class="detail-label">{{ translate('end_date') }}</span>
-                                <span class="detail-value">{{ selectedSensor.endDate }}</span>
+                                <span class="detail-value">{{ selectedDevice.endDate }}</span>
                             </div>
                         </div>
                     </div>
 
 
                 </div>
-                                    <!-- Eventos del sensor específico -->
+                                    <!-- Eventos del dispositivo específico -->
                     <div class="detail-section">
-                        <h3>{{ translate('sensor_events') }} ({{ getSensorEvents(selectedSensor.deviceId).length }})</h3>
+                        <h3>{{ translate('device_events') }} ({{ getDeviceEvents(selectedDevice.deviceId).length }})</h3>
                         <div class="events-table-container">
                             <table class="events-table">
                                 <thead>
@@ -356,8 +356,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let event of getSensorEvents(selectedSensor.deviceId); let i = index" 
-                                        [class.latest-event]="i === getSensorEvents(selectedSensor.deviceId).length - 1">
+                                    <tr *ngFor="let event of getDeviceEvents(selectedDevice.deviceId); let i = index" 
+                                        [class.latest-event]="i === getDeviceEvents(selectedDevice.deviceId).length - 1">
                                         <td>{{ event.id }}</td>
                                         <td>
                                             <span class="event-type" [ngClass]="getEventTypeClass(event.eventType)">
@@ -379,12 +379,12 @@
                             </table>
                         </div>
 
-                        <div *ngIf="getSensorEvents(selectedSensor.deviceId).length === 0" class="no-events">
+                        <div *ngIf="getDeviceEvents(selectedDevice.deviceId).length === 0" class="no-events">
                             <div class="no-events-icon">
                                 <i class="fa fa-chart-line"></i>
                             </div>
                             <h4>{{ translate('no_events_recorded') }}</h4>
-                            <p>{{ translate('no_events_available_sensor') }}</p>
+                            <p>{{ translate('no_events_available_device') }}</p>
                         </div>
                     </div>
             </div>

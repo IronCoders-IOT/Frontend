@@ -496,6 +496,10 @@
   color: #dc2626 !important; /* Rojo para contaminated water */
 }
 
+.quality-without-water {
+  color: #6b7280 !important; /* Gris para without water */
+}
+
 /* Modal styles */
 .modal-overlay {
   position: fixed;
@@ -629,47 +633,13 @@
 }
 
 /* Event type badges */
-.event-normal {
-  background: #d1fae5;
-  color: #065f46;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  font-family: 'Inter-Medium', sans-serif;
-}
-
-.event-warning {
-  background: #fef3c7;
-  color: #92400e;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  font-family: 'Inter-Medium', sans-serif;
-}
-
-.event-critical {
-  background: #fee2e2;
-  color: #dc2626;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  font-family: 'Inter-Medium', sans-serif;
-}
-
-.event-maintenance {
-  background: #e0e7ff;
-  color: #3730a3;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  font-family: 'Inter-Medium', sans-serif;
-}
-
-.event-unknown {
+.event-normal,
+.event-warning,
+.event-critical,
+.event-maintenance,
+.event-unknown,
+.event-water-measurement,
+.event-monitoring-measurement {
   background: #f1f5f9;
   color: #64748b;
   padding: 0.25rem 0.5rem;
