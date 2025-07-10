@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../AquaConecta/auth/application/services/auth.service';
-import { User } from '../../../AquaConecta/auth/domain/models/user.model';
+
+import { User } from '../../../iam/domain/models/user.model';
 import { CommonModule } from '@angular/common';
+import {AuthService} from '../../../iam/application/services/auth.service';
 
 @Component({
   selector: 'app-page-not-found',
@@ -25,12 +26,12 @@ export class PageNotFoundComponent implements OnInit {
     // Subscribe to current user
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
-      
+
       // Si no hay usuario cargado, intentar cargar desde localStorage
       if (!user) {
         this.loadUserFromStorage();
       }
-      
+
       // Dar un poco de tiempo para que se cargue la información del usuario
       setTimeout(() => {
         this.determineRedirect();
@@ -54,9 +55,9 @@ export class PageNotFoundComponent implements OnInit {
     console.log('=== DETERMINE REDIRECT DEBUG ===');
     console.log('Current user:', this.currentUser);
     console.log('Is admin?', this.isAdmin());
-    
+
     let redirectPath: string;
-    
+
     if (!this.currentUser) {
       // Usuario no autenticado - enviar al login
       redirectPath = '/login';
@@ -76,40 +77,40 @@ export class PageNotFoundComponent implements OnInit {
 
     console.log('Redirect path:', redirectPath);
     console.log('=== END DETERMINE REDIRECT DEBUG ===');
-    
+
     this.startCountdown(redirectPath);
   }
 
   private isAdmin(): boolean {
     // Múltiples métodos para verificar si el usuario es administrador
     if (!this.currentUser) return false;
-    
+
     // 1. Verificar si el username es exactamente "admin" (como en home.component.ts)
     if (this.currentUser.username === "admin") {
       return true;
     }
-    
+
     // 2. Verificar por roles en el objeto user
     if (this.currentUser.roles?.toLowerCase().includes('admin')) {
       return true;
     }
-    
+
     // 3. Verificar por username que contenga admin
     if (this.currentUser.username?.toLowerCase().includes('admin')) {
       return true;
     }
-    
+
     // 4. Verificar en localStorage por si el rol se guarda separadamente
     const storedRoles = localStorage.getItem('user_roles') || localStorage.getItem('roles');
     if (storedRoles?.toLowerCase().includes('admin')) {
       return true;
     }
-    
+
     // 5. Verificar la URL actual - si ya está en admin dashboard, es admin
     if (window.location.pathname.includes('/admin')) {
       return true;
     }
-    
+
     // 6. Verificar específicamente en localStorage como lo hace home.component.ts
     const storedUser = localStorage.getItem('auth_user');
     if (storedUser) {
@@ -122,7 +123,7 @@ export class PageNotFoundComponent implements OnInit {
         console.error('Error parsing user from localStorage:', error);
       }
     }
-    
+
     console.log('Admin check details:', {
       userRoles: this.currentUser.roles,
       username: this.currentUser.username,
@@ -130,7 +131,7 @@ export class PageNotFoundComponent implements OnInit {
       currentPath: window.location.pathname,
       currentUser: this.currentUser
     });
-    
+
     return false;
   }
 

@@ -56,9 +56,9 @@
       </div>
 
       <!-- General Requests Card -->
-      <div class="dashboard-card" routerLink="/reports">        <div class="card-header">
+      <div class="dashboard-card" routerLink="/issue-reports">        <div class="card-header">
           <div class="card-icon general-requests">📋</div>
-          <h3 class="card-title">{{ translate('service_reports') }}</h3>
+          <h3 class="card-title">{{ translate('issue_reports') }}</h3>
         </div>
         <div class="card-content">
           <div class="card-info">
@@ -95,22 +95,22 @@
         </div>
       </div>
 
-      <!-- Sensor Events Card -->
+      <!-- Device Events Card -->
       <div class="dashboard-card" routerLink="/sensor-monitoring">        <div class="card-header">
-          <div class="card-icon sensors">📊</div>
-          <h3 class="card-title">{{ translate('sensor_monitoring') }}</h3>
+          <div class="card-icon devices">📊</div>
+          <h3 class="card-title">{{ translate('device_monitoring') }}</h3>
         </div>
         <div class="card-content">
           <div class="card-info">
             <p class="card-description">
-              {{ translate('sensor_events_data') }}
+              {{ translate('device_events_data') }}
             </p>
-            <div class="status-badge status-active">{{lastSensorUpdate || translate('live_data') }}</div>
-            <a class="card-action">{{ translate('view_sensor_history') }}</a>
+            <div class="status-badge status-active">{{lastDeviceUpdate || translate('live_data') }}</div>
+            <a class="card-action">{{ translate('view_device_history') }}</a>
           </div>
           <div class="card-metric">
-            <span class="card-number">{{sensorEventsCount || '0'}}</span>
-            <span class="card-label">{{ translate('sensor_events') }}</span>
+            <span class="card-number">{{deviceEventsCount || '0'}}</span>
+            <span class="card-label">{{ translate('device_events') }}</span>
           </div>
         </div>
       </div>
