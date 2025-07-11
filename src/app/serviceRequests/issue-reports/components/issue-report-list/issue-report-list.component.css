@@ -845,3 +845,8 @@ th, td {
   }
 }
 
+.non-clickable-row {
+  opacity: 0.5;
+  pointer-events: none;
+}
+

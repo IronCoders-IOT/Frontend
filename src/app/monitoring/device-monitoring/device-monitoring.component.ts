@@ -145,6 +145,8 @@ export class DeviceMonitoringComponent implements OnInit {
         return 'quality-non-potable';
       case 'contaminated water':
         return 'quality-contaminated';
+      case 'contaminated': // <-- Agregado para el valor recibido del backend
+        return 'quality-contaminated';
       case 'without water':
         return 'quality-without-water';
       default:
@@ -287,7 +289,7 @@ export class DeviceMonitoringComponent implements OnInit {
     }
 
     // Ordenar de mejor a peor: excellent, good, acceptable, bad, non-potable, contaminated water
-    const qualityOrder = ['excellent', 'good', 'acceptable', 'bad', 'non-potable', 'contaminated water'];
+    const qualityOrder = ['excellent', 'good', 'acceptable', 'bad', 'non-potable', 'contaminated'];
     const sortedQualities = uniqueQualities.sort((a, b) => {
       const indexA = qualityOrder.indexOf(a.toLowerCase().trim());
       const indexB = qualityOrder.indexOf(b.toLowerCase().trim());
@@ -307,7 +309,7 @@ export class DeviceMonitoringComponent implements OnInit {
         const levelValue = typeof latestEvent.levelValue === 'string' ?
           parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
         const qualityLower = latestEvent.qualityValue.toLowerCase().trim();
-        const isBadQuality = ['bad', 'non-potable', 'contaminated water', 'without water'].includes(qualityLower);
+        const isBadQuality = ['bad', 'non-potable', 'contaminated', 'without water'].includes(qualityLower);
         return isBadQuality || levelValue < 30;
       }
       return false;
@@ -324,7 +326,7 @@ export class DeviceMonitoringComponent implements OnInit {
         const levelValue = typeof latestEvent.levelValue === 'string' ?
           parseFloat(latestEvent.levelValue) : latestEvent.levelValue;
         const qualityLower = latestEvent.qualityValue.toLowerCase().trim();
-        const isBadQuality = ['bad', 'non-potable', 'contaminated water', 'without water'].includes(qualityLower);
+        const isBadQuality = ['bad', 'non-potable', 'contaminated', 'without water'].includes(qualityLower);
         return isBadQuality || levelValue < 30;
       }
       return false;
@@ -377,7 +379,7 @@ export class DeviceMonitoringComponent implements OnInit {
         case 'acceptable': return 4;
         case 'bad': return 3;
         case 'non-potable': return 2;
-        case 'contaminated water': return 1;
+        case 'contaminated': return 1;
         case 'without water': return 0;
         default: return 0;
       }
@@ -391,7 +393,7 @@ export class DeviceMonitoringComponent implements OnInit {
     if (average >= 3.5) return 'acceptable';
     if (average >= 2.5) return 'bad';
     if (average >= 1.5) return 'non-potable';
-    if (average >= 0.5) return 'contaminated water';
+    if (average >= 0.5) return 'contaminated';
     return 'without water';
   }
 
