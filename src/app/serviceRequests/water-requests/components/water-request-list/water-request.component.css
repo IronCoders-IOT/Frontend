@@ -1,0 +1,488 @@
+.request-container {
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* ...existing code... */
+
+.request-title-search {
+  margin: 40px auto 0 auto;
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.title-request {
+  font-size: 40px;
+  color: #1f2937;
+  font-family: "Inter-Regular", sans-serif;
+  font-weight: 600;
+  text-align: left;
+}
+
+.search-container {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+  height: 40px;
+  /* Elimina alineación forzada a la izquierda */
+  margin-left: 0;
+  justify-content: flex-end;
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.input-wrapper .icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.input-wrapper input {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 15px 8px 38px;
+  font-size: 15px;
+  outline: none;
+  width: 200px;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.input-wrapper input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+input {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 15px;
+  font-size: 14px;
+  outline: none;
+  width: 170px;
+  transition: all 0.2s ease;
+  font-family: Inter-Medium, sans-serif;
+  background: white;
+}
+
+input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-button {
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 15px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  font-family: Inter-Medium, sans-serif;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.search-button:hover {
+  background-color: #2563eb;
+}
+
+/*----------------------------------------------*/
+
+/* Structure */
+.water-requests-data-container {
+  position: relative;
+  max-width: 1200px;
+  width: 100%;
+  margin: 1% auto 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  background: white;
+  border: 1px solid #e5e7eb;
+}
+
+.water-requests-table-container {
+  position: relative;
+  min-height: 200px;
+  overflow: auto;
+}
+
+/* Tabla profesional */
+table {
+  width: 100%;
+  background-color: white;
+  font-size: 15px;
+  margin-bottom: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Header limpio y profesional */
+th {
+  font-weight: 600;
+  background-color: #f9fafb;
+  color: #374151;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  font-family: "Inter-Medium", sans-serif;
+}
+
+/* Celdas limpias */
+td {
+  color: #374151;
+  font-size: 14px;
+  font-family: "Inter-Regular", sans-serif;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.15s ease;
+}
+
+/* Hover sutil */
+tr:hover {
+  background-color: #f9fafb;
+}
+
+.water-requests-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(2px);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.water-requests-rate-limit-reached {
+  max-width: 360px;
+  text-align: center;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  width: 64px;
+}
+
+.mat-column-created {
+  width: 124px;
+}
+
+/*-----Status profesional----------------------*/
+/* Centrar header de columna status */
+th.mat-column-status, th[mat-header-cell][matColumnDef="status"] {
+  text-align: center !important;
+}
+
+/* Forzar centrado cuando hay mat-sort-header */
+th.mat-column-status .mat-sort-header-container,
+th[mat-header-cell][matColumnDef="status"] .mat-sort-header-container {
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+/* Centrar el texto del sort header */
+th.mat-column-status .mat-sort-header-content,
+th[mat-header-cell][matColumnDef="status"] .mat-sort-header-content {
+  text-align: center !important;
+  justify-content: center !important;
+}
+
+/* Usar ::ng-deep para forzar el centrado del sort header */
+::ng-deep th.mat-column-status .mat-sort-header-container,
+::ng-deep th[mat-header-cell][matColumnDef="status"] .mat-sort-header-container {
+  justify-content: center !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+::ng-deep th.mat-column-status .mat-sort-header-content,
+::ng-deep th[mat-header-cell][matColumnDef="status"] .mat-sort-header-content {
+  text-align: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+/* Forzar centrado específico para la columna status */
+::ng-deep .water-requests-table th.mat-column-status,
+::ng-deep .water-requests-table th[mat-header-cell][matColumnDef="status"] {
+  text-align: center !important;
+}
+
+::ng-deep .water-requests-table th.mat-column-status .mat-sort-header-container,
+::ng-deep .water-requests-table th[mat-header-cell][matColumnDef="status"] .mat-sort-header-container {
+  justify-content: center !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.custom-cell-status {
+  text-align: center;
+  width: 15%;
+}
+
+.status-received,
+.status-in-progress,
+.status-closed {
+  display: inline-block;
+  width: 90%;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: "Inter-Medium", sans-serif;
+  /* Eliminar posibles restricciones de texto */
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  min-width: 80px;
+  max-width: none;
+}
+
+.status-received {
+  background-color: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.status-in-progress {
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.status-closed {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+/* Ajustar padding de headers y celdas para tabla compacta */
+th, td {
+  padding: 12px 16px;
+}
+
+/* Links profesionales */
+.schedule-link {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  display: inline-block;
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  font-size: 13px;
+}
+
+.schedule-link:hover:not(.disabled) {
+  color: #1d4ed8;
+  background-color: #e0f2fe;
+  border-color: #7dd3fc;
+}
+
+.schedule-link.disabled {
+  color: #9ca3af !important;
+  background-color: #f9fafb !important;
+  border-color: #e5e7eb !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Filas deshabilitadas */
+.row-disabled {
+  opacity: 0.6;
+  background-color: #f9fafb !important;
+}
+
+.row-disabled:hover {
+  background-color: #f9fafb !important;
+}
+
+/* Responsive profesional */
+@media (max-width: 1200px) {
+  .request-container {
+    width: 95%;
+    padding: 0 10px;
+    margin-top: 20px;
+  }
+
+  .request-title-search {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .title-request {
+    font-size: 32px;
+    margin: 0;
+    text-align: center;
+  }
+
+  .search-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .input-wrapper {
+    display: flex;
+    justify-content: center;
+    width: auto;
+  }
+
+  .input-wrapper input {
+    width: 180px;
+    margin: 0;
+    padding-left: 38px;
+  }
+
+  .search-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .water-requests-data-container,
+  .water-requests-table-container,
+  table {
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .status-received,
+  .status-in-progress,
+  .status-closed {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .schedule-link {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+}
+
+/* Scrollbar minimalista */
+.water-requests-table-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.water-requests-table-container::-webkit-scrollbar-track {
+  background: #f9fafb;
+}
+
+.water-requests-table-container::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.water-requests-table-container::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Indicadores de ordenamiento */
+.mat-sort-header-arrow {
+  color: #6b7280 !important;
+}
+
+/* Mejoras sutiles */
+tr {
+  transition: background-color 0.15s ease;
+}
+
+th:hover {
+  background-color: #f3f4f6;
+}
+
+/* Bordes más definidos */
+table {
+  border: 1px solid #e5e7eb;
+}
+
+/* Primera y última fila */
+tr:first-child td {
+  border-top: none;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* Forzar que el status nunca tenga ellipsis ni recorte */
+.custom-cell-status,
+.custom-cell-status span,
+td.custom-cell-status,
+.mat-cell.custom-cell-status,
+.mat-cell .custom-cell-status,
+.mat-column-status,
+td.mat-column-status {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  word-break: break-word !important;
+  max-width: none !important;
+}
+
+/* Asegura que el chip ocupe todo el ancho disponible */
+.custom-cell-status span {
+  display: block !important;
+  width: 100% !important;
+  min-width: 80px;
+  box-sizing: border-box;
+}
+
+[matColumnDef="status"] {
+  text-align: center !important;
+}
+
+[matColumnDef="status"] * {
+  text-align: center !important;
+  justify-content: center !important;
+}

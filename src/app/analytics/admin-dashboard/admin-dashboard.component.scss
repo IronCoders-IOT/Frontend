@@ -1,0 +1,665 @@
+.welcome-section {
+  width: 100%;
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.welcome-content {
+  text-align: left;
+  flex: 1;
+}
+
+.welcome-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  font-family: 'Inter-Bold', sans-serif;
+}
+
+.welcome-content h1 span {
+  color: #2196f3;
+}
+
+.welcome-content p {
+  font-size: 1.2rem;
+  color: #64748b;
+  margin-bottom: 0;
+}
+
+.user-profile-section {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.profile-button {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 50px;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter-Medium', sans-serif;
+  font-weight: 500;
+  color: #2c3e50;
+  text-decoration: none;
+}
+
+.profile-button:hover {
+  border-color: #2196f3;
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+}
+
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2196f3, #03a9f4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.profile-name {
+  font-size: 0.9rem;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.profile-role {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.profile-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #2c3e50;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+  border-radius: 8px;
+  margin: 0.25rem;
+}
+
+.dropdown-item:hover {
+  background: #f1f5f9;
+}
+
+.dropdown-item:first-child {
+  margin-top: 0.5rem;
+}
+
+.dropdown-item:last-child {
+  margin-bottom: 0.5rem;
+}
+
+.dropdown-item.logout {
+  color: #dc2626;
+  border-top: 1px solid #f1f5f9;
+  margin-top: 0.5rem;
+}
+
+.dropdown-item.logout:hover {
+  background: #fef2f2;
+}
+
+/* Language selector styles */
+.dropdown-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 0.5rem 0;
+}
+
+.language-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  cursor: default;
+}
+
+.language-selector:hover {
+  background: #f8fafc;
+}
+
+.language-select {
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+  color: #2c3e50;
+  margin-left: 0.5rem;
+}
+
+.language-select option {
+  background: white;
+  color: #2c3e50;
+}
+
+/* Override any dark themes */
+body,
+html,
+app-admin-dashboard {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+
+}
+
+mat-card,
+mat-card-content,
+mat-card-header,
+mat-card-title {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+    font-family: "Inter-Regular", sans-serif;
+
+}
+
+.status-header h3,
+.status-description,
+.finance-card-header h3,
+.finance-description,
+.section-header h2,
+.dashboard-title,
+.dashboard-subtitle,
+mat-card-title,
+th,
+td {
+    color: #333333 !important;
+    font-family: "Inter-Regular", sans-serif;
+
+}
+
+.activity-table th,
+.activity-table td {
+    color: #333333 !important;
+    background-color: #ffffff !important;
+}
+
+td,
+th {
+    color: #333333 !important;
+    /* Asegura que el texto de tabla sea oscuro */
+}
+
+.light-card {
+    background-color: #ffffff;
+    color: #333333;
+}
+
+.status-header h3,
+.finance-card-header h3,
+.status-description,
+.finance-description {
+    color: #333333;
+}
+
+/* admin-admin-dashboard.component.scss */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: "Inter-Regular", sans-serif;
+    color: #333333;
+}
+
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+.dashboard-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-family: "Inter-Bold", sans-serif;
+}
+
+.dashboard-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    margin: 0;
+}
+
+/* Summary Cards Styles */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.summary-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+}
+
+.summary-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.summary-card mat-card-content {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.card-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    margin-right: 1.5rem;
+}
+
+.card-icon-container mat-icon {
+    font-size: 28px;
+    height: 28px;
+    width: 28px;
+    color: white;
+}
+
+.blue {
+    background-color: #2196f3;
+}
+
+.green {
+    background-color: #4caf50;
+}
+
+.purple {
+    background-color: #9c27b0;
+}
+
+.orange {
+    background-color: #ff9800;
+}
+
+.card-data h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #666;
+    margin: 0 0 0.5rem 0;
+}
+
+.card-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    font-family: "Inter-Bold", sans-serif;
+}
+
+/* Dashboard Sections */
+.dashboard-section {
+    margin-bottom: 3rem;
+}
+
+.section-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 0.5rem 0;
+}
+
+.section-note {
+    font-size: 0.9rem;
+    color: #64748b;
+    font-style: italic;
+    margin: 0;
+    opacity: 0.8;
+}
+
+/* Financial Cards */
+.finance-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.finance-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-color: #ffffff;
+}
+
+.finance-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.finance-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.finance-card-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.finance-card-header mat-icon {
+    color: #2196f3;
+}
+
+.finance-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2196f3;
+    margin: 0 0 0.5rem 0;
+    font-family: "Inter-Bold", sans-serif;
+}
+
+.finance-description {
+    color: #666;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Status Overview */
+.status-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.status-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-color: #ffffff;
+}
+
+.status-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.status-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.status-value {
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+}
+
+.status-description {
+    color: #666;
+    margin: 0.75rem 0 0 0;
+    font-size: 0.9rem;
+}
+
+/* Status color classes */
+.status-excellent {
+    color: #2e7d32;
+    background-color: rgba(46, 125, 50, 0.1);
+}
+
+.status-good {
+    color: #2196f3;
+    background-color: rgba(33, 150, 243, 0.1);
+}
+
+.status-average {
+    color: #ff9800;
+    background-color: rgba(255, 152, 0, 0.1);
+}
+
+.status-poor {
+    color: #f44336;
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+mat-progress-bar.status-excellent ::ng-deep .mdc-linear-progress__bar-inner {
+    border-color: #2e7d32;
+}
+
+mat-progress-bar.status-good ::ng-deep .mdc-linear-progress__bar-inner {
+    border-color: #2196f3;
+}
+
+mat-progress-bar.status-average ::ng-deep .mdc-linear-progress__bar-inner {
+    border-color: #ff9800;
+}
+
+mat-progress-bar.status-poor ::ng-deep .mdc-linear-progress__bar-inner {
+    border-color: #f44336;
+}
+
+/* Recent Activity */
+.activity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
+
+.activity-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+}
+
+.activity-card mat-card-header {
+    padding: 1rem 1rem 0 1rem;
+}
+
+.activity-card mat-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.activity-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+}
+
+/* Status badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-active {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-pending {
+    background-color: #fff8e1;
+    color: #ff8f00;
+}
+
+.status-received {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.status-in-progress {
+    background-color: #fff8e1;
+    color: #ff8f00;
+}
+
+.status-closed {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.view-all-container {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+.view-all-link {
+    color: #2196f3;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.view-all-link:hover {
+    color: #1976d2;
+    text-decoration: underline;
+}
+
+/* New styles for sensor metrics */
+.metric-details {
+  margin: 0.5rem 0;
+
+  .detail-text {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0.25rem 0;
+    font-family: 'Inter-Regular', sans-serif;
+  }
+}
+
+.status-info {
+  color: #0891b2 !important;
+  background: rgba(8, 145, 178, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* Enhanced status classes for quality and level */
+.status-excellent {
+  color: #059669 !important;
+
+  &.mat-mdc-progress-bar {
+    --mdc-linear-progress-active-indicator-color: #059669;
+    --mdc-linear-progress-track-color: rgba(5, 150, 105, 0.2);
+  }
+}
+
+.status-good {
+  color: #0891b2 !important;
+
+  &.mat-mdc-progress-bar {
+    --mdc-linear-progress-active-indicator-color: #0891b2;
+    --mdc-linear-progress-track-color: rgba(8, 145, 178, 0.2);
+  }
+}
+
+.status-average {
+  color: #d97706 !important;
+
+  &.mat-mdc-progress-bar {
+    --mdc-linear-progress-active-indicator-color: #d97706;
+    --mdc-linear-progress-track-color: rgba(217, 119, 6, 0.2);
+  }
+}
+
+.status-poor {
+  color: #dc2626 !important;
+
+  &.mat-mdc-progress-bar {
+    --mdc-linear-progress-active-indicator-color: #dc2626;
+    --mdc-linear-progress-track-color: rgba(220, 38, 38, 0.2);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .dashboard-container {
+        padding: 1.5rem;
+    }
+
+    .activity-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-title {
+        font-size: 2rem;
+    }
+
+    .dashboard-container {
+        padding: 1rem;
+    }
+
+    .card-value,
+    .finance-value {
+        font-size: 1.75rem;
+    }
+}

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../application/services/auth.service';
-import { ProviderApiServiceService } from '../../../../providers/services/provider-api.service.service';
+import { ProviderApiServiceService } from '../../../../profiles/providers/services/provider-api.service.service';
 import { AuthCredentials } from '../../../domain/models/auth-credentials.model';
 import { User } from '../../../domain/models/user.model';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
