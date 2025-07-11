@@ -48,7 +48,7 @@ export class HeaderContentComponent {
   }
   navigateToDashboard(): void {
     if (this.username === 'admin') {
-      this.router.navigate(['/admin/dashboard']);
+      this.router.navigate(['/admin/admin-dashboard']);
     } else if (this.username === 'provider') {
       this.router.navigate(['/home']);
     }
