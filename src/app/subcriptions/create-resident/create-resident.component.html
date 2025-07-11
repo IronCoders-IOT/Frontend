@@ -88,6 +88,11 @@
                 {{ translate('phone_pattern_resident') }}
               </div>
             </div>
+            <!-- Input de tarjeta de prueba -->
+            <div class="form-group">
+              <label for="testCard">Tarjeta de prueba</label>
+              <input type="text" id="testCard" class="form-control" value="5031755734530604" readonly style="font-family: 'Inter', 'Inter-Regular', monospace; color: #2563eb; letter-spacing: 1px;">
+            </div>
             <!-- Validación cruzada para coincidencia de contraseñas -->
             <div *ngIf="residentForm.errors?.['passwordMismatch'] && residentForm.touched" class="error-msg">
               {{ translate('passwords_no_match_resident') }}

@@ -51,8 +51,8 @@ export class IssueReportListComponent implements AfterViewInit {
   }
 
   // Función para determinar si la fila es clickeable
-  isRowClickable(): boolean {
-    return true; // Ahora todas las filas son clickeables
+  isRowClickable(row: any): boolean {
+    return row.status !== 'Closed';
   }
 
   tittle = 'Lista de Reportes';
