@@ -39,8 +39,6 @@ export class HomeComponent implements OnInit {
   lastDeviceUpdate: string = 'Live';
   isAdmin: boolean = false;
 
-  private apiUrl = 'http://localhost:3000/api';
-
   options = [
     { path: '/water-requests', name: 'Solicitud de Agua Potable' },
     { path: '/login', name: 'Iniciar Sesión' },

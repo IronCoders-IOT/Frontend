@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
             next: (user: User) => {
               console.log('Usuario autenticado:');
                 if(credentials.email === "admin"){
-                  this.router.navigate(['/admin/dashboard']);
+                  this.router.navigate(['admin/admin-dashboard']);
                 }else{
               // Navigate to the home page or admin-dashboard after successful login
                 this.router.navigate(['/home']);

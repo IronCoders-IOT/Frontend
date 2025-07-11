@@ -34,6 +34,6 @@ export const routes: Routes = [
   { path: 'provider/:id/detail', component: ProviderSummaryComponent },
   { path: 'provider/:id/profile', component: ProviderItemComponent },
   { path: 'sensor-monitoring', component: DeviceMonitoringComponent },
-  // Wildcard route for 404 page - must be last
+  
   { path: '**', component: PageNotFoundComponent }
 ];
