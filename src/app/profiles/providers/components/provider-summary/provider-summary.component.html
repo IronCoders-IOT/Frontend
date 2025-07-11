@@ -1,0 +1,64 @@
+<app-header-content></app-header-content>
+
+<div class="details-container">
+  <div class="provider-details-card">
+    <div class="title-container">
+      <h1>{{ provider.taxName }}</h1>
+    </div>
+    <div class="provider-ruc-phone">
+      <p> <span class="subtitle">RUC: </span><span class="ruc">{{ provider.ruc }}</span> </p>
+      <p><span class="subtitle">Phone: </span><span class="tlf">{{ provider.phone }}</span></p>
+    </div>
+    <p class="subtitle" style="margin-top: 20px;">{{provider.direction}}</p>
+    <!-- <div class="provider-actions">
+      <button class="btn-profile" (click)="goToProfile()">View Profile</button>
+    </div> -->
+  </div>
+
+  <div class="providers-data-container mat-elevation-z8">
+    <div class="providers-table-container">
+      <div style="padding: 24px 24px 0 24px;">
+        <p class="title-request" style="font-size: 25px; text-decoration: underline;">Active Residents</p>
+      </div>
+      <table mat-table [dataSource]="subscriptionsDataSource" class="providers-table" matSort>
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let row">{{row.id}}</td>
+        </ng-container>
+
+        <!-- First Name Column -->
+        <ng-container matColumnDef="firts_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>First name</th>
+          <td mat-cell *matCellDef="let row">{{row.firstName}}</td>
+        </ng-container>
+
+        <!-- Last Name Column -->
+        <ng-container matColumnDef="last_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Last name</th>
+          <td mat-cell *matCellDef="let row">{{row.lastName}}</td>
+        </ng-container>
+
+        <!-- Phone Column -->
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
+          <td mat-cell *matCellDef="let row">{{row.phone}}</td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let row" class="custom-status-column">
+            <span [ngClass]="getStatusClass(row.status)">
+              {{ getStatusText(row.status) }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+</div>

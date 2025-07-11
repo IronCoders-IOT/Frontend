@@ -1,0 +1,52 @@
+<app-header-content></app-header-content>
+
+<div class="report-detail-container">
+  <div class="report-header">
+    <div class="report-titles">
+      <h2>REPORT Nº {{ report.id }}</h2>
+      <h1>{{ report.title }}</h1>
+    </div>
+
+    <!-- Status dropdown button -->
+    <div class="status-dropdown">
+      <button
+        class="status-button"
+        [ngClass]="getStatusClass(report.status)"
+        (click)="toggleStatusOptions()">
+        {{ formatStatusForDisplay(report.status) }}
+        <i class="fa fa-chevron-down" [ngClass]="{'rotated': showStatusOptions}"></i>
+      </button>
+
+      <!-- Dropdown options -->
+      <div class="status-options" *ngIf="showStatusOptions">
+        <button
+          *ngFor="let status of statusOptions"
+          class="status-option"
+          [ngClass]="getStatusClass(status)"
+          [class.current]="status === report.status"
+          (click)="updateReportStatus(status)">
+          {{ formatStatusForDisplay(status) }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="report-info">
+    <div class="resident-info">
+      <h3>Resident</h3>
+      <p>{{ report.firtsName }} {{report.lastName}} </p>
+      <p>{{ report.residentAddress }}</p>
+      <p>{{ report.residentPhone }}</p>
+    </div>
+
+  </div>
+
+  <div class="description-section">
+    <label><strong>Description</strong></label>
+    <div class="description-display">{{ report.description }}</div>
+  </div>
+
+  <button class="back-button" routerLink="/issue-reports">BACK</button>
+</div>

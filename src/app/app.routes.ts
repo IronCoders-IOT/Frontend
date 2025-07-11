@@ -1,19 +1,20 @@
 import { Routes } from '@angular/router';
-import { WaterRequestComponent } from './AquaConecta/requests/components/water-request/water-request.component';
 import { HomeComponent } from './public/pages/home/home.component';
-import { LoginComponent } from './AquaConecta/auth/presentation/pages/login/login.component';
-import { SignupComponent } from './AquaConecta/auth/presentation/pages/signup/signup.component';
-import { CreateResidentComponent } from './AquaConecta/residents/presentation/create-resident/create-resident.component';
-import { ScheduleDateComponent} from './AquaConecta/requests/components/schedule-date/schedule-date.component';
-import { ReportRequestComponent} from './AquaConecta/reports/components/report-request/report-request.component';
-import { ProviderDetailComponent} from './AquaConecta/providers/components/provider-detail/provider-detail.component';
-import { ProviderListComponent} from './AquaConecta/providers/components/provider-list/provider-list.component';
-import { ViewHistoryComponent } from './AquaConecta/residents/presentation/view-history/view-history.component';
-import { ReportDetailComponent } from './AquaConecta/reports/components/report-detail/report-detail/report-detail.component';
-import { AdminDashboardComponent } from './AquaConecta/admin/presentation/dashboard/admin-dashboard.component';
-import { ProviderProfileComponent } from './AquaConecta/providers/components/provider-profile/provider-profile.component';
-import {ResidentListComponent} from './AquaConecta/residents/presentation/resident-list/resident-list.component';
-import { SensorMonitoringComponent } from './AquaConecta/providers/components/sensor-monitoring/sensor-monitoring.component';
+import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
+import {WaterRequestComponent} from './serviceRequests/water-requests/components/water-request-list/water-request.component';
+import {ProviderListComponent} from './profiles/providers/components/provider-list/provider-list.component';
+import {ScheduleDateComponent} from './serviceRequests/water-requests/components/schedule-date/schedule-date.component';
+import {IssueReportListComponent} from './serviceRequests/issue-reports/components/issue-report-list/issue-report-list.component';
+import {CreateResidentComponent} from './subcriptions/create-resident/create-resident.component';
+import {ResidentListComponent} from './profiles/residents/presentation/resident-list/resident-list.component';
+import {ResidentSummaryComponent} from './profiles/residents/presentation/resident-summary/resident-summary.component';
+import {ProviderSummaryComponent} from './profiles/providers/components/provider-summary/provider-summary.component';
+import {ProviderItemComponent} from './profiles/providers/components/provider-item/provider-item.component';
+import {DeviceMonitoringComponent} from './monitoring/device-monitoring/device-monitoring.component';
+import {LoginComponent} from './iam/presentation/pages/login/login.component';
+import {SignupComponent} from './iam/presentation/pages/signup/signup.component';
+import {IssueSummaryComponent} from './serviceRequests/issue-reports/components/issue-summary/issue-summary.component';
+import {AdminDashboardComponent} from './analytics/admin-dashboard/admin-dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -22,16 +23,17 @@ export const routes: Routes = [
   { path: 'requests', component: WaterRequestComponent },
   { path: 'schedule', component: ScheduleDateComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'reports', component: ReportRequestComponent},
+  { path: 'issue-reports', component: IssueReportListComponent},
   { path: 'signup', component: SignupComponent },
   { path: 'residents/create', component: CreateResidentComponent },
   {path: 'residents', component: ResidentListComponent},
-  {path : 'residents/:id/details', component: ViewHistoryComponent},
-  { path: 'reports/:id', component: ReportDetailComponent },
-  { path: 'admin/dashboard', component: AdminDashboardComponent },
+  {path : 'residents/:id/details', component: ResidentSummaryComponent},
+  { path: 'issue-reports/:id', component: IssueSummaryComponent },
+  { path: 'admin/admin-dashboard', component: AdminDashboardComponent },
   { path: 'provider/:id', redirectTo: 'provider/:id/detail', pathMatch: 'full' },
-  { path: 'provider/:id/detail', component: ProviderDetailComponent },
-  { path: 'provider/:id/profile', component: ProviderProfileComponent },
-  { path: 'sensor-monitoring', component: SensorMonitoringComponent },
-
+  { path: 'provider/:id/detail', component: ProviderSummaryComponent },
+  { path: 'provider/:id/profile', component: ProviderItemComponent },
+  { path: 'sensor-monitoring', component: DeviceMonitoringComponent },
+  
+  { path: '**', component: PageNotFoundComponent }
 ];
