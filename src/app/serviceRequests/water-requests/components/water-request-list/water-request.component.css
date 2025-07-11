@@ -196,6 +196,55 @@ tr:hover {
 }
 
 /*-----Status profesional----------------------*/
+/* Centrar header de columna status */
+th.mat-column-status, th[mat-header-cell][matColumnDef="status"] {
+  text-align: center !important;
+}
+
+/* Forzar centrado cuando hay mat-sort-header */
+th.mat-column-status .mat-sort-header-container,
+th[mat-header-cell][matColumnDef="status"] .mat-sort-header-container {
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+/* Centrar el texto del sort header */
+th.mat-column-status .mat-sort-header-content,
+th[mat-header-cell][matColumnDef="status"] .mat-sort-header-content {
+  text-align: center !important;
+  justify-content: center !important;
+}
+
+/* Usar ::ng-deep para forzar el centrado del sort header */
+::ng-deep th.mat-column-status .mat-sort-header-container,
+::ng-deep th[mat-header-cell][matColumnDef="status"] .mat-sort-header-container {
+  justify-content: center !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+::ng-deep th.mat-column-status .mat-sort-header-content,
+::ng-deep th[mat-header-cell][matColumnDef="status"] .mat-sort-header-content {
+  text-align: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+/* Forzar centrado específico para la columna status */
+::ng-deep .water-requests-table th.mat-column-status,
+::ng-deep .water-requests-table th[mat-header-cell][matColumnDef="status"] {
+  text-align: center !important;
+}
+
+::ng-deep .water-requests-table th.mat-column-status .mat-sort-header-container,
+::ng-deep .water-requests-table th[mat-header-cell][matColumnDef="status"] .mat-sort-header-container {
+  justify-content: center !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
 .custom-cell-status {
   text-align: center;
   width: 15%;
